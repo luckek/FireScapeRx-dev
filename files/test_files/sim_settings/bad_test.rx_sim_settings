@@ -1,0 +1,8 @@
+NUM_RUNS:10.3 # positive integer
+NUM_SIMS:15.5 # positive integer
+SIM_DURATION:-10 # positive float
+DUMMY_KEY:1245.2543
+WIND_SPEED:-125 # positive float
+WIND_DIR:365 # positive float
+INIT_INTENSITY:-15.0 positive
+IGNITION_START:20 # positive float
