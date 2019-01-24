@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>226</height>
+    <height>225</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QDialogButtonBox" name="buttonBox">
+  <widget class="QDialogButtonBox" name="button_box">
    <property name="geometry">
     <rect>
      <x>30</x>
@@ -29,98 +29,69 @@
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
    </property>
   </widget>
-  <widget class="QWidget" name="formLayoutWidget">
+  <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>271</width>
-     <height>128</height>
+     <width>361</width>
+     <height>149</height>
     </rect>
    </property>
-   <layout class="QFormLayout" name="formLayout">
-    <property name="fieldGrowthPolicy">
-     <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-    </property>
-    <item row="0" column="0">
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>Working Directory</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QLineEdit" name="outputDirectoryLineEdit_2"/>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="outputDirectoryLabel">
+   <layout class="QGridLayout" name="grid_layout">
+    <item row="1" column="1">
+     <widget class="QLabel" name="output_dir_label">
       <property name="text">
        <string>Output Directory</string>
       </property>
      </widget>
     </item>
-    <item row="1" column="1">
-     <widget class="QLineEdit" name="outputDirectoryLineEdit"/>
+    <item row="1" column="2">
+     <widget class="QLineEdit" name="output_dir_line_edit"/>
     </item>
-    <item row="2" column="1">
-     <widget class="QLineEdit" name="simulationDurationLineEdit"/>
-    </item>
-    <item row="3" column="0">
-     <widget class="QLabel" name="simulationRunsLabel">
-      <property name="text">
-       <string>Simulation Runs</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <widget class="QLineEdit" name="simulationRunsLineEdit"/>
-    </item>
-    <item row="2" column="0">
-     <widget class="QLabel" name="simulationDurationLabel">
-      <property name="text">
-       <string>Simulation Duration</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="gridLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>330</x>
-     <y>10</y>
-     <width>39</width>
-     <height>131</height>
-    </rect>
-   </property>
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QToolButton" name="toolButton">
+    <item row="2" column="3">
+     <widget class="QPushButton" name="working_dir_button">
       <property name="text">
        <string>WD</string>
       </property>
      </widget>
     </item>
-    <item row="3" column="0">
-     <widget class="QToolButton" name="toolButton_3">
+    <item row="2" column="1">
+     <widget class="QLabel" name="working_dir_label">
       <property name="text">
-       <string>SD</string>
+       <string>Working Directory</string>
       </property>
      </widget>
     </item>
-    <item row="4" column="0">
-     <widget class="QToolButton" name="toolButton_4">
-      <property name="text">
-       <string>SR</string>
-      </property>
-     </widget>
+    <item row="2" column="2">
+     <widget class="QLineEdit" name="working_dir_line_edit"/>
     </item>
-    <item row="2" column="0">
-     <widget class="QToolButton" name="toolButton_2">
+    <item row="1" column="3">
+     <widget class="QPushButton" name="output_dir_button">
       <property name="text">
        <string>OD</string>
       </property>
      </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLabel" name="sim_duration_label">
+      <property name="text">
+       <string>Simulation Duration</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="2">
+     <widget class="QLineEdit" name="sim_duration_line_edit"/>
+    </item>
+    <item row="8" column="1">
+     <widget class="QLabel" name="sim_runs_label">
+      <property name="text">
+       <string>Simulation Runs</string>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="2">
+     <widget class="QLineEdit" name="sim_runs_line_edit"/>
     </item>
    </layout>
   </widget>
@@ -128,7 +99,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>buttonBox</sender>
+   <sender>button_box</sender>
    <signal>accepted()</signal>
    <receiver>Dialog</receiver>
    <slot>accept()</slot>
@@ -144,7 +115,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>buttonBox</sender>
+   <sender>button_box</sender>
    <signal>rejected()</signal>
    <receiver>Dialog</receiver>
    <slot>reject()</slot>
