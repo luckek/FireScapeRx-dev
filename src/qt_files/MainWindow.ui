@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
+  <widget class="QWidget" name="central_widget">
    <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
@@ -23,9 +23,9 @@
       <height>41</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="horizontal_layout">
      <item>
-      <spacer name="horizontalSpacer">
+      <spacer name="horizontal_spacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -38,22 +38,15 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="current_env_label">
        <property name="text">
         <string>Current Environment: </string>
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
     </layout>
    </widget>
-   <widget class="QScrollArea" name="scrollArea">
+   <widget class="QScrollArea" name="scroll_area">
     <property name="geometry">
      <rect>
       <x>590</x>
@@ -65,7 +58,7 @@
     <property name="widgetResizable">
      <bool>true</bool>
     </property>
-    <widget class="QWidget" name="scrollAreaWidgetContents">
+    <widget class="QWidget" name="scroll_area_widget_contents">
      <property name="geometry">
       <rect>
        <x>0</x>
@@ -83,9 +76,9 @@
         <height>441</height>
        </rect>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout">
+      <layout class="QVBoxLayout" name="vertical_layout">
        <item>
-        <widget class="QLabel" name="label_3">
+        <widget class="QLabel" name="sim_settings_label">
          <property name="text">
           <string>Simulation Settings</string>
          </property>
@@ -102,7 +95,7 @@
         </widget>
        </item>
        <item>
-        <layout class="QFormLayout" name="formLayout">
+        <layout class="QFormLayout" name="sim_settings_form_layout">
          <property name="sizeConstraint">
           <enum>QLayout::SetMaximumSize</enum>
          </property>
@@ -125,7 +118,7 @@
           <number>5</number>
          </property>
          <item row="0" column="0">
-          <widget class="QLabel" name="label_4">
+          <widget class="QLabel" name="num_sim_label">
            <property name="text">
             <string>Number of Simulations</string>
            </property>
@@ -135,10 +128,10 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QLineEdit" name="lineEdit"/>
+          <widget class="QLineEdit" name="num_sim_line_edit"/>
          </item>
          <item row="1" column="0">
-          <widget class="QLabel" name="label_5">
+          <widget class="QLabel" name="sim_duration_label">
            <property name="text">
             <string>Simulation Duration</string>
            </property>
@@ -148,7 +141,7 @@
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QLineEdit" name="lineEdit_2"/>
+          <widget class="QLineEdit" name="sim_duration_line_edit"/>
          </item>
         </layout>
        </item>
@@ -160,7 +153,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_6">
+        <widget class="QLabel" name="wind_settings_label">
          <property name="text">
           <string>Wind Settings</string>
          </property>
@@ -177,7 +170,7 @@
         </widget>
        </item>
        <item>
-        <layout class="QFormLayout" name="formLayout_2">
+        <layout class="QFormLayout" name="wind_form_layout">
          <property name="formAlignment">
           <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
          </property>
@@ -200,7 +193,7 @@
           <number>5</number>
          </property>
          <item row="0" column="0">
-          <widget class="QLabel" name="windSpeedLabel">
+          <widget class="QLabel" name="wind_speed_label">
            <property name="text">
             <string>Wind Speed</string>
            </property>
@@ -210,10 +203,10 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QLineEdit" name="windSpeedLineEdit"/>
+          <widget class="QLineEdit" name="wind_speed_line_edit"/>
          </item>
          <item row="1" column="0">
-          <widget class="QLabel" name="windDirectionLabel">
+          <widget class="QLabel" name="wind_direction_label">
            <property name="text">
             <string>Wind Direction</string>
            </property>
@@ -223,7 +216,7 @@
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QLineEdit" name="windDirectionLineEdit"/>
+          <widget class="QLineEdit" name="wind_direction_line_edit"/>
          </item>
         </layout>
        </item>
@@ -235,7 +228,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_7">
+        <widget class="QLabel" name="init_conditions_label">
          <property name="text">
           <string>Initial conditions</string>
          </property>
@@ -252,7 +245,7 @@
         </widget>
        </item>
        <item>
-        <layout class="QFormLayout" name="formLayout_3">
+        <layout class="QFormLayout" name="form_layout_3">
          <property name="formAlignment">
           <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
          </property>
@@ -298,12 +291,12 @@
           </widget>
          </item>
          <item row="2" column="1">
-          <widget class="QLineEdit" name="ignitionStartTime_lineEdit"/>
+          <widget class="QLineEdit" name="ignitionStartTime_line_edit"/>
          </item>
         </layout>
        </item>
        <item>
-        <spacer name="verticalSpacer_2">
+        <spacer name="vertical_spacer_2">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
@@ -316,7 +309,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="modify_fuel_map">
          <property name="text">
           <string>Modify Fuel Map</string>
          </property>
@@ -333,7 +326,7 @@
      <x>0</x>
      <y>0</y>
      <width>932</width>
-     <height>25</height>
+     <height>20</height>
     </rect>
    </property>
    <property name="defaultUp">
@@ -342,76 +335,67 @@
    <property name="nativeMenuBar">
     <bool>false</bool>
    </property>
-   <widget class="QMenu" name="menuFile">
+   <widget class="QMenu" name="menu_file">
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionCreate_Environment"/>
+    <addaction name="action_create_environment"/>
    </widget>
-   <widget class="QMenu" name="menuImport">
+   <widget class="QMenu" name="menu_import">
     <property name="title">
      <string>Import</string>
     </property>
-    <addaction name="actionEnvironment"/>
-    <addaction name="actionSimulation_2"/>
-    <addaction name="actionSummary_File_2"/>
+    <addaction name="action_import_environment"/>
+    <addaction name="action_import_simulation"/>
+    <addaction name="action_import_summary_file"/>
    </widget>
-   <widget class="QMenu" name="menuExport">
+   <widget class="QMenu" name="menu_export">
     <property name="title">
      <string>Export</string>
     </property>
-    <addaction name="actionEnvironment_2"/>
-    <addaction name="actionSimulation"/>
-    <addaction name="actionSummary_File"/>
+    <addaction name="action_export_environment"/>
+    <addaction name="action_export_simulation"/>
+    <addaction name="action_export_summary_file"/>
    </widget>
-   <widget class="QMenu" name="menuCustomize">
-    <property name="title">
-     <string>Customize</string>
-    </property>
-    <addaction name="actionInitial_Conditions"/>
-    <addaction name="actionWind"/>
-    <addaction name="actionFuel_Map"/>
-   </widget>
-   <widget class="QMenu" name="menuSettings">
+   <widget class="QMenu" name="menu_settings">
     <property name="title">
      <string>Settings</string>
     </property>
-    <addaction name="actionUser_Settings"/>
-    <addaction name="actionSelect_Output_Files"/>
+    <addaction name="action_user_settings"/>
+    <addaction name="action_select_output_files"/>
    </widget>
-   <widget class="QMenu" name="menuHelp">
+   <widget class="QMenu" name="menu_help">
     <property name="title">
      <string>Help</string>
     </property>
-    <addaction name="actionAbout"/>
+    <addaction name="action_about"/>
    </widget>
-   <widget class="QMenu" name="menuView">
+   <widget class="QMenu" name="menu_simulation">
     <property name="title">
      <string>Simulation</string>
     </property>
-    <addaction name="actionRun"/>
-    <addaction name="actionView"/>
+    <addaction name="action_run_sim"/>
+    <addaction name="action_view_sim"/>
    </widget>
-   <addaction name="menuFile"/>
-   <addaction name="menuImport"/>
-   <addaction name="menuExport"/>
-   <addaction name="menuCustomize"/>
-   <addaction name="menuView"/>
-   <addaction name="menuSettings"/>
-   <addaction name="menuHelp"/>
+   <addaction name="menu_file"/>
+   <addaction name="menu_import"/>
+   <addaction name="menu_export"/>
+   <addaction name="menu_simulation"/>
+   <addaction name="menu_settings"/>
+   <addaction name="menu_help"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionCreate_Environment">
+  <widget class="QStatusBar" name="current_env"/>
+  <action name="action_create_environment">
    <property name="text">
     <string>Create Environment</string>
    </property>
   </action>
-  <action name="actionEnvironment">
+  <action name="action_import_environment">
    <property name="text">
     <string>Environment</string>
    </property>
   </action>
-  <action name="actionInitial_Conditions">
+  <action name="action_Initial_Conditions">
    <property name="text">
     <string>Initial Conditions</string>
    </property>
@@ -426,27 +410,27 @@
     <string>Fuel Map</string>
    </property>
   </action>
-  <action name="actionSimulation">
+  <action name="action_export_simulation">
    <property name="text">
     <string>Simulation</string>
    </property>
   </action>
-  <action name="actionSummary_File">
+  <action name="action_export_summary_file">
    <property name="text">
     <string>Summary File</string>
    </property>
   </action>
-  <action name="actionEnvironment_2">
+  <action name="action_export_environment">
    <property name="text">
     <string>Environment</string>
    </property>
   </action>
-  <action name="actionSimulation_2">
+  <action name="action_import_simulation">
    <property name="text">
     <string>Simulation</string>
    </property>
   </action>
-  <action name="actionSummary_File_2">
+  <action name="action_import_summary_file">
    <property name="text">
     <string>Summary File</string>
    </property>
@@ -471,32 +455,49 @@
     <string>Simulation Runs</string>
    </property>
   </action>
-  <action name="actionSelect_Output_Files">
+  <action name="action_select_output_files">
    <property name="text">
     <string>Select Output Files</string>
    </property>
   </action>
-  <action name="actionRun">
+  <action name="action_run_sim">
    <property name="text">
     <string>Run</string>
    </property>
   </action>
-  <action name="actionView">
+  <action name="action_view_sim">
    <property name="text">
     <string>View</string>
    </property>
   </action>
-  <action name="actionUser_Settings">
+  <action name="action_user_settings">
    <property name="text">
     <string>User Settings</string>
    </property>
   </action>
-  <action name="actionAbout">
+  <action name="action_about">
    <property name="text">
     <string>About</string>
    </property>
   </action>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>wind_speed_line_edit</sender>
+   <signal>returnPressed()</signal>
+   <receiver>wind_speed_line_edit</receiver>
+   <slot>copy()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>920</x>
+     <y>200</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>920</x>
+     <y>200</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
