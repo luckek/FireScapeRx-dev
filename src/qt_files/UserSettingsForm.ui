@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>422</width>
     <height>225</height>
    </rect>
   </property>
@@ -16,7 +16,7 @@
   <widget class="QDialogButtonBox" name="button_box">
    <property name="geometry">
     <rect>
-     <x>30</x>
+     <x>60</x>
      <y>170</y>
      <width>341</width>
      <height>32</height>
@@ -32,7 +32,7 @@
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>40</x>
      <y>10</y>
      <width>361</width>
      <height>149</height>
@@ -84,14 +84,14 @@
      <widget class="QLineEdit" name="sim_duration_line_edit"/>
     </item>
     <item row="8" column="1">
-     <widget class="QLabel" name="sim_runs_label">
+     <widget class="QLabel" name="num_sims_label">
       <property name="text">
-       <string>Simulation Runs</string>
+       <string>Number of Simulations</string>
       </property>
      </widget>
     </item>
     <item row="8" column="2">
-     <widget class="QLineEdit" name="sim_runs_line_edit"/>
+     <widget class="QLineEdit" name="num_sims_line_edit"/>
     </item>
    </layout>
   </widget>
