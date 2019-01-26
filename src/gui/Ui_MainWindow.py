@@ -1,18 +1,15 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'MainWindow.ui'
+# Form implementation generated from reading ui file 'src/qt_files/MainWindow.ui'
 #
 # Created by: PyQt5 UI code generator 5.6
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QDialog
-from .UserSettingsForm import *
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
-
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(932, 600)
         self.central_widget = QtWidgets.QWidget(MainWindow)
@@ -227,6 +224,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menu_help.menuAction())
 
         self.retranslateUi(MainWindow)
+        self.wind_speed_line_edit.returnPressed.connect(self.wind_speed_line_edit.copy)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -268,3 +266,4 @@ class Ui_MainWindow(object):
         self.action_view_sim.setText(_translate("MainWindow", "View"))
         self.action_user_settings.setText(_translate("MainWindow", "User Settings"))
         self.action_about.setText(_translate("MainWindow", "About"))
+

@@ -1,25 +1,24 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'src/qt_files/UserSettingsForm.ui'
+# Form implementation generated from reading ui file 'qt_files/UserSettingsForm.ui'
 #
 # Created by: PyQt5 UI code generator 5.6
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QFileDialog
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(400, 225)
+        Dialog.resize(422, 225)
         self.button_box = QtWidgets.QDialogButtonBox(Dialog)
-        self.button_box.setGeometry(QtCore.QRect(30, 170, 341, 32))
+        self.button_box.setGeometry(QtCore.QRect(60, 170, 341, 32))
         self.button_box.setOrientation(QtCore.Qt.Horizontal)
         self.button_box.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.button_box.setObjectName("button_box")
         self.gridLayoutWidget = QtWidgets.QWidget(Dialog)
-        self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 10, 361, 149))
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(40, 10, 361, 149))
         self.gridLayoutWidget.setObjectName("gridLayoutWidget")
         self.grid_layout = QtWidgets.QGridLayout(self.gridLayoutWidget)
         self.grid_layout.setContentsMargins(0, 0, 0, 0)
@@ -48,20 +47,14 @@ class Ui_Dialog(object):
         self.sim_duration_line_edit = QtWidgets.QLineEdit(self.gridLayoutWidget)
         self.sim_duration_line_edit.setObjectName("sim_duration_line_edit")
         self.grid_layout.addWidget(self.sim_duration_line_edit, 3, 2, 1, 1)
-        self.sim_runs_label = QtWidgets.QLabel(self.gridLayoutWidget)
-        self.sim_runs_label.setObjectName("sim_runs_label")
-        self.grid_layout.addWidget(self.sim_runs_label, 8, 1, 1, 1)
-        self.sim_runs_line_edit = QtWidgets.QLineEdit(self.gridLayoutWidget)
-        self.sim_runs_line_edit.setObjectName("sim_runs_line_edit")
-        self.grid_layout.addWidget(self.sim_runs_line_edit, 8, 2, 1, 1)
-        # ---- End generated code
+        self.num_sims_label = QtWidgets.QLabel(self.gridLayoutWidget)
+        self.num_sims_label.setObjectName("num_sims_label")
+        self.grid_layout.addWidget(self.num_sims_label, 8, 1, 1, 1)
+        self.num_sims_line_edit = QtWidgets.QLineEdit(self.gridLayoutWidget)
+        self.num_sims_line_edit.setObjectName("num_sims_line_edit")
+        self.grid_layout.addWidget(self.num_sims_line_edit, 8, 2, 1, 1)
 
-        self.output_dir_button.clicked[bool].connect(button_clicked)
-        self.output_dir_line_edit.returnPressed.connect(self.ret_pressed)
-
-        # ---- Begin generated code
         self.retranslateUi(Dialog)
-        # self.button_box.
         self.button_box.accepted.connect(Dialog.accept)
         self.button_box.rejected.connect(Dialog.reject)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -74,16 +67,5 @@ class Ui_Dialog(object):
         self.working_dir_label.setText(_translate("Dialog", "Working Directory"))
         self.output_dir_button.setText(_translate("Dialog", "OD"))
         self.sim_duration_label.setText(_translate("Dialog", "Simulation Duration"))
-        self.sim_runs_label.setText(_translate("Dialog", "Simulation Runs"))
+        self.num_sims_label.setText(_translate("Dialog", "Number of Simulations"))
 
-    def ret_pressed(self):
-        print('Return')
-
-
-@QtCore.pyqtSlot(bool, name='button_clicked')
-def button_clicked(checked=None):
-    file = str(QFileDialog.getExistingDirectory(None, "Select Directory"))
-    # fileName, _ = QFileDialog.getSaveFileName(self.button_box.parent(), "QFileDialog.getSaveFileName()", "", "All Files (*);;Text Files (*.txt)")
-
-    if file:
-        print('file:', file)
