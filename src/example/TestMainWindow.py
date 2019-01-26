@@ -34,11 +34,15 @@ class TestMainWindow(object):
 
         self.mapper = QtCore.QSignalMapper(MainWindow)
 
+        # button.clicked.connect(lambda state, x=idx: self.button_pushed(x))
+        identifier = 'User Settings'
+        self.actionUser_Settings.triggered.connect(lambda state, x=identifier: self.handle_button(x))
+
         self.mapper.setMapping(self.actionUser_Settings, 'User Settings')
-        self.actionUser_Settings.triggered.connect(self.mapper.map)
+        # self.actionUser_Settings.triggered.connect(self.mapper.map)
 
         # Call on_button_clicked when anything connected to the mapper is pressed
-        self.mapper.mapped['QString'].connect(self.handle_button)
+        # self.mapper.mapped[str].connect(self.handle_button)
 
         # Call on_button_clicked when user_settings is pressed
         # self.actionUser_Settings.triggered.connect(self.on_button_clicked)
