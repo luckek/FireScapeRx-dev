@@ -23,7 +23,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def handle_button(self, identifier):
 
         # FIXME: ignore identifiers that will not be handled
-        dialog = QDialog()
 
         if identifier == 'Create Environment':
             print(identifier, 'not implemented')
@@ -42,7 +41,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
 
         elif identifier == 'User Settings':
-            dialog.ui = Ui_Dialog()
+            dialog = UserSettingsForm()
 
         elif identifier == 'Select Output File':
             print(identifier, 'not implemented')
@@ -64,7 +63,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             print(identifier)
             return
 
-        dialog.ui.setupUi(dialog)
         dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)  # Ensure resources are freed when dlg closes
         dialog.exec_()  # Executes dialog
 
