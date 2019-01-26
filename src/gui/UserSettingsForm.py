@@ -56,7 +56,7 @@ class Ui_Dialog(object):
         self.grid_layout.addWidget(self.sim_runs_line_edit, 8, 2, 1, 1)
         # ---- End generated code
 
-        self.output_dir_button.clicked.connect(self.button_clicked)
+        self.output_dir_button.clicked[bool].connect(button_clicked)
         self.output_dir_line_edit.returnPressed.connect(self.ret_pressed)
 
         # ---- Begin generated code
@@ -76,13 +76,14 @@ class Ui_Dialog(object):
         self.sim_duration_label.setText(_translate("Dialog", "Simulation Duration"))
         self.sim_runs_label.setText(_translate("Dialog", "Simulation Runs"))
 
-    @QtCore.pyqtSlot(bool)
-    def button_clicked(self, checked=None):
-        file = str(QFileDialog.getExistingDirectory(self.button_box.parent(), "Select Directory"))
-        # fileName, _ = QFileDialog.getSaveFileName(self.button_box.parent(), "QFileDialog.getSaveFileName()", "", "All Files (*);;Text Files (*.txt)")
-
-        if file:
-            print('file:', file)
-
     def ret_pressed(self):
         print('Return')
+
+
+@QtCore.pyqtSlot(bool, name='button_clicked')
+def button_clicked(checked=None):
+    file = str(QFileDialog.getExistingDirectory(None, "Select Directory"))
+    # fileName, _ = QFileDialog.getSaveFileName(self.button_box.parent(), "QFileDialog.getSaveFileName()", "", "All Files (*);;Text Files (*.txt)")
+
+    if file:
+        print('file:', file)
