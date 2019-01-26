@@ -32,7 +32,7 @@ class TestDialog(object):
         # By connecting to self.print_edited, this function will be called whenever this signal is emitted
         # NOTE: this uses newer, alternative syntax. The [str] specifies we want to connect to
         # the text edited signal that emits a string.
-        self.testlineEdit.textEdited[str].connect(self.print_edited)
+        self.testlineEdit.textEdited[str].connect(print_edited)
 
         self.retranslateUi(testDialog)
         self.buttonBox.accepted.connect(testDialog.accept)

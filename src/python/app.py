@@ -1,20 +1,21 @@
 import sys
-from gui.MainWindow import *
+from MainWindow import MainWindow
+from gui.UserSettingsForm import *
 from PyQt5.QtWidgets import QMainWindow, QApplication
 
 
-class AppWindow(QMainWindow):
-
-    def __init__(self):
-        super().__init__()
-        self.ui = MainWindow()
-        self.ui.setupUi(self)
-        self.show()
+# class AppWindow(QMainWindow):
+#
+#     def __init__(self):
+#         super().__init__()
+#         self.ui = MainWindow()
+#         # self.ui.setupUi(self)
+#         self.show()
 
 
 def main(argv):
     app = QApplication(argv)
-    w = AppWindow()
+    w = MainWindow()
     w.show()
     sys.exit(app.exec_())
 

@@ -38,7 +38,7 @@ class TestMainWindow(object):
         identifier = 'User Settings'
         self.actionUser_Settings.triggered.connect(lambda state, x=identifier: self.handle_button(x))
 
-        self.mapper.setMapping(self.actionUser_Settings, 'User Settings')
+        # self.mapper.setMapping(self.actionUser_Settings, 'User Settings')
         # self.actionUser_Settings.triggered.connect(self.mapper.map)
 
         # Call on_button_clicked when anything connected to the mapper is pressed

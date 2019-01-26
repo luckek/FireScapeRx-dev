@@ -7,6 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QFileDialog
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -53,8 +54,14 @@ class Ui_Dialog(object):
         self.sim_runs_line_edit = QtWidgets.QLineEdit(self.gridLayoutWidget)
         self.sim_runs_line_edit.setObjectName("sim_runs_line_edit")
         self.grid_layout.addWidget(self.sim_runs_line_edit, 8, 2, 1, 1)
+        # ---- End generated code
 
+        self.output_dir_button.clicked.connect(self.button_clicked)
+        self.output_dir_line_edit.returnPressed.connect(self.ret_pressed)
+
+        # ---- Begin generated code
         self.retranslateUi(Dialog)
+        # self.button_box.
         self.button_box.accepted.connect(Dialog.accept)
         self.button_box.rejected.connect(Dialog.reject)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -68,3 +75,14 @@ class Ui_Dialog(object):
         self.output_dir_button.setText(_translate("Dialog", "OD"))
         self.sim_duration_label.setText(_translate("Dialog", "Simulation Duration"))
         self.sim_runs_label.setText(_translate("Dialog", "Simulation Runs"))
+
+    @QtCore.pyqtSlot(bool)
+    def button_clicked(self, checked=None):
+        file = str(QFileDialog.getExistingDirectory(self.button_box.parent(), "Select Directory"))
+        # fileName, _ = QFileDialog.getSaveFileName(self.button_box.parent(), "QFileDialog.getSaveFileName()", "", "All Files (*);;Text Files (*.txt)")
+
+        if file:
+            print('file:', file)
+
+    def ret_pressed(self):
+        print('Return')
