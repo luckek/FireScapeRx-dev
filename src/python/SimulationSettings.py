@@ -1,4 +1,11 @@
+import os.path as osp
+from UserSettings import UserSettings
+
+
 class SimulationSettings:
+
+    FILE_EXT = '.sim_settings'
+    KV_SEP = ':'
 
     DEF_NUM_RUNS = 5  # FIXME: figure out reasonable default
     DEF_NUM_SIMS = 5  # FIXME: figure out reasonable default
@@ -24,12 +31,26 @@ class SimulationSettings:
         self._init_intensity = self.DEF_INIT_INTENSITY
         self._ignition_start = self.DEF_IGNITION_START
 
-        self.read_settings(fname)
+        user_settings = UserSettings()
+        self._user_settings = user_settings
+
+        # Check if sim settings file already exists
+        if osp.isfile(fname):
+            self.read(fname)
+
+        else:
+
+            # This should attempt to put sim settings into
+            # currently set output_dir if it is a valid path
+            if osp.isfile(user_settings.output_dir + fname):
+                fname = user_settings.output_dir + fname
+
+            self.create_sim_settings(fname)
 
     #  According to the documentation found at https://docs.python.org/3/library/exceptions.html,
     #  we should raise TypeErrors when an unintended value is passed i.e float when it should be an int.
     # Conversely, if a value is outside of the appropriate range, a ValueError should be raised
-    def read_settings(self, fname):
+    def read(self, fname):
 
         # Open file
         with open(fname) as f:
@@ -137,10 +158,29 @@ class SimulationSettings:
                 except (ValueError, TypeError, KeyError) as vtke:
                     print(vtke)
 
+    def create_sim_settings(self, fname):
+        with open(fname, 'w') as f:
+            for key, value in self.get_default_settings_dict():
+                f.write(key + ':' + value + '\n')
+
+    def save(self, fname):
+
+        if not fname.endswith(self.FILE_EXT):
+            fname += self.FILE_EXT
+
+        with open(fname, 'w') as f:
+            for key, value in self.get_settings_dict():
+                f.write(key + self.KV_SEP + value + '\n')
+
     def get_settings_dict(self):
         return {'NUM_RUNS': self._num_runs, 'NUM_SIMS': self._num_sims, 'SIM_DURATION': self._sim_duration,
                 'WIND_SPEED': self._wind_speed, 'WIND_DIR': self._wind_dir, 'INIT_INTENSITY': self._init_intensity,
                 'IGNITION_START': self._ignition_start}
+
+    def get_default_settings_dict(self):
+        return {'NUM_RUNS': self.DEF_NUM_SIMS, 'NUM_SIMS': self.DEF_NUM_SIMS, 'SIM_DURATION': self.DEF_SIM_DURATION,
+                'WIND_SPEED': self.DEF_WIND_SPEED, 'WIND_DIR': self.DEF_WIND_DIR, 'INIT_INTENSITY': self.DEF_INIT_INTENSITY,
+                'IGNITION_START': self.DEF_IGNITION_START}
 
     def update_settings(self, settings_dict):
 
@@ -180,3 +220,35 @@ class SimulationSettings:
             return True
         except ValueError:
             return False
+
+    @property
+    def num_sims(self):
+        return self._num_sims
+
+    @num_sims.setter
+    def num_sims(self, num_sims):
+        self._num_sims = num_sims
+
+    @property
+    def sim_duration(self):
+        return self._sim_duration
+
+    @sim_duration.setter
+    def sim_duration(self, sim_duration):
+        self._sim_duration = sim_duration
+
+    @property
+    def wind_speed(self):
+        return self._wind_speed
+
+    @wind_speed.setter
+    def wind_speed(self, wind_speed):
+        self._wind_speed = wind_speed
+
+    @property
+    def wind_dir(self):
+        return self._wind_dir
+
+    @wind_dir.setter
+    def wind_dir(self, wind_dir):
+        self._wind_dir = wind_dir

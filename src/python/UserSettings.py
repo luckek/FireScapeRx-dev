@@ -5,6 +5,8 @@ class UserSettings:
 
     FNAME = 'FireScape_Rx.ini'
     USER_SETTINGS_LOC = '../../' + FNAME
+    FILE_EXT = '.ini'
+    KV_SEP = ':'
 
     DEF_OUTPUT_DIR = '../../'
     DEF_WORKING_DIR = ''
@@ -38,7 +40,7 @@ class UserSettings:
 
                 # Remove newline and spaces
                 line = line.strip(' ')[:-1]
-                key, value = line.split(':')
+                key, value = line.split(self.KV_SEP)
 
                 # TODO: ensure directory is valid
                 if key.startswith('OUTPUT_DIRECTORY'):
@@ -61,10 +63,10 @@ class UserSettings:
         print('creating user settings')
         with open(self.USER_SETTINGS_LOC, 'w') as f:
 
-            f.write('OUTPUT_DIRECTORY:' + self._output_dir + '\n')
-            f.write('WORKING_DIRECTORY:' + self._working_dir + '\n')
-            f.write('SIM_DURATION:' + str(self._sim_duration) + '\n')
-            f.write('NUM_SIMS:' + str(self._num_sims) + '\n')
+            f.write('OUTPUT_DIRECTORY' + self.KV_SEP + self._output_dir + '\n')
+            f.write('WORKING_DIRECTORY' + self.KV_SEP + self._working_dir + '\n')
+            f.write('SIM_DURATION' + self.KV_SEP + str(self._sim_duration) + '\n')
+            f.write('NUM_SIMS' + self.KV_SEP + str(self._num_sims) + '\n')
 
     # TODO:
     # Can make saving user settings more fancy
