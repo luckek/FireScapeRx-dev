@@ -160,8 +160,8 @@ class SimulationSettings:
 
     def create_sim_settings(self, fname):
         with open(fname, 'w') as f:
-            for key, value in self.get_default_settings_dict():
-                f.write(key + ':' + value + '\n')
+            for key, value in self.get_default_settings_dict().items():
+                f.write(key + ':' + str(value) + '\n')
 
     def save(self, fname):
 
@@ -169,8 +169,8 @@ class SimulationSettings:
             fname += self.FILE_EXT
 
         with open(fname, 'w') as f:
-            for key, value in self.get_settings_dict():
-                f.write(key + self.KV_SEP + value + '\n')
+            for key, value in self.get_settings_dict().items():
+                f.write(key + self.KV_SEP + str(value) + '\n')
 
     def get_settings_dict(self):
         return {'NUM_RUNS': self._num_runs, 'NUM_SIMS': self._num_sims, 'SIM_DURATION': self._sim_duration,
