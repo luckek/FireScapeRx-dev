@@ -12,18 +12,6 @@ class UserSettingsForm(QDialog, Ui_Dialog):
 
         self.setupUi(self)
 
-        user_settings = UserSettings()
-        self.user_settings = user_settings
-
-        # If there was already a user settings file, populate dialog
-        if user_settings.file_exists:
-
-            # Use os.path.abspath to resolve absolute filepath for display purposes
-            self.output_dir_line_edit.setText(osp.abspath(user_settings.output_dir))
-            self.working_dir_line_edit.setText(osp.abspath(user_settings.working_dir))
-            self.sim_duration_line_edit.setText(user_settings.sim_duration)
-            self.num_sims_line_edit.setText(user_settings.num_sims)
-
         # Set line edits to read only
         self.output_dir_line_edit.setReadOnly(True)
         self.working_dir_line_edit.setReadOnly(True)
