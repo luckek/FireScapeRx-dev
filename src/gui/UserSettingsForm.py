@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
+from python.SimulationSettings import *
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -47,12 +48,14 @@ class Ui_Dialog(object):
         self.grid_layout.addWidget(self.sim_duration_label, 3, 1, 1, 1)
         self.sim_duration_line_edit = QtWidgets.QLineEdit(self.gridLayoutWidget)
         self.sim_duration_line_edit.setObjectName("sim_duration_line_edit")
+        self.sim_duration_line_edit.setText(str(SimulationSettings.DEF_SIM_DURATION))
         self.grid_layout.addWidget(self.sim_duration_line_edit, 3, 2, 1, 1)
         self.sim_runs_label = QtWidgets.QLabel(self.gridLayoutWidget)
         self.sim_runs_label.setObjectName("sim_runs_label")
         self.grid_layout.addWidget(self.sim_runs_label, 8, 1, 1, 1)
         self.sim_runs_line_edit = QtWidgets.QLineEdit(self.gridLayoutWidget)
         self.sim_runs_line_edit.setObjectName("sim_runs_line_edit")
+        self.sim_runs_line_edit.setText(str(SimulationSettings.DEF_NUM_RUNS))
         self.grid_layout.addWidget(self.sim_runs_line_edit, 8, 2, 1, 1)
         # ---- End generated code
 
@@ -68,7 +71,7 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        Dialog.setWindowTitle(_translate("Dialog", "User Settings"))
         self.output_dir_label.setText(_translate("Dialog", "Output Directory"))
         self.working_dir_button.setText(_translate("Dialog", "WD"))
         self.working_dir_label.setText(_translate("Dialog", "Working Directory"))
@@ -76,12 +79,13 @@ class Ui_Dialog(object):
         self.sim_duration_label.setText(_translate("Dialog", "Simulation Duration"))
         self.sim_runs_label.setText(_translate("Dialog", "Simulation Runs"))
 
+
     def ret_pressed(self):
         print('Return')
 
 
 @QtCore.pyqtSlot(bool, name='button_clicked')
-def button_clicked(checked=None):
+def button_clicked( checked=None):
     file = str(QFileDialog.getExistingDirectory(None, "Select Directory"))
     # fileName, _ = QFileDialog.getSaveFileName(self.button_box.parent(), "QFileDialog.getSaveFileName()", "", "All Files (*);;Text Files (*.txt)")
 

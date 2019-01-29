@@ -9,6 +9,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QDialog
 from .UserSettingsForm import *
+from python.SimulationSettings import *
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -62,6 +63,7 @@ class Ui_MainWindow(object):
         self.sim_settings_form_layout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.num_sim_label)
         self.num_sim_line_edit = QtWidgets.QLineEdit(self.verticalLayoutWidget)
         self.num_sim_line_edit.setObjectName("num_sim_line_edit")
+        self.num_sim_line_edit.setText(str(SimulationSettings.DEF_NUM_SIMS))
         self.sim_settings_form_layout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.num_sim_line_edit)
         self.sim_duration_label = QtWidgets.QLabel(self.verticalLayoutWidget)
         self.sim_duration_label.setAlignment(QtCore.Qt.AlignCenter)
@@ -69,6 +71,7 @@ class Ui_MainWindow(object):
         self.sim_settings_form_layout.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.sim_duration_label)
         self.sim_duration_line_edit = QtWidgets.QLineEdit(self.verticalLayoutWidget)
         self.sim_duration_line_edit.setObjectName("sim_duration_line_edit")
+        self.sim_duration_line_edit.setText(str(SimulationSettings.DEF_SIM_DURATION))
         self.sim_settings_form_layout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.sim_duration_line_edit)
         self.vertical_layout.addLayout(self.sim_settings_form_layout)
         self.line_3 = QtWidgets.QFrame(self.verticalLayoutWidget)
@@ -97,6 +100,7 @@ class Ui_MainWindow(object):
         self.wind_form_layout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.wind_speed_label)
         self.wind_speed_line_edit = QtWidgets.QLineEdit(self.verticalLayoutWidget)
         self.wind_speed_line_edit.setObjectName("wind_speed_line_edit")
+        self.wind_speed_line_edit.setText(str(SimulationSettings.DEF_WIND_SPEED))
         self.wind_form_layout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.wind_speed_line_edit)
         self.wind_direction_label = QtWidgets.QLabel(self.verticalLayoutWidget)
         self.wind_direction_label.setAlignment(QtCore.Qt.AlignCenter)
@@ -104,6 +108,7 @@ class Ui_MainWindow(object):
         self.wind_form_layout.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.wind_direction_label)
         self.wind_direction_line_edit = QtWidgets.QLineEdit(self.verticalLayoutWidget)
         self.wind_direction_line_edit.setObjectName("wind_direction_line_edit")
+        self.wind_direction_line_edit.setText(str(SimulationSettings.DEF_WIND_DIR))
         self.wind_form_layout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.wind_direction_line_edit)
         self.vertical_layout.addLayout(self.wind_form_layout)
         self.line = QtWidgets.QFrame(self.verticalLayoutWidget)
@@ -132,6 +137,7 @@ class Ui_MainWindow(object):
         self.form_layout_3.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.initialFireIntensity_label)
         self.initialFireIntensityLineEdit = QtWidgets.QLineEdit(self.verticalLayoutWidget)
         self.initialFireIntensityLineEdit.setObjectName("initialFireIntensityLineEdit")
+        self.initialFireIntensityLineEdit.setText(str(SimulationSettings.DEF_INIT_INTENSITY))
         self.form_layout_3.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.initialFireIntensityLineEdit)
         self.ingnitionStartTime_label = QtWidgets.QLabel(self.verticalLayoutWidget)
         self.ingnitionStartTime_label.setAlignment(QtCore.Qt.AlignCenter)
@@ -139,6 +145,7 @@ class Ui_MainWindow(object):
         self.form_layout_3.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.ingnitionStartTime_label)
         self.ignitionStartTime_line_edit = QtWidgets.QLineEdit(self.verticalLayoutWidget)
         self.ignitionStartTime_line_edit.setObjectName("ignitionStartTime_line_edit")
+        self.ignitionStartTime_line_edit.setText(str(SimulationSettings.DEF_IGNITION_START))
         self.form_layout_3.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.ignitionStartTime_line_edit)
         self.vertical_layout.addLayout(self.form_layout_3)
         spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)

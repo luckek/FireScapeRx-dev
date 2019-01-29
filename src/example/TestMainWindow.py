@@ -59,7 +59,7 @@ class TestMainWindow(object):
         self.menuSettings.setTitle(_translate("MainWindow", "Settings"))
         self.actionUser_Settings.setText(_translate("MainWindow", "User Settings"))
 
-    @QtCore.pyqtSlot(str)
+    #@QtCore.pyqtSlot(str)
     def handle_button(self, identifier):
         dialog = QDialog()
 
