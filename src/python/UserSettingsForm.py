@@ -12,6 +12,8 @@ class UserSettingsForm(QDialog, Ui_Dialog):
 
         self.setupUi(self)
 
+        self.user_settings = UserSettings()
+
         #Initalize fields with user settings values
         self.output_dir_line_edit.setText(osp.abspath(str(UserSettings.DEF_OUTPUT_DIR)))
         self.working_dir_line_edit.setText(osp.abspath(str(UserSettings.DEF_WORKING_DIR)))
