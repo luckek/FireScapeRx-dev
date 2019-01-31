@@ -12,6 +12,12 @@ class UserSettingsForm(QDialog, Ui_Dialog):
 
         self.setupUi(self)
 
+        #Initalize fields with user settings values
+        self.output_dir_line_edit.setText(osp.abspath(str(UserSettings.DEF_OUTPUT_DIR)))
+        self.working_dir_line_edit.setText(osp.abspath(str(UserSettings.DEF_WORKING_DIR)))
+        self.sim_duration_line_edit.setText(str(UserSettings.DEF_SIM_DURATION))
+        self.num_sims_line_edit.setText(str(UserSettings.DEF_NUM_SIMS))
+
         # Set line edits to read only
         self.output_dir_line_edit.setReadOnly(True)
         self.working_dir_line_edit.setReadOnly(True)

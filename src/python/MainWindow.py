@@ -13,6 +13,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Set up the user interface from Designer.
         self.setupUi(self)
 
+        #Initialize fields with simulation settings values
+        self.num_sim_line_edit.setText(str(SimulationSettings.DEF_NUM_SIMS))
+        self.sim_duration_line_edit.setText(str(SimulationSettings.DEF_SIM_DURATION))
+        self.wind_speed_line_edit.setText(str(SimulationSettings.DEF_WIND_SPEED))
+        self.wind_direction_line_edit.setText(str(SimulationSettings.DEF_WIND_DIR))
+        self.initialFireIntensityLineEdit.setText(str(SimulationSettings.DEF_INIT_INTENSITY))
+        self.ignitionStartTime_line_edit.setText(str(SimulationSettings.DEF_IGNITION_START))
+
         for child in self.menubar.children():
             if type(child) is QtWidgets.QMenu:
                 for action in child.actions():
