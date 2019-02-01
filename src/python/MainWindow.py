@@ -2,6 +2,7 @@ from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QMainWindow
 from gui.Ui_MainWindow import Ui_MainWindow
 from UserSettingsForm import UserSettingsForm
+from AboutDialog import AboutDialog
 from SimulationSettings import SimulationSettings
 
 
@@ -57,8 +58,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
 
         elif identifier == 'About':
-            print(identifier, 'not implemented')
-            return
+            dialog = AboutDialog()
 
         elif identifier == 'Run':
             print(identifier, 'not implemented')
