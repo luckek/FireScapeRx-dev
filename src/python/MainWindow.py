@@ -4,6 +4,7 @@ from gui.Ui_MainWindow import Ui_MainWindow
 from UserSettingsForm import UserSettingsForm
 from AboutDialog import AboutDialog
 from SimulationSettings import SimulationSettings
+from SelectOutputFileTypesForm import SelectOutputFileTypesForm
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -53,9 +54,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         elif identifier == 'User Settings':
             dialog = UserSettingsForm()
 
-        elif identifier == 'Select Output File':
-            print(identifier, 'not implemented')
-            return
+        elif identifier == 'Select Output Files':
+            dialog = SelectOutputFileTypesForm()
 
         elif identifier == 'About':
             dialog = AboutDialog()
