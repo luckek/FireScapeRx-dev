@@ -6,6 +6,7 @@ from UserSettings import UserSettings
 from AboutDialog import AboutDialog
 from SimulationSettings import SimulationSettings
 
+
 class MainWindow(QMainWindow, Ui_MainWindow):
 
     def __init__(self):
@@ -68,8 +69,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
 
         elif identifier == 'action_run_sim':
-            print(identifier, 'not implemented')
-            return
+            # FIXME: could probably wrap this in it's own function
+            if self.environment_present():
+                print('Run simulation...')
+                # FIXME: actually run simulation right here
+                # & give user indication of how far along
+                # simulation is(if possible)
+
+            else:
+
+                # FIXME: decide if should be warning, information or critical
+                # NOTE: Since QMessageBox displays rich text, we can use markup and html to format output
+                # NOTE: QMessageBox displays itself
+                QMessageBox.information(self, 'No Environment Present', '<html>No Environment Present!<br>Please create or import an environment.</html>')
+
+                # We do not care about return value of QMessageBox
+                return
 
         elif identifier == 'action_view_sim':
             print(identifier, 'not implemented')
