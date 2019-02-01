@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QDialog, QFileDialog
 from gui.Ui_UserSettings import Ui_Dialog
 from UserSettings import *
 import os.path as osp
+from Utility import get_directory
 
 
 class UserSettingsForm(QDialog, Ui_Dialog):
@@ -34,7 +35,7 @@ class UserSettingsForm(QDialog, Ui_Dialog):
         self.output_dir_line_edit.returnPressed.connect(self.ret_pressed)
 
     def ret_pressed(self):
-      print('Return')
+        print('Return')
 
     @QtCore.pyqtSlot(name='save_user_settings')
     def save_user_settings(self):
@@ -53,12 +54,15 @@ def button_clicked(args):
 
     output_dir_pressed, state = args
 
-    file = str(QFileDialog.getExistingDirectory(state, "Select Directory"))
+    # NOTE: we do not have to worry about validating
+    # new_directory. If anything != None is returned, it
+    # is guaranteed to be a valid directory.
+    new_directory = get_directory(state)
 
     # Make sure user chose a directory
-    if file:
+    if new_directory:
         if output_dir_pressed:
-            state.output_dir_line_edit.setText(file)
+            state.output_dir_line_edit.setText(new_directory)
 
         else:
-            state.working_dir_line_edit.setText(file)
+            state.working_dir_line_edit.setText(new_directory)
