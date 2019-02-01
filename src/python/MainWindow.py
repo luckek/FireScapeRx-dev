@@ -14,7 +14,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Set up the user interface from Designer.
         self.setupUi(self)
 
-        #Initialize fields with simulation settings values
+        # Initialize fields with simulation settings values
         self.num_sim_line_edit.setText(str(SimulationSettings.DEF_NUM_SIMS))
         self.sim_duration_line_edit.setText(str(SimulationSettings.DEF_SIM_DURATION))
         self.wind_speed_line_edit.setText(str(SimulationSettings.DEF_WIND_SPEED))
@@ -25,7 +25,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for child in self.menubar.children():
             if type(child) is QtWidgets.QMenu:
                 for action in child.actions():
-                    identifier = action.text()
+                    # Use objectName as identifier so as to ensure uniqueness of identifier
+                    identifier = action.objectName()
                     action.triggered.connect(lambda state, x=identifier: self.handle_button(x))
 
     # FIXME: make static or remove from class altogether if we do not need to access anything in main window
@@ -34,39 +35,51 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # FIXME: ignore identifiers that will not be handled
 
-        if identifier == 'Create Environment':
+        if identifier == 'action_create_environment':
             print(identifier, 'not implemented')
             return
 
-        elif identifier == 'Environment':
+        elif identifier == 'action_import_environment':
             print(identifier, 'not implemented')
             return
 
-        elif identifier == 'Simulation':
+        elif identifier == 'action_import_simulation':
             print(identifier, 'not implemented')
             return
 
-        elif identifier == 'Summary File':
+        elif identifier == 'action_export_summary':
             print(identifier, 'not implemented')
             return
 
-        elif identifier == 'User Settings':
+        elif identifier == 'action_export_environment':
+            print(identifier, 'not implemented')
+            return
+
+        elif identifier == 'action_export_simulation':
+            print(identifier, 'not implemented')
+            return
+
+        elif identifier == 'action_export_summary':
+            print(identifier, 'not implemented')
+            return
+
+        elif identifier == 'action_run_sim':
+            print(identifier, 'not implemented')
+            return
+
+        elif identifier == 'action_view_sim':
+            print(identifier, 'not implemented')
+            return
+
+        elif identifier == 'action_user_settings':
             dialog = UserSettingsForm()
 
-        elif identifier == 'Select Output File':
+        elif identifier == 'action_select_output_file':
             print(identifier, 'not implemented')
             return
 
-        elif identifier == 'About':
+        elif identifier == 'action_about':
             dialog = AboutDialog()
-
-        elif identifier == 'Run':
-            print(identifier, 'not implemented')
-            return
-
-        elif identifier == 'View':
-            print(identifier, 'not implemented')
-            return
 
         else:
             print(identifier)
