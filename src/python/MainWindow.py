@@ -1,10 +1,10 @@
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox
 from gui.Ui_MainWindow import Ui_MainWindow
 from UserSettingsForm import UserSettingsForm
+from UserSettings import UserSettings
 from AboutDialog import AboutDialog
 from SimulationSettings import SimulationSettings
-
 
 class MainWindow(QMainWindow, Ui_MainWindow):
 
@@ -13,6 +13,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # Set up the user interface from Designer.
         self.setupUi(self)
+
+        # Initialize fds_file to be None
+        self.fds_file = None
 
         # Initialize fields with simulation settings values
         self.num_sim_line_edit.setText(str(SimulationSettings.DEF_NUM_SIMS))
@@ -28,6 +31,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     # Use objectName as identifier so as to ensure uniqueness of identifier
                     identifier = action.objectName()
                     action.triggered.connect(lambda state, x=identifier: self.handle_button(x))
+                    action.triggered.connect(lambda state, x=identifier: self.handle_file_button(x))
 
     # FIXME: make static or remove from class altogether if we do not need to access anything in main window
     @QtCore.pyqtSlot(str)
@@ -88,8 +92,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)  # Ensure resources are freed when dlg closes
         dialog.exec_()  # Executes dialog
 
-    # FIXME: make static or remove from class altogether if we do not need to access anything in main window
+    # FIXME: make better name for this function
     @QtCore.pyqtSlot(str)
     def handle_file_button(self, identifier):
-        # FIXME: ignore identifiers that will not be handled
-        print(identifier, 'Not implemented')
+
+        if identifier == 'action_import_environment':
+            user_settings = UserSettings()
+            file = str(QFileDialog.getOpenFileName(self, 'Import Environment', user_settings.working_dir, filter="fds (*.fds *.txt)"))
+
+            if file:
+                self.fds_file = file
+                # TODO: actually import FDS file
+            return
+
+        else:
+            # FIXME: ignore identifiers that will not be handled
+            print(identifier, 'Not implemented')
+
+    def environment_present(self):
+        return self.fds_file is not None
