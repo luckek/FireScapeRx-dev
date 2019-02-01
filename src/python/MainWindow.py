@@ -74,6 +74,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # FIXME: could probably wrap this in it's own function
             if self.environment_present():
                 print('Run simulation...')
+
+                # TODO: System call to fds executable
+
                 # FIXME: actually run simulation right here
                 # & give user indication of how far along
                 # simulation is(if possible)
@@ -103,10 +106,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             dialog = AboutDialog()
 
         else:
+            # TODO: Log unrecognized identifiers?
             print('UNRECOGNIZED IDENTIFIER:', identifier)
             return
 
         if dialog is not None:
+            # TODO: Log null dialog?
             dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)  # Ensure resources are freed when dlg closes
             dialog.exec_()  # Executes dialog
 
@@ -116,14 +121,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         if identifier == 'action_import_environment':
             user_settings = UserSettings()
+
+            # Open FileDialog in user's current working directory, with fds file filter
             file = str(QFileDialog.getOpenFileName(self, 'Import Environment', user_settings.working_dir, filter="fds (*.fds *.txt)"))
 
             if file:
                 self.fds_file = file
                 # TODO: actually import FDS file
+                # TODO: if FDS file import is successful, modify current_env_label
+
             return
 
         else:
+            # TODO: Log unrecognized identifiers?
             # FIXME: ignore identifiers that will not be handled
             print('UNRECOGNIZED IDENTIFIER:', identifier)
 
