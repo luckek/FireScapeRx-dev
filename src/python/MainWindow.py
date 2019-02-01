@@ -101,7 +101,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             dialog = AboutDialog()
 
         else:
-            print(identifier)
+            print('UNRECOGNIZED IDENTIFIER:', identifier)
             return
 
         dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)  # Ensure resources are freed when dlg closes
@@ -122,7 +122,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         else:
             # FIXME: ignore identifiers that will not be handled
-            print(identifier, 'Not implemented')
+            print('UNRECOGNIZED IDENTIFIER:', identifier)
 
     def environment_present(self):
         return self.fds_file is not None
