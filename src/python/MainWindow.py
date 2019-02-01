@@ -38,6 +38,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @QtCore.pyqtSlot(str)
     def handle_button(self, identifier):
 
+        dialog = None
+
         # FIXME: ignore identifiers that will not be handled
 
         if identifier == 'action_create_environment':
@@ -104,8 +106,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             print('UNRECOGNIZED IDENTIFIER:', identifier)
             return
 
-        dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)  # Ensure resources are freed when dlg closes
-        dialog.exec_()  # Executes dialog
+        if dialog is not None:
+            dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)  # Ensure resources are freed when dlg closes
+            dialog.exec_()  # Executes dialog
 
     # FIXME: make better name for this function
     @QtCore.pyqtSlot(str)
