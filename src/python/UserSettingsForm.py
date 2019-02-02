@@ -1,7 +1,7 @@
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QDialog, QFileDialog
 from gui.Ui_UserSettings import Ui_Dialog
-from UserSettings import *
+from UserSettings import UserSettings
 import os.path as osp
 
 
@@ -15,10 +15,10 @@ class UserSettingsForm(QDialog, Ui_Dialog):
         self.user_settings = UserSettings()
 
         #Initalize fields with user settings values
-        self.output_dir_line_edit.setText(osp.abspath(str(UserSettings.DEF_OUTPUT_DIR)))
-        self.working_dir_line_edit.setText(osp.abspath(str(UserSettings.DEF_WORKING_DIR)))
-        self.sim_duration_line_edit.setText(str(UserSettings.DEF_SIM_DURATION))
-        self.num_sims_line_edit.setText(str(UserSettings.DEF_NUM_SIMS))
+        self.output_dir_line_edit.setText(osp.abspath(str(self.user_settings.output_dir)))
+        self.working_dir_line_edit.setText(osp.abspath(str(self.user_settings.working_dir)))
+        self.sim_duration_line_edit.setText(str(self.user_settings.sim_duration))
+        self.num_sims_line_edit.setText(str(self.user_settings.num_sims))
 
         # Set line edits to read only
         self.output_dir_line_edit.setReadOnly(True)
