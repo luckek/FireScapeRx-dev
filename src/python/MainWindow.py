@@ -123,7 +123,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             user_settings = UserSettings()
 
             # Open FileDialog in user's current working directory, with fds file filter
-            file = str(QFileDialog.getOpenFileName(self, 'Import Environment', user_settings.working_dir, filter="fds (*.fds *.txt)"))
+            file, file_filter = QFileDialog.getOpenFileName(self, 'Import Environment', user_settings.working_dir, filter="fds (*.fds *.txt)")
 
             if file:
                 self.fds_file = file
