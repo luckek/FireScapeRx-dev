@@ -58,9 +58,6 @@ def make_unique_directory(directory):
 def execute(cmd, cwd):
     """Execute the given command, from within the given current working directory"""
 
-    if cwd is None:
-        cwd = os.getcwd()
-
     # Run command via Popen, set stderr and stdout to a new PIPE.
     # This is done because writing directly to a file causes a block buffering issue. However, qApp.processEvents may alleviate this
     # NOTE: Cannot use subprocess.run because this will wait for the given command to finish, whereas
