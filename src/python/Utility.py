@@ -61,12 +61,11 @@ def execute(cmd, cwd):
     if cwd is None:
         cwd = os.getcwd()
 
-    # Run command via Popen, set stderr and stdout to sys.stdout(subprocess.PIPE).
-    # NOTE: This will not actually print to sys.stdout because we read from it and capture the output.
-    # This is done because writing to a file causes a block buffering issue. However, qApp.processEvents may alleviate this
+    # Run command via Popen, set stderr and stdout to a new PIPE.
+    # This is done because writing directly to a file causes a block buffering issue. However, qApp.processEvents may alleviate this
     # NOTE: Cannot use subprocess.run because this will wait for the given command to finish, whereas
     # Popen will start the process and just return a process id(pid).
-    # FIXME: See if we can replace subprcess.pipe with a file? may run into block-buffering issue again
+    # FIXME: See if we can replace subprocess.pipe with a file? may run into block-buffering issue again
     popen = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, cwd=cwd, bufsize=1)
 
     for stdout_line in iter(popen.stdout.readline, ""):
