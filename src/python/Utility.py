@@ -1,5 +1,5 @@
 import os
-
+import subprocess
 
 # FIXME: can rename to more useful method name
 # eg if it is used to validate positive floats, could be called positive float validator
@@ -53,3 +53,25 @@ def make_unique_directory(directory):
         directory += str(uid)
 
     return directory
+
+
+def execute(cmd, cwd):
+    """Execute the given command, from within the given current working directory"""
+
+    if cwd is None:
+        cwd = os.getcwd()
+
+    # Run command via Popen, set stderr and stdout to sys.stdout(subprocess.PIPE).
+    # NOTE: This will not actually print to sys.stdout because we read from it and capture the output.
+    # This is done because writing to a file causes a block buffering issue. However, qApp.processEvents may alleviate this
+    # NOTE: Cannot use subprocess.run because this will wait for the given command to finish, whereas
+    # Popen will start the process and just return a process id(pid).
+    # FIXME: See if we can replace subprcess.pipe with a file? may run into block-buffering issue again
+    popen = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, cwd=cwd, bufsize=1)
+
+    for stdout_line in iter(popen.stdout.readline, ""):
+        yield stdout_line
+    popen.stdout.close()
+    return_code = popen.wait()
+    if return_code:
+        raise subprocess.CalledProcessError(return_code, cmd)
