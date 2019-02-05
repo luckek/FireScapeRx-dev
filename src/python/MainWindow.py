@@ -203,5 +203,5 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 loading = (sim_time_float / t_end) * 100
                 self.progressBar.setValue(loading)
 
-                # This may help to keep the gui responsive
-                qApp.processEvents()
+            # This may help to keep the gui responsive
+            qApp.processEvents()
