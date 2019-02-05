@@ -1,11 +1,14 @@
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox, qApp
 from gui.Ui_MainWindow import Ui_MainWindow
 from UserSettingsForm import UserSettingsForm
 from UserSettings import UserSettings
 from AboutDialog import AboutDialog
 from SimulationSettings import SimulationSettings
 import os
+import Utility as util
+import sys
+import logging as logger
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -78,15 +81,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
 
         elif identifier == 'action_run_sim':
-            # FIXME: could probably wrap this in it's own function
+            # FIXME: could probably wrap this if-else in it's own function
+            # TODO: run simulation num_sims number of times
             if self.environment_present():
-                print('Run simulation...')
+                logger.log(logger.INFO, 'Run simulation...')
 
-                # TODO: System call to fds executable
-
-                # FIXME: actually run simulation right here
-                # & give user indication of how far along
-                # simulation is(if possible)
+                self.run_wfds()
 
             else:
 
@@ -127,6 +127,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def handle_file_button(self, identifier):
 
         if identifier == 'action_import_environment':
+            # TODO: Could probably wrap this in its own function
             user_settings = UserSettings()
 
             # Open FileDialog in user's current working directory, with fds file filter
@@ -146,3 +147,61 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def environment_present(self):
         return self.fds_file is not None
+
+    def run_wfds(self):
+        """This function runs wfds with the currently loaded environment"""
+
+        user_settings = UserSettings()
+
+        # Get user's output directory
+        out_dir = os.path.abspath(user_settings.output_dir)
+
+        # TODO: add ability to name simulation output directory?
+        # TODO: if so, could make this(current) scheme default
+        # eg, auto populate prompt w/ this directory
+
+        fds_fname = util.get_filename(self.fds_file)
+
+        # Create directory with same name as simulation
+        out_dir += os.sep + fds_fname
+
+        # TODO: see if this is necessary
+        out_dir = util.make_unique_directory(out_dir)
+
+        # Make another directory for simulation output files
+        os.mkdir(out_dir)
+
+        # FIXME
+        fds_out_file = ''  # = open(out_dir + '/' + fds_fname + '.err', 'w', buffering=1)
+
+        logger.log(logger.INFO, 'Running simulation')
+        self.execute_and_update(cmd=[self.fds_exec, self.fds_file], cwd=out_dir, out_file=fds_out_file)
+
+    # out_file not currently used, but may be later. So it is left in signature
+    def execute_and_update(self, cmd, cwd=None, out_file=sys.stdout):
+
+        """Execute the given command and update the progress bar"""
+
+        # FIXME: this should come from fds_file
+        t_end = 5.0
+
+        # TODO: May be able to grab first few lines and update version info etc
+        # could also use modified version of WFDS that does not hang upon execution
+        for path in util.execute(cmd=cmd, cwd=cwd):
+
+            path = path.replace(' ', '').replace('\n', '')
+
+            if path.startswith('TimeStep'):
+
+                timestep_kv, sim_time_kv = path.split(',')
+
+                # Not currently used, could be later?
+                timestep_int = timestep_kv.split(':')[1]
+                sim_time_float = float(sim_time_kv.split(':')[1].replace('s', ''))
+
+                # Figure out percentage and update progress bar
+                loading = (sim_time_float / t_end) * 100
+                self.progressBar.setValue(loading)
+
+                # This may help to keep the gui responsive
+                qApp.processEvents()
