@@ -22,8 +22,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Set up the user interface from Designer.
         self.setupUi(self)
 
-        # Reset progress bar
-        self.progressBar.setValue(0)
+        self.hide_and_reset_progress()
 
         # Initialize fds_file to be None
         self.fds_file = None
@@ -93,7 +92,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 # FIXME: decide if should be warning, information or critical
                 # NOTE: Since QMessageBox displays rich text, we can use markup and html to format output
                 # NOTE: QMessageBox displays itself
-                QMessageBox.information(self, 'No Environment Present', '<html>No Environment Present!<br>Please create or import an environment.</html>')
+                QMessageBox.information(self, 'No Environment Present',
+                                        '<html>No Environment Present!<br>Please create or import an environment.</html>')
 
                 # We do not care about return value of QMessageBox
                 return
@@ -131,10 +131,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             user_settings = UserSettings()
 
             # Open FileDialog in user's current working directory, with fds file filter
-            file, file_filter = QFileDialog.getOpenFileName(self, 'Import Environment', user_settings.working_dir, filter="fds (*.fds *.txt)")
+            file, file_filter = QFileDialog.getOpenFileName(self, 'Import Environment', user_settings.working_dir,
+                                                            filter="fds (*.fds *.txt)")
 
             if file:
                 self.fds_file = file
+
+                QMessageBox.information(self, 'Import successful', 'Environment imported successfully.')
                 # TODO: actually import FDS file
                 # TODO: if FDS file import is successful, modify current_env_label
 
@@ -185,6 +188,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # FIXME: this should come from fds_file
         t_end = 5.0
 
+        # Make progress bar visible
+        self.progressBar.show()
+
         # TODO: May be able to grab first few lines and update version info etc
         # could also use modified version of WFDS that does not hang upon execution
         for path in util.execute(cmd=cmd, cwd=cwd):
@@ -205,3 +211,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             # This may help to keep the gui responsive
             qApp.processEvents()
+
+        # TODO: could get pid from popen and check it or something here.
+        # May also be useful to get pid for things such as killing if FireScape Rx is
+        # terminated prematurely
+        # If we reach here, simulation should be done.
+        logger.log(logger.INFO, "Simulation complete")
+
+        self.hide_and_reset_progress()
+        QMessageBox.information(self, 'Simulation Complete', 'Simulation(s) completed.')
+
+    def hide_and_reset_progress(self):
+
+        # Hide progress bar and reset it
+        self.progressBar.hide()
+        self.progressBar.setValue(0)
