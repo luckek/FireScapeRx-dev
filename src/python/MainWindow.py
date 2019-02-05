@@ -5,9 +5,13 @@ from UserSettingsForm import UserSettingsForm
 from UserSettings import UserSettings
 from AboutDialog import AboutDialog
 from SimulationSettings import SimulationSettings
+import os
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
+
+    # Path to pre-packaged fds executable
+    fds_exec = os.path.abspath(os.pardir) + os.sep + 'fds_gnu_linux_64'
 
     def __init__(self):
         super(MainWindow, self).__init__()
