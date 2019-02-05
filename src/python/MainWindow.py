@@ -19,6 +19,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Set up the user interface from Designer.
         self.setupUi(self)
 
+        # Reset progress bar
+        self.progressBar.setValue(0)
+
         # Initialize fds_file to be None
         self.fds_file = None
 
