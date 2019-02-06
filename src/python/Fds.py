@@ -23,8 +23,14 @@ class Fds:
     def read(self):
         self._parser.parse(self.fds_file)
 
-    def save(self):
-        self._parser.save_file(self.fds_file)
+    def save(self, new_fds_file=None):
+
+        save_fname = self._fds_file
+
+        if new_fds_file is not None:
+            save_fname = new_fds_file
+
+        self._parser.save_file(save_fname)
 
     def file_present(self):
         return self._fds_file is not None
