@@ -137,6 +137,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if file:
                 self._fds.fds_file = file
 
+                # Should not throw because the file is coming from UI,
+                # but just in case
+                try:
+
+                    self._fds.read()
+
+                except FileNotFoundError as fnfe:
+                    self._fds.fds_file = None
+                    logger.log(logger.ERROR, str(fnfe))
+                    QMessageBox.information(self, "Import Not Successful", "Fds file {0} could not be found".format(file))
+                    return
+
                 QMessageBox.information(self, 'Import successful', 'Environment imported successfully.')
                 # TODO: actually import FDS file
                 # TODO: if FDS file import is successful, modify current_env_label
@@ -170,11 +182,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Make another directory for simulation output files
         os.mkdir(out_dir)
 
+        # Save the input file that was used to run the simulation
+        save_fname = out_dir + os.sep + fds_fname
+        self._fds.save(save_fname)
+
         # FIXME
         fds_out_file = ''  # = open(out_dir + '/' + fds_fname + '.err', 'w', buffering=1)
 
         logger.log(logger.INFO, 'Running simulation')
-        self.execute_and_update(cmd=[self._fds_exec, fds_filepath], cwd=out_dir, out_file=fds_out_file)
+
+        # Clean up the output directory that was made if exception occurs
+        try:
+
+            print('hello world')
+            self._fds_exec = self._fds_exec.replace(os.sep, '')
+            self.execute_and_update(cmd=[self._fds_exec, fds_filepath], cwd=out_dir, out_file=fds_out_file)
+
+        except Exception as e:
+            logger.log(logger.ERROR, str(e))
+            logger.log(logger.INFO, 'Cleaning up...')
+            os.rmdir(out_dir)
 
     # out_file not currently used, but may be later. So it is left in signature
     def execute_and_update(self, cmd, cwd=None, out_file=sys.stdout):
