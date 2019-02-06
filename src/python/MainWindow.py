@@ -9,12 +9,10 @@ import os
 import Utility as util
 import sys
 import logging as logger
+from Fds import Fds
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
-
-    # Path to pre-packaged fds executable
-    fds_exec = os.path.abspath(os.pardir) + os.sep + 'fds_gnu_linux_64'
 
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -22,10 +20,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Set up the user interface from Designer.
         self.setupUi(self)
 
+        # Hide and reset progress bar
         self.hide_and_reset_progress()
 
-        # Initialize fds_file to be None
-        self.fds_file = None
+        # Initialize fds object
+        self._fds = Fds()
+        self._fds_exec = self._fds.fds_exec
 
         # Initialize fields with simulation settings values
         self.num_sim_line_edit.setText(str(SimulationSettings.DEF_NUM_SIMS))
@@ -135,7 +135,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                                             filter="fds (*.fds *.txt)")
 
             if file:
-                self.fds_file = file
+                self._fds.fds_file = file
 
                 QMessageBox.information(self, 'Import successful', 'Environment imported successfully.')
                 # TODO: actually import FDS file
@@ -149,7 +149,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             print('UNRECOGNIZED IDENTIFIER:', identifier)
 
     def environment_present(self):
-        return self.fds_file is not None
+        return self._fds.file_present()
 
     def run_wfds(self):
         """This function runs wfds with the currently loaded environment"""
@@ -159,16 +159,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Get user's output directory
         out_dir = os.path.abspath(user_settings.output_dir)
 
-        # TODO: add ability to name simulation output directory?
-        # TODO: if so, could make this(current) scheme default
-        # eg, auto populate prompt w/ this directory
-
-        fds_fname = util.get_filename(self.fds_file)
+        fds_filepath = self._fds.fds_file
+        fds_fname = util.get_filename(fds_filepath)
 
         # Create directory with same name as simulation
         out_dir += os.sep + fds_fname
 
-        # TODO: see if this is necessary
         out_dir = util.make_unique_directory(out_dir)
 
         # Make another directory for simulation output files
@@ -178,11 +174,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         fds_out_file = ''  # = open(out_dir + '/' + fds_fname + '.err', 'w', buffering=1)
 
         logger.log(logger.INFO, 'Running simulation')
-        self.execute_and_update(cmd=[self.fds_exec, self.fds_file], cwd=out_dir, out_file=fds_out_file)
+        self.execute_and_update(cmd=[self._fds_exec, fds_filepath], cwd=out_dir, out_file=fds_out_file)
 
     # out_file not currently used, but may be later. So it is left in signature
     def execute_and_update(self, cmd, cwd=None, out_file=sys.stdout):
-
         """Execute the given command and update the progress bar"""
 
         # FIXME: this should come from fds_file
