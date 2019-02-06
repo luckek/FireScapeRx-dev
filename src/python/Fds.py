@@ -34,3 +34,12 @@ class Fds:
 
     def file_present(self):
         return self._fds_file is not None
+
+    def sim_time(self):
+        return self._parser.time
+
+    def job(self):
+        return self._parser.head
+
+    def job_name(self):
+        return self._parser.title
