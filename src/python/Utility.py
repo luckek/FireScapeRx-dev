@@ -1,6 +1,7 @@
 import os
 import subprocess
 
+
 # FIXME: can rename to more useful method name
 # eg if it is used to validate positive floats, could be called positive float validator
 def validate(text):
@@ -62,9 +63,6 @@ def execute(cmd, cwd, out_file):
     # NOTE: Cannot use subprocess.run because this will wait for the given command to finish, whereas
     # Popen will start the process and just return a process id(pid).
     # FIXME: See if we can replace subprocess.pipe with a file? may run into block-buffering issue again
-
-    # cmd = ' '.join(cmd)
-    # print(cmd)
 
     subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 

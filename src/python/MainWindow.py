@@ -260,8 +260,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.progressBar.hide()
         self.progressBar.setValue(0)
 
+
 def follow(thefile):
-    thefile.seek(0,2)
+
+    thefile.seek(0, 2)
     while True:
         line = thefile.readline()
         if not line:
@@ -269,10 +271,3 @@ def follow(thefile):
             qApp.processEvents()
             continue
         yield line
-
-# if __name__ == '__main__':
-#
-#     logfile = open("run/foo/access-log","r")
-#     loglines = follow(logfile)
-#     for line in loglines:
-#         print(line,)
