@@ -167,35 +167,30 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def run_wfds(self):
         """This function runs wfds with the currently loaded environment"""
 
-        user_settings = UserSettings()
-
         # Get user's output directory
+        user_settings = UserSettings()
         out_dir = os.path.abspath(user_settings.output_dir)
 
+        # Get path to current fds file
         fds_filepath = self._fds.fds_file
         fds_fname = util.get_filename(fds_filepath)
 
-        # Create directory with same name as simulation
+        # Create a unique directory with same name as simulation
         out_dir += os.sep + fds_fname
-
         out_dir = util.make_unique_directory(out_dir)
 
-        # Make another directory for simulation output files
         os.mkdir(out_dir)
 
         # Save the input file that was used to run the simulation
         save_fname = out_dir + os.sep + fds_fname
         self._fds.save(save_fname)
 
-        # FIXME
-        fds_out_file = out_dir + os.sep + fds_fname + '.err'
-
         logger.log(logger.INFO, 'Running simulation')
 
         # Clean up the output directory that was made if exception occurs
         try:
 
-            self.execute_and_update(cmd=[self._fds_exec, fds_filepath], out_dir=out_dir, out_file=fds_out_file)
+            self.execute_and_update(cmd=[self._fds_exec, fds_filepath], out_dir=out_dir)
 
         except Exception as e:
             logger.log(logger.ERROR, str(e))
