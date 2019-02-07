@@ -30,7 +30,7 @@ class Fds:
         if new_fds_file is not None:
             save_fname = new_fds_file
 
-        self._parser.save_file(save_fname)
+        self._parser.save_file(save_fname + '.fds')
 
     def file_present(self):
         return self._fds_file is not None

@@ -55,7 +55,7 @@ class FdsParser:
         # TODO: save modified values
         with open(fds_file, 'w') as f:
             for line in self._lines:
-                f.write(line)
+                f.write(line + '\n')
 
     @property
     def time(self):
