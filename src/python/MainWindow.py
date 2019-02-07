@@ -81,23 +81,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
 
         elif identifier == 'action_run_sim':
-            # FIXME: could probably wrap this if-else in it's own function
             # TODO: run simulation num_sims number of times
-            if self.environment_present():
-                logger.log(logger.INFO, 'Run simulation...')
-
-                self.run_wfds()
-
-            else:
-
-                # FIXME: decide if should be warning, information or critical
-                # NOTE: Since QMessageBox displays rich text, we can use markup and html to format output
-                # NOTE: QMessageBox displays itself
-                QMessageBox.information(self, 'No Environment Present',
-                                        '<html>No Environment Present!<br>Please create or import an environment.</html>')
-
-                # We do not care about return value of QMessageBox
-                return
+            self.run_simulation()
 
         elif identifier == 'action_view_sim':
             print(identifier, 'not implemented')
@@ -128,38 +113,58 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def handle_file_button(self, identifier):
 
         if identifier == 'action_import_environment':
-            # TODO: Could probably wrap this in its own function
-            user_settings = UserSettings()
-
-            # Open FileDialog in user's current working directory, with fds file filter
-            file, file_filter = QFileDialog.getOpenFileName(self, 'Import Environment', user_settings.working_dir,
-                                                            filter="fds (*.fds *.txt)")
-
-            if file:
-                self._fds.fds_file = file
-
-                # Should not throw because the file is coming from UI,
-                # but just in case
-                try:
-
-                    self._fds.read()
-
-                except FileNotFoundError as fnfe:
-                    self._fds.fds_file = None
-                    logger.log(logger.ERROR, str(fnfe))
-                    QMessageBox.information(self, "Import Not Successful", "Fds file {0} could not be found".format(file))
-                    return
-
-                QMessageBox.information(self, 'Import successful', 'Environment imported successfully.')
-                # TODO: actually import FDS file
-                # TODO: if FDS file import is successful, modify current_env_label
-
-            return
+            self.import_environment()
 
         else:
             # TODO: Log unrecognized identifiers?
             # FIXME: ignore identifiers that will not be handled
             print('UNRECOGNIZED IDENTIFIER:', identifier)
+
+    def import_environment(self):
+
+        user_settings = UserSettings()
+
+        # Open FileDialog in user's current working directory, with fds file filter
+        file, file_filter = QFileDialog.getOpenFileName(self, 'Import Environment', user_settings.working_dir,
+                                                        filter="fds (*.fds *.txt)")
+
+        # TODO: actually import FDS file
+        # TODO: if FDS file import is successful, modify current_env_label
+
+        if file:
+            self._fds.fds_file = file
+
+            # Should not throw because the file is coming from UI,
+            # but just in case
+            try:
+
+                self._fds.read()
+
+            except FileNotFoundError as fnfe:
+                self._fds.fds_file = None
+                logger.log(logger.ERROR, str(fnfe))
+                QMessageBox.information(self, "Import Not Successful", "Fds file {0} could not be found".format(file))
+                return
+
+            QMessageBox.information(self, 'Import successful', 'Environment imported successfully.')
+
+    def run_simulation(self):
+
+        if self.environment_present():
+            logger.log(logger.INFO, 'Run simulation...')
+
+            self.run_wfds()
+
+        else:
+
+            # FIXME: decide if should be warning, information or critical
+            # NOTE: Since QMessageBox displays rich text, we can use markup and html to format output
+            # NOTE: QMessageBox displays itself
+            QMessageBox.information(self, 'No Environment Present',
+                                    '<html>No Environment Present!<br>Please create or import an environment.</html>')
+
+            # We do not care about return value of QMessageBox
+            return
 
     def environment_present(self):
         return self._fds.file_present()
