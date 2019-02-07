@@ -15,6 +15,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Set up the user interface from Designer.
         self.setupUi(self)
 
+        # Initialize selected output file types
+        self._output_file_types = []
+
         # Initialize fields with simulation settings values
         self.num_sim_line_edit.setText(str(SimulationSettings.DEF_NUM_SIMS))
         self.sim_duration_line_edit.setText(str(SimulationSettings.DEF_SIM_DURATION))
@@ -75,8 +78,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         elif identifier == 'action_user_settings':
             dialog = UserSettingsForm()
 
-        elif identifier == 'action_select_output_file':
+        elif identifier == 'action_select_output_files':
             dialog = SelectOutputFileTypesForm()
+            self._output_file_types = dialog.get_file_types()
+
+            # Dialog will run itself, so we can return.
+            return
 
         elif identifier == 'action_about':
             dialog = AboutDialog()
