@@ -61,19 +61,16 @@ class FdsParser:
     def time(self):
 
         t_end_str = self._time.split('=')[1].replace('/', '').strip(' ')
-
         return t_end_str
 
     @property
     def title(self):
 
         title_str = self._title.split('=')[1].replace('/', '').replace("'", '').strip(' ')
-
         return title_str
 
     @property
     def head(self):
 
         head_str = self._head.split('=')[1].replace('/', '').replace("'", '').strip(' ')
-
         return head_str
