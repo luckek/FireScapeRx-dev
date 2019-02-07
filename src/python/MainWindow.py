@@ -15,6 +15,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Set up the user interface from Designer.
         self.setupUi(self)
 
+        # TODO: make use of this variable
         # Initialize selected output file types
         self._output_file_types = []
 
