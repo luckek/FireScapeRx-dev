@@ -10,6 +10,7 @@ import Utility as util
 import sys
 import logging as logger
 from Fds import Fds
+import time
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -187,14 +188,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._fds.save(save_fname)
 
         # FIXME
-        fds_out_file = ''  # = open(out_dir + '/' + fds_fname + '.err', 'w', buffering=1)
+        fds_out_file = out_dir + os.sep + fds_fname + '.err'
 
         logger.log(logger.INFO, 'Running simulation')
 
         # Clean up the output directory that was made if exception occurs
         try:
 
-            self.execute_and_update(cmd=[self._fds_exec, fds_filepath], cwd=out_dir, out_file=fds_out_file)
+            self.execute_and_update(cmd=[self._fds_exec, fds_filepath], out_dir=out_dir, out_file=fds_out_file)
 
         except Exception as e:
             logger.log(logger.ERROR, str(e))
@@ -213,23 +214,28 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.hide_and_reset_progress()
 
     # out_file not currently used, but may be later. So it is left in signature
-    def execute_and_update(self, cmd, cwd=None, out_file=sys.stdout):
+    def execute_and_update(self, cmd, out_dir=None, out_file=sys.stdout):
         """Execute the given command and update the progress bar"""
+
+        util.execute(cmd=cmd, cwd=out_dir, out_file=out_file)
 
         t_end = float(self._fds.sim_time())
 
         # Make progress bar visible
         self.progressBar.show()
 
-        # TODO: May be able to grab first few lines and update version info etc
-        # could also use modified version of WFDS that does not hang upon execution
-        for path in util.execute(cmd=cmd, cwd=cwd):
+        # Give Wfds some time to spin up
+        time.sleep(1)
 
-            path = path.replace(' ', '').replace('\n', '')
+        for line in follow(open(out_dir + os.sep + self._fds.job() + '.out', 'r')):
 
-            if path.startswith('TimeStep'):
+            line = line.replace(' ', '').replace('\n', '')
 
-                timestep_kv, sim_time_kv = path.split(',')
+            if line.startswith('STOP'):
+                break
+
+            if line.startswith('Timestep'):
+                timestep_kv, sim_time_kv = line.split(',')
 
                 # Not currently used, could be later?
                 timestep_int = timestep_kv.split(':')[1]
@@ -238,9 +244,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 # Figure out percentage and update progress bar
                 loading = (sim_time_float / t_end) * 100
                 self.progressBar.setValue(loading)
-
-            # This may help to keep the gui responsive
-            qApp.processEvents()
 
         # TODO: could get pid from popen and check it or something here.
         # May also be useful to get pid for things such as killing if FireScape Rx is
@@ -256,3 +259,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Hide progress bar and reset it
         self.progressBar.hide()
         self.progressBar.setValue(0)
+
+def follow(thefile):
+    thefile.seek(0,2)
+    while True:
+        line = thefile.readline()
+        if not line:
+            time.sleep(0.1)
+            qApp.processEvents()
+            continue
+        yield line
+
+# if __name__ == '__main__':
+#
+#     logfile = open("run/foo/access-log","r")
+#     loglines = follow(logfile)
+#     for line in loglines:
+#         print(line,)
