@@ -194,21 +194,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Clean up the output directory that was made if exception occurs
         try:
 
-            print('hello world')
-            self._fds_exec = self._fds_exec.replace(os.sep, '')
             self.execute_and_update(cmd=[self._fds_exec, fds_filepath], cwd=out_dir, out_file=fds_out_file)
 
         except Exception as e:
             logger.log(logger.ERROR, str(e))
             logger.log(logger.INFO, 'Cleaning up...')
+
+            QMessageBox.warning(self, 'A problem occurred',
+                                'There was a problem while running the simulation(s), please try again')
+
+            # Remove files from directory
+            for file in os.listdir(out_dir):
+                os.remove(out_dir + os.sep + file)
+
             os.rmdir(out_dir)
+
+            # Hide and reset progress bar
+            self.hide_and_reset_progress()
 
     # out_file not currently used, but may be later. So it is left in signature
     def execute_and_update(self, cmd, cwd=None, out_file=sys.stdout):
         """Execute the given command and update the progress bar"""
 
-        # FIXME: this should come from fds_file
-        t_end = 5.0
+        t_end = float(self._fds.sim_time())
 
         # Make progress bar visible
         self.progressBar.show()
