@@ -16,6 +16,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     # Path to pre-packaged fds executable
     fds_exec = os.path.abspath(os.pardir) + os.sep + 'fds_gnu_linux_64'
 
+    # Path to pre-packaged smv executable
+    smv_exec = os.path.abspath(os.pardir) + os.sep + 'smokeview_linux_64'
+
     def __init__(self):
         super(MainWindow, self).__init__()
 
@@ -27,6 +30,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # Initialize fds_file to be None
         self.fds_file = None
+
+        # Initialize fds_file to be None
+        self.smv_file = None
 
         # Initialize fields with simulation settings values
         self.num_sim_line_edit.setText(str(SimulationSettings.DEF_NUM_SIMS))
@@ -99,7 +105,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 return
 
         elif identifier == 'action_view_sim':
-            print(identifier, 'not implemented')
+            user_settings = UserSettings()
+
+            # Open FileDialog in user's current working directory, with smv file filter
+            file, file_filter = QFileDialog.getOpenFileName(self, 'View Simulation', user_settings.working_dir,
+                                                            filter="smv (*.smv)")
+
+            if file:
+                self.smv_file = file
+
+            if self.smv_file is not None:
+                logger.log(logger.INFO, 'Launching smokeview')
+                self.run_smv()
+
+            # We do not care about return value of QMessageBox
             return
 
         elif identifier == 'action_user_settings':
@@ -140,6 +159,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             return
 
+        elif identifier == 'action_view_sim':
+
+            return
         else:
             # TODO: Log unrecognized identifiers?
             # FIXME: ignore identifiers that will not be handled
@@ -176,6 +198,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         logger.log(logger.INFO, 'Running simulation')
         self.execute_and_update(cmd=[self.fds_exec, self.fds_file], cwd=out_dir, out_file=fds_out_file)
+
+    def run_smv(self):
+        """This function runs smv with the currently loaded environment"""
+
+        logger.log(logger.INFO, 'Viewing simulation')
+        for path in util.execute(cmd=[self.smv_exec, self.smv_file], cwd=None):
+            path.replace(' ', '').replace('\n', '')
+
 
     # out_file not currently used, but may be later. So it is left in signature
     def execute_and_update(self, cmd, cwd=None, out_file=sys.stdout):
