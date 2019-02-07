@@ -5,11 +5,12 @@ from UserSettingsForm import UserSettingsForm
 from UserSettings import UserSettings
 from AboutDialog import AboutDialog
 from SimulationSettings import SimulationSettings
+from SelectOutputFileTypesForm import SelectOutputFileTypesForm
+from Fds import Fds
 import os
 import Utility as util
 import sys
 import logging as logger
-from Fds import Fds
 import time
 
 
@@ -27,6 +28,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Initialize fds object
         self._fds = Fds()
         self._fds_exec = self._fds.fds_exec
+
+        # TODO: make use of this variable
+        # Initialize selected output file types
+        self._output_file_types = []
 
         # Initialize fields with simulation settings values
         self.num_sim_line_edit.setText(str(SimulationSettings.DEF_NUM_SIMS))
@@ -91,8 +96,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         elif identifier == 'action_user_settings':
             dialog = UserSettingsForm()
 
-        elif identifier == 'action_select_output_file':
-            print(identifier, 'not implemented')
+        elif identifier == 'action_select_output_files':
+            dialog = SelectOutputFileTypesForm()
+            self._output_file_types = dialog.get_file_types()
+
+            # Dialog will run itself, so we can return.
             return
 
         elif identifier == 'action_about':

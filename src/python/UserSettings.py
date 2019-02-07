@@ -50,11 +50,11 @@ class UserSettings:
                 elif key.startswith('WORKING_DIRECTORY'):
                     self._working_dir = value
 
-                # TODO: ensure duration is valid
+                # TODO: ensure duration is valid( < SimulationSettings.MAX_SIM_DURATION)
                 elif key.startswith('SIM_DURATION'):
                     self._sim_duration = value
 
-                # TODO: ensure number sims is valid
+                # TODO: ensure number sims is valid( < SimulationSettings.MAX_NUM_SIMS)
                 elif key.startswith('NUM_SIMS'):
                     self._num_sims = value
 

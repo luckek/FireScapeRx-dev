@@ -1,6 +1,6 @@
 import os
 import subprocess
-
+from PyQt5.QtWidgets import QFileDialog
 
 # FIXME: can rename to more useful method name
 # eg if it is used to validate positive floats, could be called positive float validator
@@ -54,6 +54,10 @@ def make_unique_directory(directory):
         directory += str(uid)
 
     return directory
+
+
+def get_directory(parent, dlg_name='Select Directory'):
+    return str(QFileDialog.getExistingDirectory(parent, dlg_name))
 
 
 def execute(cmd, cwd, out_file):
