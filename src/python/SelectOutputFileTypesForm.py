@@ -7,7 +7,7 @@ import os.path as osp
 
 class SelectOutputFileTypesForm(QDialog, Ui_SelectOutputFileTypes):
 
-    FILE_TYPES = ['txt', 'fds', 'slc']
+    FILE_TYPES = ['txt', 'fds', 'slc', 'iso', 'bf', 'sf', ]
 
     def __init__(self):
         super(SelectOutputFileTypesForm, self).__init__()
@@ -20,3 +20,13 @@ class SelectOutputFileTypesForm(QDialog, Ui_SelectOutputFileTypes):
             check_box.setObjectName(file_type)
             self.verticalLayout.addWidget(check_box)
             self._check_box_list.append(check_box)
+
+    def get_file_types(self):
+        out_list = []
+        if self.exec_() == QDialog.Accepted:
+            # Get the selected output file types
+            for box in self.verticalLayout.children():
+                if type(box) is QtWidgets.QCheckBox and box.isChecked():
+                    out_list.append(box.text())
+
+        return out_list
