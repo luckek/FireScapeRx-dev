@@ -1,10 +1,11 @@
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMainWindow
 from gui.Ui_MainWindow import Ui_MainWindow
 from UserSettingsForm import UserSettingsForm
 from AboutDialog import AboutDialog
 from SimulationSettings import SimulationSettings
 from SelectOutputFileTypesForm import SelectOutputFileTypesForm
+from gui.FuelMapEditor import FuelMapEditor
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -14,6 +15,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # Set up the user interface from Designer.
         self.setupUi(self)
+
+        # Setup the fuel map editor
+        self.scrollAreaWidgetContents = FuelMapEditor(20, 20)
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+
+        self.modify_fuel_map.clicked.connect(self.modify_fuel_map_clicked)
 
         # TODO: make use of this variable
         # Initialize selected output file types
@@ -99,3 +106,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def handle_file_button(self, identifier):
         # FIXME: ignore identifiers that will not be handled
         print(identifier, 'Not implemented')
+
+    @QtCore.pyqtSlot(name='modify_fuel_map')
+    def modify_fuel_map_clicked(self):
+
+        if self.scrollArea.isHidden():
+
+            self.scrollArea.show()
+
+        else:
+
+            self.scrollArea.hide()

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'MainWindow.ui'
+# Form implementation generated from reading ui file 'qt_files/MainWindow.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.6
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -144,6 +144,14 @@ class Ui_MainWindow(object):
         self.modify_fuel_map.setObjectName("modify_fuel_map")
         self.vertical_layout.addWidget(self.modify_fuel_map)
         self.scroll_area.setWidget(self.scroll_area_widget_contents)
+        self.scrollArea = QtWidgets.QScrollArea(self.central_widget)
+        self.scrollArea.setGeometry(QtCore.QRect(0, 50, 581, 501))
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setObjectName("scrollArea")
+        self.scrollAreaWidgetContents = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 579, 499))
+        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         MainWindow.setCentralWidget(self.central_widget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 932, 22))
