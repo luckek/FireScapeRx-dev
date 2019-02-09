@@ -222,6 +222,27 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         logger.log(logger.INFO, 'Running simulation')
 
+        # Clean up the output directory that was made if exception occurs
+        try:
+
+            self.execute_and_update(cmd=[self._fds_exec, fds_filepath], out_dir=out_dir)
+
+        except Exception as e:
+            logger.log(logger.ERROR, str(e))
+            logger.log(logger.INFO, 'Cleaning up...')
+
+            QMessageBox.warning(self, 'A problem occurred',
+                                'There was a problem while running the simulation(s), please try again')
+
+            # Remove files from directory
+            for file in os.listdir(out_dir):
+                os.remove(out_dir + os.sep + file)
+
+            os.rmdir(out_dir)
+
+            # Hide and reset progress bar
+            self.hide_and_reset_progress()
+
     def run_smv(self):
         """This function runs smv with the currently loaded environment"""
 
@@ -240,7 +261,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.progressBar.show()
 
         # Give Wfds some time to spin up
-        time.sleep(1)
+        time.sleep(2)
 
         for line in follow(open(out_dir + os.sep + self._fds.job() + '.out', 'r')):
 
