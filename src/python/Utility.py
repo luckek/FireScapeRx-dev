@@ -1,5 +1,6 @@
 import os
 import subprocess
+from PyQt5.QtWidgets import QFileDialog
 
 # FIXME: can rename to more useful method name
 # eg if it is used to validate positive floats, could be called positive float validator
@@ -55,19 +56,16 @@ def make_unique_directory(directory):
     return directory
 
 
-def execute(cmd, cwd):
+def get_directory(parent, dlg_name='Select Directory'):
+    return str(QFileDialog.getExistingDirectory(parent, dlg_name))
+
+
+def execute(cmd, cwd, out_file):
     """Execute the given command, from within the given current working directory"""
 
-    # Run command via Popen, set stderr and stdout to a new PIPE.
-    # This is done because writing directly to a file causes a block buffering issue. However, qApp.processEvents may alleviate this
+    # Run command via Popen, set stderr and stdout to /dev/null.
     # NOTE: Cannot use subprocess.run because this will wait for the given command to finish, whereas
     # Popen will start the process and just return a process id(pid).
     # FIXME: See if we can replace subprocess.pipe with a file? may run into block-buffering issue again
-    popen = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, cwd=cwd, bufsize=1)
 
-    for stdout_line in iter(popen.stdout.readline, ""):
-        yield stdout_line
-    popen.stdout.close()
-    return_code = popen.wait()
-    if return_code:
-        raise subprocess.CalledProcessError(return_code, cmd)
+    subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)

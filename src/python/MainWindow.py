@@ -5,16 +5,16 @@ from UserSettingsForm import UserSettingsForm
 from UserSettings import UserSettings
 from AboutDialog import AboutDialog
 from SimulationSettings import SimulationSettings
+from SelectOutputFileTypesForm import SelectOutputFileTypesForm
+from Fds import Fds
 import os
 import Utility as util
 import sys
 import logging as logger
+import time
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
-
-    # Path to pre-packaged fds executable
-    fds_exec = os.path.abspath(os.pardir) + os.sep + 'fds_gnu_linux_64'
 
     # Path to pre-packaged smv executable
     smv_exec = os.path.abspath(os.pardir) + os.sep + 'smokeview_linux_64'
@@ -25,11 +25,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Set up the user interface from Designer.
         self.setupUi(self)
 
-        # Reset progress bar
-        self.progressBar.setValue(0)
+        # Hide and reset progress bar
+        self.hide_and_reset_progress()
 
-        # Initialize fds_file to be None
-        self.fds_file = None
+        # Initialize fds object
+        self._fds = Fds()
+        self._fds_exec = self._fds.fds_exec
+
+        # TODO: make use of this variable
+        # Initialize selected output file types
+        self._output_file_types = []
 
         # Initialize fds_file to be None
         self.smv_file = None
@@ -87,22 +92,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
 
         elif identifier == 'action_run_sim':
-            # FIXME: could probably wrap this if-else in it's own function
             # TODO: run simulation num_sims number of times
-            if self.environment_present():
-                logger.log(logger.INFO, 'Run simulation...')
-
-                self.run_wfds()
-
-            else:
-
-                # FIXME: decide if should be warning, information or critical
-                # NOTE: Since QMessageBox displays rich text, we can use markup and html to format output
-                # NOTE: QMessageBox displays itself
-                QMessageBox.information(self, 'No Environment Present', '<html>No Environment Present!<br>Please create or import an environment.</html>')
-
-                # We do not care about return value of QMessageBox
-                return
+            self.run_simulation()
 
         elif identifier == 'action_view_sim':
             user_settings = UserSettings()
@@ -124,8 +115,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         elif identifier == 'action_user_settings':
             dialog = UserSettingsForm()
 
-        elif identifier == 'action_select_output_file':
-            print(identifier, 'not implemented')
+        elif identifier == 'action_select_output_files':
+            dialog = SelectOutputFileTypesForm()
+            self._output_file_types = dialog.get_file_types()
+
+            # Dialog will run itself, so we can return.
             return
 
         elif identifier == 'action_about':
@@ -146,18 +140,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def handle_file_button(self, identifier):
 
         if identifier == 'action_import_environment':
-            # TODO: Could probably wrap this in its own function
-            user_settings = UserSettings()
-
-            # Open FileDialog in user's current working directory, with fds file filter
-            file, file_filter = QFileDialog.getOpenFileName(self, 'Import Environment', user_settings.working_dir, filter="fds (*.fds *.txt)")
-
-            if file:
-                self.fds_file = file
-                # TODO: actually import FDS file
-                # TODO: if FDS file import is successful, modify current_env_label
-
-            return
+            self.import_environment()
 
         elif identifier == 'action_view_sim':
 
@@ -167,63 +150,107 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # FIXME: ignore identifiers that will not be handled
             print('UNRECOGNIZED IDENTIFIER:', identifier)
 
+    def import_environment(self):
+
+        user_settings = UserSettings()
+
+        # Open FileDialog in user's current working directory, with fds file filter
+        file, file_filter = QFileDialog.getOpenFileName(self, 'Import Environment', user_settings.working_dir,
+                                                        filter="fds (*.fds *.txt)")
+
+        # TODO: actually import FDS file
+        # TODO: if FDS file import is successful, modify current_env_label
+
+        if file:
+            self._fds.fds_file = file
+
+            # Should not throw because the file is coming from UI,
+            # but just in case
+            try:
+
+                self._fds.read()
+
+            except FileNotFoundError as fnfe:
+                self._fds.fds_file = None
+                logger.log(logger.ERROR, str(fnfe))
+                QMessageBox.information(self, "Import Not Successful", "Fds file {0} could not be found".format(file))
+                return
+
+            QMessageBox.information(self, 'Import successful', 'Environment imported successfully.')
+
+    def run_simulation(self):
+
+        if self.environment_present():
+            logger.log(logger.INFO, 'Run simulation...')
+
+            self.run_wfds()
+
+        else:
+
+            # FIXME: decide if should be warning, information or critical
+            # NOTE: Since QMessageBox displays rich text, we can use markup and html to format output
+            # NOTE: QMessageBox displays itself
+            QMessageBox.information(self, 'No Environment Present',
+                                    '<html>No Environment Present!<br>Please create or import an environment.</html>')
+
+            # We do not care about return value of QMessageBox
+            return
+
     def environment_present(self):
-        return self.fds_file is not None
+        return self._fds.file_present()
 
     def run_wfds(self):
         """This function runs wfds with the currently loaded environment"""
 
-        user_settings = UserSettings()
-
         # Get user's output directory
+        user_settings = UserSettings()
         out_dir = os.path.abspath(user_settings.output_dir)
 
-        # TODO: add ability to name simulation output directory?
-        # TODO: if so, could make this(current) scheme default
-        # eg, auto populate prompt w/ this directory
+        # Get path to current fds file
+        fds_filepath = self._fds.fds_file
+        fds_fname = util.get_filename(fds_filepath)
 
-        fds_fname = util.get_filename(self.fds_file)
-
-        # Create directory with same name as simulation
+        # Create a unique directory with same name as simulation
         out_dir += os.sep + fds_fname
-
-        # TODO: see if this is necessary
         out_dir = util.make_unique_directory(out_dir)
 
-        # Make another directory for simulation output files
         os.mkdir(out_dir)
 
-        # FIXME
-        fds_out_file = ''  # = open(out_dir + '/' + fds_fname + '.err', 'w', buffering=1)
+        # Save the input file that was used to run the simulation
+        save_fname = out_dir + os.sep + fds_fname
+        self._fds.save(save_fname)
 
         logger.log(logger.INFO, 'Running simulation')
-        self.execute_and_update(cmd=[self.fds_exec, self.fds_file], cwd=out_dir, out_file=fds_out_file)
 
     def run_smv(self):
         """This function runs smv with the currently loaded environment"""
 
         logger.log(logger.INFO, 'Viewing simulation')
-        for path in util.execute(cmd=[self.smv_exec, self.smv_file], cwd=None):
-            path.replace(' ', '').replace('\n', '')
-
+        util.execute(cmd=[self.smv_exec, self.smv_file], cwd=None, out_file=None)
 
     # out_file not currently used, but may be later. So it is left in signature
-    def execute_and_update(self, cmd, cwd=None, out_file=sys.stdout):
-
+    def execute_and_update(self, cmd, out_dir=None, out_file=sys.stdout):
         """Execute the given command and update the progress bar"""
 
-        # FIXME: this should come from fds_file
-        t_end = 5.0
+        util.execute(cmd=cmd, cwd=out_dir, out_file=out_file)
 
-        # TODO: May be able to grab first few lines and update version info etc
-        # could also use modified version of WFDS that does not hang upon execution
-        for path in util.execute(cmd=cmd, cwd=cwd):
+        t_end = float(self._fds.sim_time())
 
-            path = path.replace(' ', '').replace('\n', '')
+        # Make progress bar visible
+        self.progressBar.show()
 
-            if path.startswith('TimeStep'):
+        # Give Wfds some time to spin up
+        time.sleep(1)
 
-                timestep_kv, sim_time_kv = path.split(',')
+        for line in follow(open(out_dir + os.sep + self._fds.job() + '.out', 'r')):
+
+            line = line.replace(' ', '').replace('\n', '')
+
+            if line.startswith('STOP'):
+                break
+
+            if line.startswith('Timestep'):
+                timestep_kv, sim_time_kv = line.split(',')
 
                 # Not currently used, could be later?
                 timestep_int = timestep_kv.split(':')[1]
@@ -233,5 +260,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 loading = (sim_time_float / t_end) * 100
                 self.progressBar.setValue(loading)
 
-                # This may help to keep the gui responsive
-                qApp.processEvents()
+        # TODO: could get pid from popen and check it or something here.
+        # May also be useful to get pid for things such as killing if FireScape Rx is
+        # terminated prematurely
+        # If we reach here, simulation should be done.
+        logger.log(logger.INFO, "Simulation complete")
+
+        self.hide_and_reset_progress()
+        QMessageBox.information(self, 'Simulation Complete', 'Simulation(s) completed.')
+
+    def hide_and_reset_progress(self):
+
+        # Hide progress bar and reset it
+        self.progressBar.hide()
+        self.progressBar.setValue(0)
+
+
+def follow(thefile):
+
+    thefile.seek(0, 2)
+    while True:
+        line = thefile.readline()
+        if not line:
+            time.sleep(0.1)
+            qApp.processEvents()
+            continue
+        yield line

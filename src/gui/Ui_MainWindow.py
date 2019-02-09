@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qt_files/MainWindow.ui'
 #
-# Created by: PyQt5 UI code generator 5.6
+# Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -150,7 +150,7 @@ class Ui_MainWindow(object):
         self.progressBar.setObjectName("progressBar")
         MainWindow.setCentralWidget(self.central_widget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 932, 20))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 932, 22))
         self.menubar.setDefaultUp(False)
         self.menubar.setNativeMenuBar(False)
         self.menubar.setObjectName("menubar")
@@ -233,7 +233,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "FireScape Rx"))
         self.current_env_label.setText(_translate("MainWindow", "Current Environment: "))
         self.sim_settings_label.setText(_translate("MainWindow", "Simulation Settings"))
         self.num_sim_label.setText(_translate("MainWindow", "Number of Simulations"))
