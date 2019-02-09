@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>932</width>
+    <width>943</width>
     <height>600</height>
    </rect>
   </property>
@@ -49,10 +49,10 @@
    <widget class="QScrollArea" name="scroll_area">
     <property name="geometry">
      <rect>
-      <x>590</x>
+      <x>600</x>
       <y>0</y>
-      <width>341</width>
-      <height>561</height>
+      <width>340</width>
+      <height>560</height>
      </rect>
     </property>
     <property name="widgetResizable">
@@ -63,8 +63,8 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>339</width>
-       <height>559</height>
+       <width>338</width>
+       <height>558</height>
       </rect>
      </property>
      <widget class="QWidget" name="verticalLayoutWidget">
@@ -322,7 +322,7 @@
    <widget class="QScrollArea" name="scrollArea">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>10</x>
       <y>50</y>
       <width>581</width>
       <height>501</height>
@@ -348,8 +348,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>932</width>
-     <height>20</height>
+     <width>943</width>
+     <height>25</height>
     </rect>
    </property>
    <property name="defaultUp">
@@ -371,6 +371,8 @@
     <addaction name="action_import_environment"/>
     <addaction name="action_import_simulation"/>
     <addaction name="action_import_summary_file"/>
+    <addaction name="action_import_fuel_map"/>
+    <addaction name="action_import_dem"/>
    </widget>
    <widget class="QMenu" name="menu_export">
     <property name="title">
@@ -379,6 +381,8 @@
     <addaction name="action_export_environment"/>
     <addaction name="action_export_simulation"/>
     <addaction name="action_export_summary_file"/>
+    <addaction name="action_export_fuel_map"/>
+    <addaction name="action_export_dem"/>
    </widget>
    <widget class="QMenu" name="menu_settings">
     <property name="title">
@@ -501,6 +505,26 @@
   <action name="action_about">
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="action_import_fuel_map">
+   <property name="text">
+    <string>Fuel Map</string>
+   </property>
+  </action>
+  <action name="action_import_dem">
+   <property name="text">
+    <string>Digital Elevation Model</string>
+   </property>
+  </action>
+  <action name="action_export_fuel_map">
+   <property name="text">
+    <string>Fuel Map</string>
+   </property>
+  </action>
+  <action name="action_export_dem">
+   <property name="text">
+    <string>Digital Elevation Model</string>
    </property>
   </action>
  </widget>
