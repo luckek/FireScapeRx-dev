@@ -1,12 +1,11 @@
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox, qApp
 from gui.Ui_MainWindow import Ui_MainWindow
-from UserSettingsForm import UserSettingsForm
-from UserSettings import UserSettings
+from UserSettingsForm import UserSettingsForm, UserSettings
 from AboutDialog import AboutDialog
 from SimulationSettings import SimulationSettings
 from SelectOutputFileTypesForm import SelectOutputFileTypesForm
-from gui.FuelMapEditor import FuelMapEditor
+from FuelMapEditor import FuelMapEditor, AsciiParser
 from Fds import Fds
 import os
 import Utility as util
@@ -27,11 +26,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Set up the user interface from Designer.
         self.setupUi(self)
 
-        # Setup the fuel map editor
-        self.scrollAreaWidgetContents = FuelMapEditor(20, 20)
-        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+        # Create the fuel map editor variable
+        self._fuel_map_editor = None
 
-        self.modify_fuel_map.clicked.connect(self.modify_fuel_map_clicked)
+        # Hide scroll area
+        self.scrollArea.hide()
+
+        # Disable export of files until one is loaded
+        self.action_export_fuel_map.setEnabled(False)
+        self.action_export_dem.setEnabled(False)
+
+        # FIXME: re-enable when this gets implemented:
+        self.action_import_dem.setEnabled(False)
+
+        self.modify_fuel_map.setEnabled(False)
+        self.modify_fuel_map.clicked.connect(self.__modify_fuel_map_clicked)
 
         # Hide and reset progress bar
         self.hide_and_reset_progress()
@@ -59,7 +68,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     # Use objectName as identifier so as to ensure uniqueness of identifier
                     identifier = action.objectName()
                     action.triggered.connect(lambda state, x=identifier: self.handle_button(x))
-                    action.triggered.connect(lambda state, x=identifier: self.handle_file_button(x))
+                    action.triggered.connect(lambda state, x=identifier: self.__handle_file_button(x))
 
     # FIXME: make static or remove from class altogether if we do not need to access anything in main window
     @QtCore.pyqtSlot(str)
@@ -81,6 +90,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             print(identifier, 'not implemented')
             return
 
+        elif identifier == 'action_import_fuel_map':
+            self.__import_fuel_map()
+            return
+
+        elif identifier == 'action_import_dem':
+            print(identifier, 'not implemented')
+            return
+
         elif identifier == 'action_export_summary':
             print(identifier, 'not implemented')
             return
@@ -97,11 +114,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             print(identifier, 'not implemented')
             return
 
+        elif identifier == 'action_export_fuel_map':
+            self.__export_fuel_map()
+
+        elif identifier == 'action_export_dem':
+            print(identifier, 'not implemented')
+            return
+
         elif identifier == 'action_run_sim':
             # TODO: run simulation num_sims number of times
             self.run_simulation()
 
         elif identifier == 'action_view_sim':
+
             user_settings = UserSettings()
 
             # Open FileDialog in user's current working directory, with smv file filter
@@ -142,22 +167,54 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             dialog.exec_()  # Executes dialog
 
     # FIXME: make better name for this function
+    # FIXME: make static or remove from class altogether if we do not need to access anything in main window
     @QtCore.pyqtSlot(str)
-    def handle_file_button(self, identifier):
-
+    def __handle_file_button(self, identifier):
         # FIXME: ignore identifiers that will not be handled
         print(identifier, 'Not implemented')
 
-    @QtCore.pyqtSlot(name='modify_fuel_map')
-    def modify_fuel_map_clicked(self):
+    @QtCore.pyqtSlot(name='__modify_fuel_map')
+    def __modify_fuel_map_clicked(self):
 
         if self.scrollArea.isHidden():
 
             self.scrollArea.show()
 
         else:
-
             self.scrollArea.hide()
+
+    def __import_fuel_map(self):
+
+        user_settings = UserSettings()
+        file_filter = 'Ascii GRID file (*' + ' *'.join(AsciiParser.FILE_EXT) + ')'
+        file, filt = QFileDialog.getOpenFileName(self, 'Open File', user_settings.working_dir, file_filter)
+
+        if file:
+            self._fuel_map_editor = FuelMapEditor(file)
+            self.scrollArea.setWidget(self._fuel_map_editor)
+            self.modify_fuel_map.setEnabled(True)
+            self.action_export_fuel_map.setEnabled(True)
+            self.scrollArea.show()
+
+        else:
+            return
+
+    def __export_fuel_map(self):
+
+        user_settings = UserSettings()
+        file_filter = 'Ascii GRID file (*' + ' *'.join(AsciiParser.FILE_EXT) + ')'
+        file, filt = QFileDialog.getSaveFileName(self, 'Save File', user_settings.working_dir, file_filter)
+
+        if file:
+
+            if not file.endswith('.asc') or not file.endswith('.grd'):
+                file += AsciiParser.FILE_EXT[0]
+
+            self._fuel_map_editor.save(file)
+            QMessageBox.information(self, "Export successful", "Fuel map successfully exported")
+
+        else:
+            return
 
     def import_environment(self):
 
