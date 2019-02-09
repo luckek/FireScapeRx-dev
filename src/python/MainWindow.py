@@ -324,7 +324,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         t_end = float(self._fds.sim_time())
 
         # Make progress bar visible
-        self.progressBar.show()
+        self.progress_bar.show()
+
+        # TODO: try catch until .out file is found
 
         # Give Wfds some time to spin up
         time.sleep(2)
@@ -345,7 +347,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
                 # Figure out percentage and update progress bar
                 loading = (sim_time_float / t_end) * 100
-                self.progressBar.setValue(loading)
+                self.progress_bar.setValue(loading)
 
         # TODO: could get pid from popen and check it or something here.
         # May also be useful to get pid for things such as killing if FireScape Rx is
@@ -359,8 +361,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def hide_and_reset_progress(self):
 
         # Hide progress bar and reset it
-        self.progressBar.hide()
-        self.progressBar.setValue(0)
+        self.progress_bar.hide()
+        self.progress_bar.setValue(0)
 
 
 def follow(thefile):
