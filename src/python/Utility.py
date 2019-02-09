@@ -20,3 +20,17 @@ def validate(text):
 
 def get_directory(parent, dlg_name='Select Directory'):
     return str(QFileDialog.getExistingDirectory(parent, dlg_name))
+
+
+def linspace(start, end, number_points):
+
+    # Figure out how much to increment by
+    length = end - start
+    increment = length / number_points - 1  # There are 19 points to calculate
+
+    # Create list of points
+    current = start
+    out = [] * number_points
+    for i in range(number_points):
+        out[i] = current
+        current += increment
