@@ -5,7 +5,9 @@ from PyQt5.QtCore import Qt, pyqtSlot
 
 class Ui_FuelMapButton(QPushButton):
 
-    colors = QColor(Qt.white), QColor(Qt.green)
+    colors = [QColor(Qt.white), QColor(Qt.green)]
+
+    no_data_color = [QColor(Qt.black)]
 
     def __init__(self, parent, bttn_size, init_color=0, name=None):
 
@@ -40,5 +42,11 @@ class Ui_FuelMapButton(QPushButton):
 
         self._color = new_color
         pallete = self.palette()
-        pallete.setColor(self.backgroundRole(), self.colors[self._color])
+
+        if self._color == -1:
+            pallete.setColor(self.backgroundRole(), self.no_data_color[0])
+
+        else:
+            pallete.setColor(self.backgroundRole(), self.colors[self._color])
+
         self.setPalette(pallete)

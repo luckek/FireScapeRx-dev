@@ -43,6 +43,12 @@ class FuelMapEditor(Ui_FuelMapEditor):
             button_row = []
             for j in range(1, self._ncols + 1):
                 button = Ui_FuelMapButton(self.gridLayoutWidget, self.BUTTON_SIZE)
+
+                current_data = self._ascii_parser.data_table[i - 1][j - 1]
+
+                if current_data == self._ascii_parser.no_data_val:
+                    button.color = -1
+
                 button.color = self._ascii_parser.data_table[i - 1][j - 1]  # Initialize grid to match ascii data table
                 self.gridLayout.addWidget(button, i, j)
                 button_row.append(button)
@@ -66,7 +72,24 @@ class FuelMapEditor(Ui_FuelMapEditor):
         self._ascii_parser.save(save_fname)
 
     def colors(self):
-        return Ui_FuelMapButton.colors
+        return Ui_FuelMapButton.colors + list(Ui_FuelMapButton.no_data_color)
 
     def fuel_types(self):
-        return ['Untreated', 'Treated']
+        return ['Untreated', 'Treated', 'No data']
+
+    def get_point_translation_map(self):
+
+        t_map = dict()
+
+        cell_size = self._ascii_parser.cell_size
+        init_x = int(cell_size / 2)
+        current_y = int((cell_size * self._nrows) - int(cell_size / 2.0))
+
+        for i in range(self._nrows):
+            current_x = init_x
+            for j in range(self._ncols):
+                t_map[(i, j)] = (current_x, current_y)
+                current_x += cell_size
+            current_y -= cell_size
+
+        return t_map
