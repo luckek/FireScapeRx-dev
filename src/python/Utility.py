@@ -84,3 +84,8 @@ def execute(cmd, cwd, out_file):
     # FIXME: See if we can replace subprocess.pipe with a file? may run into block-buffering issue again
 
     subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+
+
+def meters_per_cell(meters, number_cells):
+    """Simple convenience function for calculating FDS mesh sizes"""
+    return meters / number_cells
