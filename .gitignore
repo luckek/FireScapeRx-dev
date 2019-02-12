@@ -3,3 +3,5 @@
 *.pyc
 *.ini
 *.sim_settings
+fds_gnu_*
+smokeview_*
