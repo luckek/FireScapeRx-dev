@@ -46,10 +46,16 @@ class FuelMapEditor(Ui_FuelMapEditor):
 
                 current_data = self._ascii_parser.data_table[i - 1][j - 1]
 
+                # FIXME: throw, log, or handle? (currently silently handled)
+                if current_data > len(Ui_FuelMapButton.colors):
+                    current_data = len(Ui_FuelMapButton.colors) - 1
+
                 if current_data == self._ascii_parser.no_data_val:
                     button.color = -1
 
-                button.color = self._ascii_parser.data_table[i - 1][j - 1]  # Initialize grid to match ascii data table
+                else:
+
+                    button.color = self._ascii_parser.data_table[i - 1][j - 1]  # Initialize grid to match ascii data table
                 self.gridLayout.addWidget(button, i, j)
                 button_row.append(button)
 
