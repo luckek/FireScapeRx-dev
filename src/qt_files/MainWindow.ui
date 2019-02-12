@@ -7,45 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>965</width>
-    <height>629</height>
+    <height>605</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>FireScape Rx</string>
   </property>
   <widget class="QWidget" name="central_widget">
-   <widget class="QWidget" name="horizontalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>151</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontal_layout">
-     <item>
-      <spacer name="horizontal_spacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QLabel" name="current_env_label">
-       <property name="text">
-        <string>Current Environment: </string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
    <widget class="QScrollArea" name="scrollArea">
     <property name="geometry">
      <rect>
@@ -403,7 +371,7 @@
           <x>20</x>
           <y>0</y>
           <width>321</width>
-          <height>221</height>
+          <height>331</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -442,148 +410,9 @@
               <x>0</x>
               <y>0</y>
               <width>317</width>
-              <height>138</height>
+              <height>218</height>
              </rect>
             </property>
-            <widget class="QWidget" name="verticalLayoutWidget_3">
-             <property name="geometry">
-              <rect>
-               <x>20</x>
-               <y>0</y>
-               <width>281</width>
-               <height>150</height>
-              </rect>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout">
-              <item>
-               <layout class="QGridLayout" name="fuel_type_grid_layout">
-                <property name="verticalSpacing">
-                 <number>6</number>
-                </property>
-                <item row="0" column="1">
-                 <widget class="QGraphicsView" name="graphicsView">
-                  <property name="palette">
-                   <palette>
-                    <active>
-                     <colorrole role="Base">
-                      <brush brushstyle="SolidPattern">
-                       <color alpha="255">
-                        <red>0</red>
-                        <green>170</green>
-                        <blue>0</blue>
-                       </color>
-                      </brush>
-                     </colorrole>
-                    </active>
-                    <inactive>
-                     <colorrole role="Base">
-                      <brush brushstyle="SolidPattern">
-                       <color alpha="255">
-                        <red>0</red>
-                        <green>170</green>
-                        <blue>0</blue>
-                       </color>
-                      </brush>
-                     </colorrole>
-                    </inactive>
-                    <disabled>
-                     <colorrole role="Base">
-                      <brush brushstyle="SolidPattern">
-                       <color alpha="255">
-                        <red>255</red>
-                        <green>255</green>
-                        <blue>255</blue>
-                       </color>
-                      </brush>
-                     </colorrole>
-                    </disabled>
-                   </palette>
-                  </property>
-                  <property name="foregroundBrush">
-                   <brush brushstyle="NoBrush">
-                    <color alpha="255">
-                     <red>0</red>
-                     <green>170</green>
-                     <blue>0</blue>
-                    </color>
-                   </brush>
-                  </property>
-                  <property name="interactive">
-                   <bool>false</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="0">
-                 <widget class="QLabel" name="label_2">
-                  <property name="text">
-                   <string>TextLabel</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="1">
-                 <widget class="QGraphicsView" name="graphicsView_2">
-                  <property name="palette">
-                   <palette>
-                    <active>
-                     <colorrole role="Base">
-                      <brush brushstyle="SolidPattern">
-                       <color alpha="255">
-                        <red>0</red>
-                        <green>170</green>
-                        <blue>0</blue>
-                       </color>
-                      </brush>
-                     </colorrole>
-                    </active>
-                    <inactive>
-                     <colorrole role="Base">
-                      <brush brushstyle="SolidPattern">
-                       <color alpha="255">
-                        <red>0</red>
-                        <green>170</green>
-                        <blue>0</blue>
-                       </color>
-                      </brush>
-                     </colorrole>
-                    </inactive>
-                    <disabled>
-                     <colorrole role="Base">
-                      <brush brushstyle="SolidPattern">
-                       <color alpha="255">
-                        <red>255</red>
-                        <green>255</green>
-                        <blue>255</blue>
-                       </color>
-                      </brush>
-                     </colorrole>
-                    </disabled>
-                   </palette>
-                  </property>
-                  <property name="foregroundBrush">
-                   <brush brushstyle="NoBrush">
-                    <color alpha="255">
-                     <red>0</red>
-                     <green>170</green>
-                     <blue>0</blue>
-                    </color>
-                   </brush>
-                  </property>
-                  <property name="interactive">
-                   <bool>false</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="0">
-                 <widget class="QLabel" name="label">
-                  <property name="text">
-                   <string>very very very long text</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </widget>
            </widget>
           </widget>
          </item>
@@ -625,6 +454,23 @@
            </property>
           </widget>
          </item>
+         <item>
+          <widget class="QLabel" name="modify_fuel_map_label">
+           <property name="text">
+            <string>Modify Fuel Map:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="Line" name="line_11">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
         </layout>
        </widget>
       </widget>
@@ -635,6 +481,28 @@
       <string>Ignition Points</string>
      </attribute>
     </widget>
+   </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>160</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="current_env_label">
+       <property name="text">
+        <string>Current Environment:</string>
+       </property>
+       <property name="margin">
+        <number>5</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -657,16 +525,6 @@
      <string>File</string>
     </property>
     <addaction name="action_create_environment"/>
-   </widget>
-   <widget class="QMenu" name="menu_import">
-    <property name="title">
-     <string>Import</string>
-    </property>
-    <addaction name="action_import_environment"/>
-    <addaction name="action_import_simulation"/>
-    <addaction name="action_import_summary_file"/>
-    <addaction name="action_import_fuel_map"/>
-    <addaction name="action_import_dem"/>
    </widget>
    <widget class="QMenu" name="menu_export">
     <property name="title">
@@ -698,6 +556,16 @@
     <addaction name="action_run_sim"/>
     <addaction name="action_view_sim"/>
    </widget>
+   <widget class="QMenu" name="menu_import">
+    <property name="title">
+     <string>Import</string>
+    </property>
+    <addaction name="action_import_environment"/>
+    <addaction name="action_import_simulation"/>
+    <addaction name="action_import_summary_file"/>
+    <addaction name="action_import_fuel_map"/>
+    <addaction name="action_import_dem"/>
+   </widget>
    <addaction name="menu_file"/>
    <addaction name="menu_import"/>
    <addaction name="menu_export"/>
@@ -705,7 +573,6 @@
    <addaction name="menu_settings"/>
    <addaction name="menu_help"/>
   </widget>
-  <widget class="QStatusBar" name="current_env"/>
   <action name="action_create_environment">
    <property name="text">
     <string>Create Environment</string>
