@@ -35,12 +35,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Disable export of files until one is loaded
         self.action_export_fuel_map.setEnabled(False)
         self.action_export_dem.setEnabled(False)
+        self.fuel_type_legend_tab.setEnabled(False)
 
         # FIXME: re-enable when this gets implemented:
         self.action_import_dem.setEnabled(False)
-
-        self.modify_fuel_map.setEnabled(False)
-        self.modify_fuel_map.clicked.connect(self.__modify_fuel_map_clicked)
 
         # Hide and reset progress bar
         self.hide_and_reset_progress()
@@ -173,16 +171,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # FIXME: ignore identifiers that will not be handled
         print(identifier, 'Not implemented')
 
-    @QtCore.pyqtSlot(name='__modify_fuel_map')
-    def __modify_fuel_map_clicked(self):
-
-        if self.scrollArea.isHidden():
-
-            self.scrollArea.show()
-
-        else:
-            self.scrollArea.hide()
-
     def __import_fuel_map(self):
 
         user_settings = UserSettings()
@@ -192,8 +180,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if file:
             self._fuel_map_editor = FuelMapEditor(file)
             self.scrollArea.setWidget(self._fuel_map_editor)
-            self.modify_fuel_map.setEnabled(True)
             self.action_export_fuel_map.setEnabled(True)
+            self.fuel_type_legend_tab.setEnabled(True)
             self.scrollArea.show()
 
         else:
@@ -335,6 +323,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             line = line.replace(' ', '').replace('\n', '')
 
+            # Break if we hit STOP because simulation is over
             if line.startswith('STOP'):
                 break
 
