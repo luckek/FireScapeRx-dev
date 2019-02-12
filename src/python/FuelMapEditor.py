@@ -64,3 +64,9 @@ class FuelMapEditor(Ui_FuelMapEditor):
 
         self._ascii_parser.data_table = self.get_fuel_map()
         self._ascii_parser.save(save_fname)
+
+    def colors(self):
+        return Ui_FuelMapButton.colors
+
+    def fuel_types(self):
+        return ['Untreated', 'Treated']
