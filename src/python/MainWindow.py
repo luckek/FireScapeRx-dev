@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox, qApp
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox, qApp, QLabel, QGraphicsView, QWidget, QGridLayout
 from gui.Ui_MainWindow import Ui_MainWindow
 from UserSettingsForm import UserSettingsForm, UserSettings
 from AboutDialog import AboutDialog
@@ -46,6 +46,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Initialize fds object
         self._fds = Fds()
         self._fds_exec = self._fds.fds_exec
+
+        self.fuel_type_grid_layout_widget = QWidget(self)
+        self.fuel_type_grid_layout = QGridLayout(self.fuel_type_grid_layout_widget)
+
+        # HIDE THIS or it will cause problems with GUI (cant click on part of menubar)
+        self.fuel_type_grid_layout_widget.hide()
 
         # TODO: make use of this variable
         # Initialize selected output file types
@@ -180,6 +186,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if file:
             self._fuel_map_editor = FuelMapEditor(file)
             self.scrollArea.setWidget(self._fuel_map_editor)
+            self.setup_fuel_map_legend()
             self.action_export_fuel_map.setEnabled(True)
             self.fuel_type_legend_tab.setEnabled(True)
             self.scrollArea.show()
@@ -353,6 +360,30 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.progress_bar.hide()
         self.progress_bar.setValue(0)
 
+    def setup_fuel_map_legend(self):
+
+        colors = self._fuel_map_editor.colors()
+        fuel_types = self._fuel_map_editor.fuel_types()
+
+        assert len(colors) == len(fuel_types), "Length of colors != length of fuel_types"
+
+        for i in range(len(colors)):
+            legend_label = QLabel()
+            legend_label.setText(fuel_types[i])
+            self.fuel_type_grid_layout.addWidget(legend_label, i, 0)
+
+            legend_label.setFixedSize(65, 20)
+
+            g_view = QGraphicsView()
+
+            pallete = g_view.palette()
+            pallete.setColor(g_view.backgroundRole(), colors[i])
+            g_view.setPalette(pallete)
+            g_view.setMaximumSize(25, 10)
+
+            self.fuel_type_grid_layout.addWidget(g_view, i, 1)
+
+        self.scrollArea_3.setWidget(self.fuel_type_grid_layout_widget)
 
 def follow(thefile):
 
