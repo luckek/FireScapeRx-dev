@@ -43,6 +43,7 @@ class FuelMapEditor(Ui_FuelMapEditor):
             button_row = []
             for j in range(1, self._ncols + 1):
                 button = Ui_FuelMapButton(self.gridLayoutWidget, self.BUTTON_SIZE)
+                button.color = self._ascii_parser.data_table[i - 1][j - 1]  # Initialize grid to match ascii data table
                 self.gridLayout.addWidget(button, i, j)
                 button_row.append(button)
 
