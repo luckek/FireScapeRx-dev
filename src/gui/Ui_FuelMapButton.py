@@ -21,18 +21,12 @@ class Ui_FuelMapButton(QPushButton):
     @pyqtSlot(bool, name='button_clicked')
     def button_click(self):
 
-        if self.color == 0:
-            self._color = 1
+        if self.color == len(self.colors) - 1:
+            self._set_color(0)
 
         else:
-            self._color = 0
-
-        color_index = self._color
-        color = self.colors[color_index].lighter(150)
-
-        pallete = self.palette()
-        pallete.setColor(self.backgroundRole(), color)
-        self.setPalette(pallete)
+            self._color += 1
+            self._set_color(self._color)
 
     @property
     def color(self):
@@ -43,9 +37,6 @@ class Ui_FuelMapButton(QPushButton):
         self._set_color(new_color)
 
     def _set_color(self, new_color):
-
-        if new_color > len(self.colors):
-            new_color = len(self.colors) - 1
 
         self._color = new_color
         pallete = self.palette()
