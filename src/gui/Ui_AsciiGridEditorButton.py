@@ -1,15 +1,16 @@
 from PyQt5.QtWidgets import QPushButton
-from PyQt5.QtGui import QColor
-from PyQt5.QtCore import Qt, pyqtSlot
+from PyQt5.QtCore import pyqtSlot
 
 
-class Ui_FuelMapButton(QPushButton):
+class Ui_AsciiGridEditorButton(QPushButton):
 
-    colors = [QColor(Qt.white), QColor(Qt.green)]
+    # Not necessary, but useful for debugging.
+    # Since this is more or less an abstract class, this may
+    # have the unintended side effect of also guarding against instantiation
+    colors = []
+    no_data_color = None
 
-    no_data_color = [QColor(Qt.black)]
-
-    def __init__(self, parent, bttn_size, init_color=0, name=None):
+    def __init__(self, parent, bttn_size, init_color, name):
 
         QPushButton.__init__(self, parent)
 

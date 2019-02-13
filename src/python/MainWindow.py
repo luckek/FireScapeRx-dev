@@ -5,7 +5,8 @@ from UserSettingsForm import UserSettingsForm, UserSettings
 from AboutDialog import AboutDialog
 from SimulationSettings import SimulationSettings
 from SelectOutputFileTypesForm import SelectOutputFileTypesForm
-from FuelMapEditor import FuelMapEditor, AsciiParser
+from AsciiParser import AsciiParser
+from FuelMapEditor import FuelMapEditor
 from Fds import Fds
 import os
 import Utility as util
@@ -425,23 +426,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def check_x_range(self):
 
-        x_min = self.x_range_min_line_edit.text()
-        x_max = self.x_range_max_line_edit.text()
+        usr_x_min = self.x_range_min_line_edit.text()
+        usr_x_max = self.x_range_max_line_edit.text()
 
-        f_map_x_max = self._fuel_map_editor.f_map_x_max()
-        f_map_x_min = self._fuel_map_editor.f_map_x_min()
+        f_map_x_max = self._fuel_map_editor.grid_x_max()
+        f_map_x_min = self._fuel_map_editor.grid_x_min()
 
         # Ensure the coordinates are within a valid range
-        valid_range = self.check_range_input(x_min, x_max, f_map_x_min, f_map_x_max)
+        valid_range = self.check_range_input(usr_x_min, usr_x_max, f_map_x_min, f_map_x_max)
 
         if valid_range:
 
             column_numbers = self._fuel_map_editor.column_numbers()
-            x_min = int(x_min)
-            x_max = int(x_max)
+            usr_x_min = int(usr_x_min)
+            usr_x_max = int(usr_x_max)
 
             # Ensure the coordinates correspond to proper fuel map coordinates
-            if x_min not in column_numbers or x_max not in column_numbers:
+            if usr_x_min not in column_numbers or usr_x_max not in column_numbers:
                 QMessageBox.information(self, 'Non numeric range', 'At least one of the x range inputs not a valid fuel '
                                                                    'map coordinate<br>Please input a valid coordinate.')
                 return False
@@ -455,8 +456,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         y_min = self.y_range_min_line_edit.text()
         y_max = self.y_range_max_line_edit.text()
 
-        f_map_y_max = self._fuel_map_editor.f_map_y_max()
-        f_map_y_min = self._fuel_map_editor.f_map_y_min()
+        f_map_y_max = self._fuel_map_editor.grid_y_max()
+        f_map_y_min = self._fuel_map_editor.grid_y_min()
 
         # Ensure the coordinates are within a valid range
         valid_range = self.check_range_input(y_min, y_max, f_map_y_min, f_map_y_max)

@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QGridLayout
 
 
-class Ui_FuelMapEditor(QWidget):
+class Ui_AsciiGridEditor(QWidget):
 
     BUTTON_SIZE = 25
 
