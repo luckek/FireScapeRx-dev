@@ -7,6 +7,7 @@ from SimulationSettings import SimulationSettings
 from SelectOutputFileTypesForm import SelectOutputFileTypesForm
 from AsciiParser import AsciiParser
 from FuelMapEditor import FuelMapEditor
+from IgnitionPointEditor import IgnitionPointEditor
 from Fds import Fds
 import os
 import Utility as util
@@ -29,6 +30,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # Create the fuel map editor variable
         self._fuel_map_editor = None
+        self._ignition_point_editor = None
 
         # Hide scroll area
         self.fuel_map_grid_scroll_area.hide()
@@ -37,9 +39,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.action_export_fuel_map.setEnabled(False)
         self.action_export_dem.setEnabled(False)
         self.fuel_type_legend_tab.setEnabled(False)
-
-        # FIXME: re-enable when this gets implemented:
-        self.action_import_dem.setEnabled(False)
+        self.ignition_point_legend_tab.setEnabled(False)
 
         # Hide and reset progress bar
         self.hide_and_reset_progress()
@@ -57,11 +57,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._fds = Fds()
         self._fds_exec = self._fds.fds_exec
 
+        # Setup and hide the fuel type legend grid
         self.fuel_type_grid_layout_widget = QWidget(self)
         self.fuel_type_grid_layout = QGridLayout(self.fuel_type_grid_layout_widget)
 
         # HIDE THIS or it will cause problems with GUI (cant click on part of menubar)
         self.fuel_type_grid_layout_widget.hide()
+
+        # Setup and hide the ignition point type legend grid
+        self.ignition_point_type_grid_layout_widget = QWidget(self)
+        self.ignition_point_type_grid_layout = QGridLayout(self.ignition_point_type_grid_layout_widget)
+        self.ignition_point_type_grid_layout_widget.hide()
 
         # TODO: make use of this variable
         # Initialize selected output file types
@@ -109,7 +115,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
 
         elif identifier == 'action_import_dem':
-            print(identifier, 'not implemented')
+            self.__import_digital_elevation_model()
             return
 
         elif identifier == 'action_export_summary':
@@ -239,6 +245,44 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             self._fuel_map_editor.save(file)
             QMessageBox.information(self, "Export successful", "Fuel map successfully exported")
+
+        else:
+            return
+
+    def __import_digital_elevation_model(self):
+
+        user_settings = UserSettings()
+        file_filter = 'Ascii GRID file (*' + ' *'.join(AsciiParser.FILE_EXT) + ')'
+        file, filt = QFileDialog.getOpenFileName(self, 'Open File', user_settings.working_dir, file_filter)
+
+        if file:
+            self._ignition_point_editor = IgnitionPointEditor(file)
+            self.fuel_map_grid_scroll_area.setWidget(self._ignition_point_editor)
+            self.setup_ignition_point_map_legend()
+
+            # Enable relevant widgets
+            self.action_export_dem.setEnabled(True)
+            self.ignition_point_legend_tab.setEnabled(True)
+
+            # Set current tab to fuel type legend
+            self.tab_widget.setCurrentIndex(2)
+
+            # Show relevant scroll area
+            self.fuel_map_grid_scroll_area.show()
+
+    def __export_digital_elevation_model(self):
+
+        user_settings = UserSettings()
+        file_filter = 'Ascii GRID file (*' + ' *'.join(AsciiParser.FILE_EXT) + ')'
+        file, filt = QFileDialog.getSaveFileName(self, 'Save File', user_settings.working_dir, file_filter)
+
+        if file:
+
+            if not file.endswith('.asc') or not file.endswith('.grd'):
+                file += AsciiParser.FILE_EXT[0]
+
+            self._fuel_map_editor.save(file)
+            QMessageBox.information(self, "Export successful", "Digital elevation model successfully exported")
 
         else:
             return
@@ -417,6 +461,32 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.fuel_type_grid_layout.addWidget(g_view, i, 1)
 
         self.scrollArea_3.setWidget(self.fuel_type_grid_layout_widget)
+
+    def setup_ignition_point_map_legend(self):
+
+        colors = self._ignition_point_editor.colors()
+        fuel_types = self._ignition_point_editor.fuel_types()
+
+        assert len(colors) == len(fuel_types), "Length of colors != length of fuel_types"
+
+        # Create the fuel map legend
+        for i in range(len(colors)):
+            legend_label = QLabel()
+            legend_label.setText(fuel_types[i])
+            self.ignition_point_type_grid_layout.addWidget(legend_label, i, 0)
+
+            legend_label.setFixedSize(65, 20)
+
+            g_view = QGraphicsView()
+
+            pallete = g_view.palette()
+            pallete.setColor(g_view.backgroundRole(), colors[i])
+            g_view.setPalette(pallete)
+            g_view.setMaximumSize(25, 10)
+
+            self.ignition_point_type_grid_layout.addWidget(g_view, i, 1)
+
+        self.ignition_point_map_legend_scroll_area.setWidget(self.ignition_point_type_grid_layout_widget)
 
     def x_range_return_pressed(self):
         self.check_x_range()
