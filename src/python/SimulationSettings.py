@@ -4,7 +4,7 @@
 import os.path as osp
 from UserSettings import UserSettings
 from math import cos, sin
-
+from Utility import is_number
 
 class SimulationSettings:
 
@@ -60,7 +60,7 @@ class SimulationSettings:
 
                 try:
 
-                    if not self.is_number(value):
+                    if not is_number(value):
                         raise TypeError('TypeError: ' + key + ' should be a valid number')
 
                     # Check for negative numbers(none of the sim parameters are allowed to be negative
@@ -159,16 +159,6 @@ class SimulationSettings:
 
             elif key == 'WIND_DIR':
                 self._wind_dir = float(value)
-
-    # FIXME: possible soln for checking whether or not value is number
-    # TODO: Move this into utility class?
-    @staticmethod
-    def is_number(s):
-        try:
-            float(s)
-            return True
-        except ValueError:
-            return False
 
     def wind_vector(self):
         # x=U0, y=V0
