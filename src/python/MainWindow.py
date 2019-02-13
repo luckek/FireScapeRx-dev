@@ -187,8 +187,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         print(identifier, 'Not implemented')
 
     def __modify_fuel_map(self):
-        # TODO: check x range and y range
 
+        # Ensure x and y range are valid
         if self.check_x_range():
             if self.check_y_range():
                 print('valid coordinate range')
@@ -201,6 +201,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
                 fuel_type = self.fuel_type_combo_box.currentIndex()
 
+                # Modify the fuel map
                 self._fuel_map_editor.modify_range(x_min, x_max, y_min, y_max, fuel_type)
 
     def __import_fuel_map(self):
@@ -218,13 +219,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.action_export_fuel_map.setEnabled(True)
             self.fuel_type_legend_tab.setEnabled(True)
 
-            # Set current tab to fuel type legeng
+            # Set current tab to fuel type legend
             self.tab_widget.setCurrentIndex(1)
 
             # Show relevant scroll area
             self.fuel_map_grid_scroll_area.show()
-            # for item in self._fuel_map_editor.point_to_index_map().items():
-            #     print(item)
 
     def __export_fuel_map(self):
 
@@ -399,6 +398,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         assert len(colors) == len(fuel_types), "Length of colors != length of fuel_types"
 
+        # Create the fuel map legend
         for i in range(len(colors)):
             legend_label = QLabel()
             legend_label.setText(fuel_types[i])
@@ -431,16 +431,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         f_map_x_max = self._fuel_map_editor.f_map_x_max()
         f_map_x_min = self._fuel_map_editor.f_map_x_min()
 
+        # Ensure the coordinates are within a valid range
         valid_range = self.check_range_input(x_min, x_max, f_map_x_min, f_map_x_max)
 
-        column_numbers = self._fuel_map_editor.column_numbers()
         if valid_range:
 
+            column_numbers = self._fuel_map_editor.column_numbers()
             x_min = int(x_min)
             x_max = int(x_max)
 
+            # Ensure the coordinates correspond to proper fuel map coordinates
             if x_min not in column_numbers or x_max not in column_numbers:
-                QMessageBox.information(self, 'Non numeric range', 'At least one of the range inputs not a valid fuel '
+                QMessageBox.information(self, 'Non numeric range', 'At least one of the x range inputs not a valid fuel '
                                                                    'map coordinate<br>Please input a valid coordinate.')
                 return False
 
@@ -456,16 +458,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         f_map_y_max = self._fuel_map_editor.f_map_y_max()
         f_map_y_min = self._fuel_map_editor.f_map_y_min()
 
+        # Ensure the coordinates are within a valid range
         valid_range = self.check_range_input(y_min, y_max, f_map_y_min, f_map_y_max)
 
-        row_numbers = self._fuel_map_editor.row_numbers()
         if valid_range:
 
+            row_numbers = self._fuel_map_editor.row_numbers()
             y_min = int(y_min)
             y_max = int(y_max)
 
+            # Ensure the coordinates correspond to proper fuel map coordinates
             if y_min not in row_numbers or y_max not in row_numbers:
-                QMessageBox.information(self, 'Non numeric range', 'At least one of the range inputs not a valid fuel '
+                QMessageBox.information(self, 'Non numeric range', 'At least one of the y range inputs not a valid fuel '
                                                                    'map coordinate<br>Please input a valid coordinate.')
                 return False
 
@@ -518,7 +522,7 @@ def follow(thefile):
     while True:
         line = thefile.readline()
         if not line:
+            qApp.processEvents()  # Helps keep gui responsive
             time.sleep(0.1)
-            qApp.processEvents()
             continue
         yield line
