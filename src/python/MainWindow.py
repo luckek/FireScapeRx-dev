@@ -30,7 +30,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._fuel_map_editor = None
 
         # Hide scroll area
-        self.scrollArea.hide()
+        self.fuel_map_grid_scroll_area.hide()
 
         # Disable export of files until one is loaded
         self.action_export_fuel_map.setEnabled(False)
@@ -185,14 +185,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         if file:
             self._fuel_map_editor = FuelMapEditor(file)
-            self.scrollArea.setWidget(self._fuel_map_editor)
+            self.fuel_map_grid_scroll_area.setWidget(self._fuel_map_editor)
             self.setup_fuel_map_legend()
+
+            # Enable relevant widgets
             self.action_export_fuel_map.setEnabled(True)
             self.fuel_type_legend_tab.setEnabled(True)
-            self.scrollArea.show()
 
-        else:
-            return
+            # Set current tab to fuel type legeng
+            self.tab_widget.setCurrentIndex(1)
+
+            # Show relevant scroll area
+            self.fuel_map_grid_scroll_area.show()
+            # for item in self._fuel_map_editor.point_to_index_map().items():
+            #     print(item)
 
     def __export_fuel_map(self):
 
