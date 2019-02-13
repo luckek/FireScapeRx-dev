@@ -43,6 +43,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Hide and reset progress bar
         self.hide_and_reset_progress()
 
+        # Setup validation for fuel map editor inputs
+        self.x_range_max_line_edit.returnPressed.connect(self.x_range_return_pressed)
+        self.x_range_min_line_edit.returnPressed.connect(self.x_range_return_pressed)
+
+        self.y_range_max_line_edit.returnPressed.connect(self.y_range_return_pressed)
+        self.y_range_min_line_edit.returnPressed.connect(self.y_range_return_pressed)
+
+        self.modify_fuel_map_button.clicked.connect(self.__modify_fuel_map)
+
         # Initialize fds object
         self._fds = Fds()
         self._fds_exec = self._fds.fds_exec
@@ -176,6 +185,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __handle_file_button(self, identifier):
         # FIXME: ignore identifiers that will not be handled
         print(identifier, 'Not implemented')
+
+    def __modify_fuel_map(self):
+        # TODO: check x range and y range
+
+        if self.check_x_range():
+            if self.check_y_range():
+                print('valid coordinate range')
+
+                x_min = int(self.x_range_min_line_edit.text())
+                x_max = int(self.x_range_max_line_edit.text())
+
+                y_min = int(self.y_range_min_line_edit.text())
+                y_max = int(self.y_range_max_line_edit.text())
+
+                fuel_type = self.fuel_type_combo_box.currentIndex()
+
+                self._fuel_map_editor.modify_range(x_min, x_max, y_min, y_max, fuel_type)
 
     def __import_fuel_map(self):
 
@@ -390,6 +416,101 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.fuel_type_grid_layout.addWidget(g_view, i, 1)
 
         self.scrollArea_3.setWidget(self.fuel_type_grid_layout_widget)
+
+    def x_range_return_pressed(self):
+        self.check_x_range()
+
+    def y_range_return_pressed(self):
+        self.check_y_range()
+
+    def check_x_range(self):
+
+        x_min = self.x_range_min_line_edit.text()
+        x_max = self.x_range_max_line_edit.text()
+
+        f_map_x_max = self._fuel_map_editor.f_map_x_max()
+        f_map_x_min = self._fuel_map_editor.f_map_x_min()
+
+        valid_range = self.check_range_input(x_min, x_max, f_map_x_min, f_map_x_max)
+
+        column_numbers = self._fuel_map_editor.column_numbers()
+        if valid_range:
+
+            x_min = int(x_min)
+            x_max = int(x_max)
+
+            if x_min not in column_numbers or x_max not in column_numbers:
+                QMessageBox.information(self, 'Non numeric range', 'At least one of the range inputs not a valid fuel '
+                                                                   'map coordinate<br>Please input a valid coordinate.')
+                return False
+
+            return True
+
+        return False
+
+    def check_y_range(self):
+
+        y_min = self.y_range_min_line_edit.text()
+        y_max = self.y_range_max_line_edit.text()
+
+        f_map_y_max = self._fuel_map_editor.f_map_y_max()
+        f_map_y_min = self._fuel_map_editor.f_map_y_min()
+
+        valid_range = self.check_range_input(y_min, y_max, f_map_y_min, f_map_y_max)
+
+        row_numbers = self._fuel_map_editor.row_numbers()
+        if valid_range:
+
+            y_min = int(y_min)
+            y_max = int(y_max)
+
+            if y_min not in row_numbers or y_max not in row_numbers:
+                QMessageBox.information(self, 'Non numeric range', 'At least one of the range inputs not a valid fuel '
+                                                                   'map coordinate<br>Please input a valid coordinate.')
+                return False
+
+            return True
+
+        return False
+
+    def check_range_input(self, usr_min, usr_max, f_map_min, f_map_max):
+
+        # Check if one of the inputs is empty
+        if len(usr_min) == 0 or len(usr_max) == 0:
+            return False
+
+        # Ensure both of the inputs are valid numbers
+        if not util.is_number(usr_min) or not util.is_number(usr_max):
+            QMessageBox.information(self, 'Non numeric range', 'At least one of the range inputs is non-numeric'
+                                                               '<br>Please input a numerical range.')
+            self.x_range_min_line_edit.setFocus()
+            return False
+
+        usr_min = float(usr_min)
+        usr_max = float(usr_max)
+
+        # Ensure both of the inputs are integers(they should essentially be parts of a coordinate)
+        if not usr_min.is_integer() or not usr_max.is_integer():
+            QMessageBox.information(self, 'Non integer range', 'At least one of the range inputs is not an integer.'
+                                                               '<br>Please input an integer range.')
+            return False
+
+        # Ensure the start of the range is not larger than the end
+        if usr_min > usr_max:
+            QMessageBox.information(self, 'Invalid range', 'The first range input cannot be larger than the second.'
+                                                           '<br>Please input a valid range.')
+            return False
+
+        usr_min = int(usr_min)
+        usr_max = int(usr_max)
+
+        if usr_max > f_map_max or usr_min < f_map_min:
+            QMessageBox.information(self, 'Invalid range', 'At least one of the range inputs is outside of the fuel map coordinates'
+                                                           '<br>Please input a valid range.')
+            return False
+
+        return True
+
 
 def follow(thefile):
 
