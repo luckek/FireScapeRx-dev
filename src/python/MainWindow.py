@@ -354,26 +354,38 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # TODO: try catch until .out file is found
 
         # Give Wfds some time to spin up
-        time.sleep(3)
+        # time.sleep(3)
 
-        for line in follow(open(out_dir + os.sep + self._fds.job() + '.out', 'r')):
+        wait = True
 
-            line = line.replace(' ', '').replace('\n', '')
+        while wait:
 
-            # Break if we hit STOP because simulation is over
-            if line.startswith('STOP'):
-                break
+            try:
 
-            if line.startswith('Timestep'):
-                timestep_kv, sim_time_kv = line.split(',')
+                for line in follow(open(out_dir + os.sep + self._fds.job() + '.out', 'r')):
 
-                # Not currently used, could be later?
-                timestep_int = timestep_kv.split(':')[1]
-                sim_time_float = float(sim_time_kv.split(':')[1].replace('s', ''))
+                    line = line.replace(' ', '').replace('\n', '')
 
-                # Figure out percentage and update progress bar
-                loading = (sim_time_float / t_end) * 100
-                self.progress_bar.setValue(loading)
+                    # Break if we hit STOP because simulation is over
+                    if line.startswith('STOP'):
+                        break
+
+                    if line.startswith('Timestep'):
+                        timestep_kv, sim_time_kv = line.split(',')
+
+                        # Not currently used, could be later?
+                        timestep_int = timestep_kv.split(':')[1]
+                        sim_time_float = float(sim_time_kv.split(':')[1].replace('s', ''))
+
+                        # Figure out percentage and update progress bar
+                        loading = (sim_time_float / t_end) * 100
+                        self.progress_bar.setValue(loading)
+                wait = False
+
+            except FileNotFoundError:
+                logger.log(logger.INFO, 'Sleep')
+                time.sleep(0.1)
+
 
         # TODO: could get pid from popen and check it or something here.
         # May also be useful to get pid for things such as killing if FireScape Rx is
@@ -381,8 +393,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # If we reach here, simulation should be done.
         logger.log(logger.INFO, "Simulation complete")
 
-        self.hide_and_reset_progress()
+        self.progress_bar.setValue(100)
         QMessageBox.information(self, 'Simulation Complete', 'Simulation(s) completed.')
+        self.hide_and_reset_progress()
 
     def hide_and_reset_progress(self):
 
