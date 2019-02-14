@@ -44,6 +44,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.action_export_environment.setEnabled(False)
         self.add_type_button.setEnabled(False)
         self.remove_type_button.setEnabled(False)
+        self.action_create_environment.setEnabled(False)
 
         # Hide and reset progress bar
         self.hide_and_reset_progress()
