@@ -1,5 +1,7 @@
 class FdsParser:
 
+    file_ext = '.fds'
+
     # TODO: figure out what is optional, create mechanism to deal with that
     def __init__(self):
         self._lines = list()

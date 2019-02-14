@@ -15,6 +15,7 @@ from FuelMapEditor import FuelMapEditor
 from IgnitionPointEditor import IgnitionPointEditor
 from Fds import Fds
 import os
+import os.path as osp
 import Utility as util
 import sys
 import logging as logger
@@ -24,7 +25,7 @@ import time
 class MainWindow(QMainWindow, Ui_MainWindow):
 
     # Path to pre-packaged smv executable
-    smv_exec = os.path.abspath(os.pardir) + os.sep + 'smokeview_linux_64'
+    smv_exec = osp.join(osp.abspath(os.pardir), 'smokeview_linux_64')
 
     def __init__(self):
 
@@ -398,20 +399,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # Get user's output directory
         user_settings = UserSettings()
-        out_dir = os.path.abspath(user_settings.output_dir)
+        out_dir = osp.abspath(user_settings.output_dir)
 
         # Get path to current fds file
         fds_filepath = self._fds.fds_file
         fds_fname = util.get_filename(fds_filepath)
 
         # Create a unique directory with same name as simulation
-        out_dir += os.sep + fds_fname
+        out_dir = osp.join(out_dir, fds_fname)
         out_dir = util.make_unique_directory(out_dir)
 
         os.mkdir(out_dir)
 
         # Save the input file that was used to run the simulation
-        save_fname = out_dir + os.sep + fds_fname
+        save_fname = osp.join(out_dir, fds_fname + Fds.file_ext())
         self._fds.save(save_fname)
 
         logger.log(logger.INFO, 'Running simulation')
@@ -430,7 +431,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             # Remove files from directory
             for file in os.listdir(out_dir):
-                os.remove(out_dir + os.sep + file)
+                os.remove(osp.join(out_dir, file))
 
             os.rmdir(out_dir)
 
@@ -459,7 +460,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Give Wfds some time to spin up
         time.sleep(2)
 
-        for line in follow(open(out_dir + os.sep + self._fds.job() + '.out', 'r')):
+        for line in follow(open(osp.join(out_dir, self._fds.job() + '.out'), 'r')):
 
             line = line.replace(' ', '').replace('\n', '')
 

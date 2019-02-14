@@ -1,11 +1,11 @@
-import os
+import os as os
 from FdsParser import FdsParser
 
 
 class Fds:
 
     # Path to pre-packaged fds executable
-    fds_exec = os.path.abspath(os.pardir) + os.sep + 'fds_gnu_linux_64'
+    fds_exec = os.path.join(os.path.abspath(os.pardir), 'fds_gnu_linux_64')
 
     def __init__(self, fds_file=None):
 
@@ -43,3 +43,7 @@ class Fds:
 
     def job_name(self):
         return self._parser.title
+
+    @staticmethod
+    def file_ext():
+        return FdsParser.file_ext
