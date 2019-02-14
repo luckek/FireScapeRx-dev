@@ -56,14 +56,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.action_create_environment.setEnabled(False)
 
         # Hide and reset progress bar
-        self.hide_and_reset_progress()
+        self.__hide_and_reset_progress()
 
         # Setup validation for fuel map editor inputs
-        self.x_range_max_line_edit.returnPressed.connect(self.x_range_return_pressed)
-        self.x_range_min_line_edit.returnPressed.connect(self.x_range_return_pressed)
+        self.x_range_max_line_edit.returnPressed.connect(self.__x_rng_ret_pressed)
+        self.x_range_min_line_edit.returnPressed.connect(self.__x_rng_ret_pressed)
 
-        self.y_range_max_line_edit.returnPressed.connect(self.y_range_return_pressed)
-        self.y_range_min_line_edit.returnPressed.connect(self.y_range_return_pressed)
+        self.y_range_max_line_edit.returnPressed.connect(self.__y_rng_ret_pressed)
+        self.y_range_min_line_edit.returnPressed.connect(self.__y_rng_ret_pressed)
 
         self.modify_fuel_map_button.clicked.connect(self.__modify_fuel_map)
         self.modify_ign_points_button.clicked.connect(self.__modify_ignition_map)
@@ -158,7 +158,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         elif identifier == 'action_run_sim':
             # TODO: run simulation num_sims number of times
-            self.run_simulation()
+            self.__run_simulation()
 
         elif identifier == 'action_view_sim':
 
@@ -169,11 +169,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                                             filter="smv (*.smv)")
 
             if file:
-                self.smv_file = file
+                self._smv_file = file
 
-            if self.smv_file is not None:
+            if self._smv_file is not None:
                 logger.log(logger.INFO, 'Launching smokeview')
-                self.run_smv()
+                self.__run_smv()
 
             # We do not care about return value of QMessageBox
             return
@@ -211,8 +211,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __modify_fuel_map(self):
 
         # Ensure x and y range are valid
-        if self.check_fuel_map_x_range():
-            if self.check_fuel_map_y_range():
+        if self.__check_fl_map_x_rng():
+            if self.__check_fl_map_y_rng():
                 print('valid coordinate range')
 
                 x_min = int(self.x_range_min_line_edit.text())
@@ -229,8 +229,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __modify_ignition_map(self):
 
         # Ensure x and y range are valid
-        if self.check_fuel_map_x_range():
-            if self.check_fuel_map_y_range():
+        if self.__check_fl_map_x_rng():
+            if self.__check_fl_map_y_rng():
                 print('valid coordinate range')
 
                 x_min = int(self.x_range_min_line_edit.text())
@@ -253,7 +253,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if file:
             self._fuel_map_editor = FuelMapEditor(file)
             self.fuel_map_grid_scroll_area.setWidget(self._fuel_map_editor)
-            self.setup_fuel_map_legend()
+            self.__setup_fl_map_lgnd()
 
             # Enable relevant widgets
             self.action_export_fuel_map.setEnabled(True)
@@ -293,7 +293,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if file:
             self._ignition_point_editor = IgnitionPointEditor(file)
             self.ign_point_scroll_area.setWidget(self._ignition_point_editor)
-            self.setup_ignition_point_map_legend()
+            self._setup_ign_pt_map_lgnd()
 
             # Enable relevant widgets
             self.action_export_dem.setEnabled(True)
@@ -333,7 +333,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.fuel_map_grid_scroll_area.hide()
             self.ign_point_scroll_area.show()
 
-    def import_environment(self):
+    def __import_environment(self):
 
         user_settings = UserSettings()
 
@@ -364,12 +364,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.action_run_sim.setEnabled(True)
             self.simulation_settings_widget.setEnabled(True)
 
-    def run_simulation(self):
+    def __run_simulation(self):
 
-        if self.environment_present():
+        if self.__environment_present():
             logger.log(logger.INFO, 'Run simulation...')
 
-            self.run_wfds()
+            self.__run_wfds()
 
         else:
 
@@ -382,10 +382,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # We do not care about return value of QMessageBox
             return
 
-    def environment_present(self):
+    def __environment_present(self):
         return self._fds.file_present()
 
-    def run_wfds(self):
+    def __run_wfds(self):
         """This function runs wfds with the currently loaded environment"""
 
         # Get user's output directory
@@ -411,7 +411,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Clean up the output directory that was made if exception occurs
         try:
 
-            self.execute_and_update(cmd=[self._fds_exec, fds_filepath], out_dir=out_dir)
+            self.__execute_and_update(cmd=[self._fds_exec, fds_filepath], out_dir=out_dir)
 
         except Exception as e:
             logger.log(logger.ERROR, str(e))
@@ -427,16 +427,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             os.rmdir(out_dir)
 
             # Hide and reset progress bar
-            self.hide_and_reset_progress()
+            self.__hide_and_reset_progress()
 
-    def run_smv(self):
+    def __run_smv(self):
         """This function runs smv with the currently loaded environment"""
 
         logger.log(logger.INFO, 'Viewing simulation')
-        util.execute(cmd=[self.smv_exec, self.smv_file], cwd=None, out_file=None)
+        util.execute(cmd=[self.smv_exec, self._smv_file], cwd=None, out_file=None)
 
     # out_file not currently used, but may be later. So it is left in signature
-    def execute_and_update(self, cmd, out_dir=None, out_file=sys.stdout):
+    def __execute_and_update(self, cmd, out_dir=None, out_file=sys.stdout):
         """Execute the given command and update the progress bar"""
 
         util.execute(cmd=cmd, cwd=out_dir, out_file=out_file)
@@ -476,16 +476,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # If we reach here, simulation should be done.
         logger.log(logger.INFO, "Simulation complete")
 
-        self.hide_and_reset_progress()
+        self.__hide_and_reset_progress()
         QMessageBox.information(self, 'Simulation Complete', 'Simulation(s) completed.')
 
-    def hide_and_reset_progress(self):
+    def __hide_and_reset_progress(self):
 
         # Hide progress bar and reset it
         self.progress_bar.hide()
         self.progress_bar.setValue(0)
 
-    def setup_fuel_map_legend(self):
+    def __setup_fl_map_lgnd(self):
 
         colors = self._fuel_map_editor.colors()
         fuel_types = self._fuel_map_editor.fuel_types()
@@ -511,7 +511,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.scrollArea_3.setWidget(self.fuel_type_grid_layout_widget)
 
-    def setup_ignition_point_map_legend(self):
+    def _setup_ign_pt_map_lgnd(self):
 
         colors = self._ignition_point_editor.colors()
         fuel_types = self._ignition_point_editor.fuel_types()
@@ -537,13 +537,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.ignition_point_map_legend_scroll_area.setWidget(self.ignition_point_type_grid_layout_widget)
 
-    def x_range_return_pressed(self):
-        self.check_fuel_map_x_range()
+    def __x_rng_ret_pressed(self):
+        self.__check_fl_map_x_rng()
 
-    def y_range_return_pressed(self):
-        self.check_fuel_map_y_range()
+    def __y_rng_ret_pressed(self):
+        self.__check_fl_map_y_rng()
 
-    def check_fuel_map_x_range(self):
+    def __check_fl_map_x_rng(self):
 
         usr_x_min = self.x_range_min_line_edit.text()
         usr_x_max = self.x_range_max_line_edit.text()
@@ -553,7 +553,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # TODO: Move this into fuel map editor / ascii grid editor??
         # Ensure the coordinates are within a valid range
-        valid_range = self.check_range_input(usr_x_min, usr_x_max, f_map_x_min, f_map_x_max)
+        valid_range = self.__check_rng_input(usr_x_min, usr_x_max, f_map_x_min, f_map_x_max)
 
         if valid_range:
 
@@ -571,7 +571,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         return False
 
-    def check_fuel_map_y_range(self):
+    def __check_fl_map_y_rng(self):
 
         y_min = self.y_range_min_line_edit.text()
         y_max = self.y_range_max_line_edit.text()
@@ -580,7 +580,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         f_map_y_min = self._fuel_map_editor.grid_y_min()
 
         # Ensure the coordinates are within a valid range
-        valid_range = self.check_range_input(y_min, y_max, f_map_y_min, f_map_y_max)
+        valid_range = self.__check_rng_input(y_min, y_max, f_map_y_min, f_map_y_max)
 
         if valid_range:
 
@@ -598,7 +598,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         return False
 
-    def check_ign_point_x_range(self):
+    def __check_ign_pt_x_rng(self):
 
         usr_x_min = self.x_range_ign_point_min_line_edit.text()
         usr_x_max = self.x_range_ign_point_max_line_edit.text()
@@ -608,7 +608,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # TODO: Move this into fuel map editor / ascii grid editor??
         # Ensure the coordinates are within a valid range
-        valid_range = self.check_range_input(usr_x_min, usr_x_max, ign_point_x_min, ign_point_x_max)
+        valid_range = self.__check_rng_input(usr_x_min, usr_x_max, ign_point_x_min, ign_point_x_max)
 
         if valid_range:
 
@@ -627,7 +627,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         return False
 
-    def check_ign_point_y_range(self):
+    def __check_ign_pt_y_rng(self):
 
         y_min = self.y_range_ign_point_min_line_edit.text()
         y_max = self.y_range_ign_point_max_line_edit.text()
@@ -636,7 +636,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ign_point_y_max = self._ignition_point_editor.grid_y_max()
 
         # Ensure the coordinates are within a valid range
-        valid_range = self.check_range_input(y_min, y_max, ign_point_y_min, ign_point_y_max)
+        valid_range = self.__check_rng_input(y_min, y_max, ign_point_y_min, ign_point_y_max)
 
         if valid_range:
 
@@ -655,7 +655,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         return False
 
-    def check_range_input(self, usr_min, usr_max, f_map_min, f_map_max):
+    def __check_rng_input(self, usr_min, usr_max, f_map_min, f_map_max):
 
         # Check if one of the inputs is empty
         if len(usr_min) == 0 or len(usr_max) == 0:
