@@ -1112,25 +1112,16 @@
    <property name="text">
     <string>Create Environment</string>
    </property>
+   <property name="toolTip">
+    <string>Import a GeoTIFF file</string>
+   </property>
   </action>
   <action name="action_import_environment">
    <property name="text">
     <string>Environment</string>
    </property>
-  </action>
-  <action name="action_Initial_Conditions">
-   <property name="text">
-    <string>Initial Conditions</string>
-   </property>
-  </action>
-  <action name="actionWind">
-   <property name="text">
-    <string>Wind</string>
-   </property>
-  </action>
-  <action name="actionFuel_Map">
-   <property name="text">
-    <string>Fuel Map</string>
+   <property name="toolTip">
+    <string>Import an FDS file</string>
    </property>
   </action>
   <action name="action_export_simulation">
@@ -1147,6 +1138,9 @@
    <property name="text">
     <string>Environment</string>
    </property>
+   <property name="toolTip">
+    <string>Export the currently loaded FDS file with modifications</string>
+   </property>
   </action>
   <action name="action_import_simulation">
    <property name="text">
@@ -1158,69 +1152,76 @@
     <string>Summary File</string>
    </property>
   </action>
-  <action name="actionWorking_Directory">
-   <property name="text">
-    <string>Working Directory</string>
-   </property>
-  </action>
-  <action name="actionOutput_Directory">
-   <property name="text">
-    <string>Output Directory</string>
-   </property>
-  </action>
-  <action name="actionDefault_Simulation_Duration">
-   <property name="text">
-    <string>Simulation Duration</string>
-   </property>
-  </action>
-  <action name="actionSimulation_Runs">
-   <property name="text">
-    <string>Simulation Runs</string>
-   </property>
-  </action>
   <action name="action_select_output_files">
    <property name="text">
     <string>Select Output Files</string>
+   </property>
+   <property name="toolTip">
+    <string>Select the types of output files you would like</string>
    </property>
   </action>
   <action name="action_run_sim">
    <property name="text">
     <string>Run</string>
    </property>
+   <property name="toolTip">
+    <string>Run the currently loaded FDS file</string>
+   </property>
   </action>
   <action name="action_view_sim">
    <property name="text">
     <string>View</string>
+   </property>
+   <property name="toolTip">
+    <string>View the results of a simulation in Smokeview</string>
    </property>
   </action>
   <action name="action_user_settings">
    <property name="text">
     <string>User Settings</string>
    </property>
+   <property name="toolTip">
+    <string>View and modify user settings</string>
+   </property>
   </action>
   <action name="action_about">
    <property name="text">
     <string>About</string>
+   </property>
+   <property name="toolTip">
+    <string>Information about this program</string>
    </property>
   </action>
   <action name="action_import_fuel_map">
    <property name="text">
     <string>Fuel Map</string>
    </property>
+   <property name="toolTip">
+    <string>Import an Ascii grid Fuel Map</string>
+   </property>
   </action>
   <action name="action_import_dem">
    <property name="text">
     <string>Digital Elevation Model</string>
+   </property>
+   <property name="toolTip">
+    <string>Import an Ascii grid Digital Elevation Model</string>
    </property>
   </action>
   <action name="action_export_fuel_map">
    <property name="text">
     <string>Fuel Map</string>
    </property>
+   <property name="toolTip">
+    <string>Export the currently loaded Fuel Map</string>
+   </property>
   </action>
   <action name="action_export_dem">
    <property name="text">
     <string>Digital Elevation Model</string>
+   </property>
+   <property name="toolTip">
+    <string>Export the currently loaded Digital Elevation Model</string>
    </property>
   </action>
  </widget>
