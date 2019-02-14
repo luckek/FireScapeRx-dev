@@ -999,15 +999,15 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>143</width>
+      <width>581</width>
       <height>41</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QLabel" name="current_env_label">
+      <widget class="QLabel" name="sim_title_label">
        <property name="text">
-        <string>Current Environment:</string>
+        <string>Simulation Title:</string>
        </property>
        <property name="margin">
         <number>5</number>
