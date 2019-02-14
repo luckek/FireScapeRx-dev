@@ -46,7 +46,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.tab_widget.currentChanged.connect(self.__tab_changed)
 
         # FIXME: re-enable when this gets implemented:
-        self.action_import_dem.setEnabled(False)
         self.action_export_summary_file.setEnabled(False)
         self.action_import_summary_file.setEnabled(False)
         self.action_export_environment.setEnabled(False)
