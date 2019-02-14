@@ -461,7 +461,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         while wait:
 
             try:
-                for line in follow(open(osp.join(out_dir, self._fds.job() + '.out'), 'r')):
+                out_file = osp.join(out_dir, self._fds.job() + '.out')
+                for line in follow(open(out_file, 'r')):
 
                     line = line.replace(' ', '').replace('\n', '')
 
