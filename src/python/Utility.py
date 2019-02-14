@@ -2,6 +2,7 @@ import os
 import subprocess
 from PyQt5.QtWidgets import QFileDialog
 
+
 # FIXME: can rename to more useful method name
 # eg if it is used to validate positive floats, could be called positive float validator
 def validate(text):
@@ -60,6 +61,23 @@ def get_directory(parent, dlg_name='Select Directory'):
     return str(QFileDialog.getExistingDirectory(parent, dlg_name))
 
 
+def linspace(start, end, number_points, increment=-1):
+
+    # Figure out how much to increment by
+
+    if increment == -1:
+        length = end - start
+        increment = length / number_points - 1  # There are 19 points to calculate
+
+    # Create list of points
+    current = start
+    out = [0] * number_points
+    for i in range(number_points):
+        out[i] = current
+        current += increment
+
+    return out
+
 def execute(cmd, cwd, out_file):
     """Execute the given command, from within the given current working directory"""
 
@@ -69,3 +87,18 @@ def execute(cmd, cwd, out_file):
     # FIXME: See if we can replace subprocess.pipe with a file? may run into block-buffering issue again
 
     subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+
+
+def meters_per_cell(meters, number_cells):
+    """Simple convenience function for calculating FDS mesh sizes"""
+    return meters / number_cells
+
+
+# FIXME: possible soln for checking whether or not value is number
+# TODO: Move this into utility class?
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False

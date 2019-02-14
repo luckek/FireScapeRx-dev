@@ -1,11 +1,11 @@
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox, qApp
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox, qApp, QLabel, QGraphicsView, QWidget, QGridLayout
 from gui.Ui_MainWindow import Ui_MainWindow
-from UserSettingsForm import UserSettingsForm
-from UserSettings import UserSettings
+from UserSettingsForm import UserSettingsForm, UserSettings
 from AboutDialog import AboutDialog
 from SimulationSettings import SimulationSettings
 from SelectOutputFileTypesForm import SelectOutputFileTypesForm
+from FuelMapEditor import FuelMapEditor, AsciiParser
 from Fds import Fds
 import os
 import Utility as util
@@ -20,17 +20,47 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     smv_exec = os.path.abspath(os.pardir) + os.sep + 'smokeview_linux_64'
 
     def __init__(self):
+
         super(MainWindow, self).__init__()
 
         # Set up the user interface from Designer.
         self.setupUi(self)
 
+        # Create the fuel map editor variable
+        self._fuel_map_editor = None
+
+        # Hide scroll area
+        self.fuel_map_grid_scroll_area.hide()
+
+        # Disable export of files until one is loaded
+        self.action_export_fuel_map.setEnabled(False)
+        self.action_export_dem.setEnabled(False)
+        self.fuel_type_legend_tab.setEnabled(False)
+
+        # FIXME: re-enable when this gets implemented:
+        self.action_import_dem.setEnabled(False)
+
         # Hide and reset progress bar
         self.hide_and_reset_progress()
+
+        # Setup validation for fuel map editor inputs
+        self.x_range_max_line_edit.returnPressed.connect(self.x_range_return_pressed)
+        self.x_range_min_line_edit.returnPressed.connect(self.x_range_return_pressed)
+
+        self.y_range_max_line_edit.returnPressed.connect(self.y_range_return_pressed)
+        self.y_range_min_line_edit.returnPressed.connect(self.y_range_return_pressed)
+
+        self.modify_fuel_map_button.clicked.connect(self.__modify_fuel_map)
 
         # Initialize fds object
         self._fds = Fds()
         self._fds_exec = self._fds.fds_exec
+
+        self.fuel_type_grid_layout_widget = QWidget(self)
+        self.fuel_type_grid_layout = QGridLayout(self.fuel_type_grid_layout_widget)
+
+        # HIDE THIS or it will cause problems with GUI (cant click on part of menubar)
+        self.fuel_type_grid_layout_widget.hide()
 
         # TODO: make use of this variable
         # Initialize selected output file types
@@ -51,7 +81,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     # Use objectName as identifier so as to ensure uniqueness of identifier
                     identifier = action.objectName()
                     action.triggered.connect(lambda state, x=identifier: self.handle_button(x))
-                    action.triggered.connect(lambda state, x=identifier: self.handle_file_button(x))
+                    action.triggered.connect(lambda state, x=identifier: self.__handle_file_button(x))
 
     # FIXME: make static or remove from class altogether if we do not need to access anything in main window
     @QtCore.pyqtSlot(str)
@@ -66,10 +96,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
 
         elif identifier == 'action_import_environment':
-            print(identifier, 'not implemented')
+            self.import_environment()
             return
 
         elif identifier == 'action_import_simulation':
+            print(identifier, 'not implemented')
+            return
+
+        elif identifier == 'action_import_fuel_map':
+            self.__import_fuel_map()
+            return
+
+        elif identifier == 'action_import_dem':
             print(identifier, 'not implemented')
             return
 
@@ -89,11 +127,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             print(identifier, 'not implemented')
             return
 
+        elif identifier == 'action_export_fuel_map':
+            self.__export_fuel_map()
+
+        elif identifier == 'action_export_dem':
+            print(identifier, 'not implemented')
+            return
+
         elif identifier == 'action_run_sim':
             # TODO: run simulation num_sims number of times
             self.run_simulation()
 
         elif identifier == 'action_view_sim':
+
             user_settings = UserSettings()
 
             # Open FileDialog in user's current working directory, with smv file filter
@@ -134,19 +180,67 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             dialog.exec_()  # Executes dialog
 
     # FIXME: make better name for this function
+    # FIXME: make static or remove from class altogether if we do not need to access anything in main window
     @QtCore.pyqtSlot(str)
-    def handle_file_button(self, identifier):
+    def __handle_file_button(self, identifier):
+        # FIXME: ignore identifiers that will not be handled
+        print(identifier, 'Not implemented')
 
-        if identifier == 'action_import_environment':
-            self.import_environment()
+    def __modify_fuel_map(self):
 
-        elif identifier == 'action_view_sim':
+        # Ensure x and y range are valid
+        if self.check_x_range():
+            if self.check_y_range():
+                print('valid coordinate range')
 
-            return
+                x_min = int(self.x_range_min_line_edit.text())
+                x_max = int(self.x_range_max_line_edit.text())
+
+                y_min = int(self.y_range_min_line_edit.text())
+                y_max = int(self.y_range_max_line_edit.text())
+
+                fuel_type = self.fuel_type_combo_box.currentIndex()
+
+                # Modify the fuel map
+                self._fuel_map_editor.modify_range(x_min, x_max, y_min, y_max, fuel_type)
+
+    def __import_fuel_map(self):
+
+        user_settings = UserSettings()
+        file_filter = 'Ascii GRID file (*' + ' *'.join(AsciiParser.FILE_EXT) + ')'
+        file, filt = QFileDialog.getOpenFileName(self, 'Open File', user_settings.working_dir, file_filter)
+
+        if file:
+            self._fuel_map_editor = FuelMapEditor(file)
+            self.fuel_map_grid_scroll_area.setWidget(self._fuel_map_editor)
+            self.setup_fuel_map_legend()
+
+            # Enable relevant widgets
+            self.action_export_fuel_map.setEnabled(True)
+            self.fuel_type_legend_tab.setEnabled(True)
+
+            # Set current tab to fuel type legend
+            self.tab_widget.setCurrentIndex(1)
+
+            # Show relevant scroll area
+            self.fuel_map_grid_scroll_area.show()
+
+    def __export_fuel_map(self):
+
+        user_settings = UserSettings()
+        file_filter = 'Ascii GRID file (*' + ' *'.join(AsciiParser.FILE_EXT) + ')'
+        file, filt = QFileDialog.getSaveFileName(self, 'Save File', user_settings.working_dir, file_filter)
+
+        if file:
+
+            if not file.endswith('.asc') or not file.endswith('.grd'):
+                file += AsciiParser.FILE_EXT[0]
+
+            self._fuel_map_editor.save(file)
+            QMessageBox.information(self, "Export successful", "Fuel map successfully exported")
+
         else:
-            # TODO: Log unrecognized identifiers?
-            # FIXME: ignore identifiers that will not be handled
-            print('UNRECOGNIZED IDENTIFIER:', identifier)
+            return
 
     def import_environment(self):
 
@@ -256,7 +350,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         t_end = float(self._fds.sim_time())
 
         # Make progress bar visible
-        self.progressBar.show()
+        self.progress_bar.show()
+
+        # TODO: try catch until .out file is found
 
         # Give Wfds some time to spin up
         time.sleep(2)
@@ -265,6 +361,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             line = line.replace(' ', '').replace('\n', '')
 
+            # Break if we hit STOP because simulation is over
             if line.startswith('STOP'):
                 break
 
@@ -277,7 +374,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
                 # Figure out percentage and update progress bar
                 loading = (sim_time_float / t_end) * 100
-                self.progressBar.setValue(loading)
+                self.progress_bar.setValue(loading)
 
         # TODO: could get pid from popen and check it or something here.
         # May also be useful to get pid for things such as killing if FireScape Rx is
@@ -291,8 +388,132 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def hide_and_reset_progress(self):
 
         # Hide progress bar and reset it
-        self.progressBar.hide()
-        self.progressBar.setValue(0)
+        self.progress_bar.hide()
+        self.progress_bar.setValue(0)
+
+    def setup_fuel_map_legend(self):
+
+        colors = self._fuel_map_editor.colors()
+        fuel_types = self._fuel_map_editor.fuel_types()
+
+        assert len(colors) == len(fuel_types), "Length of colors != length of fuel_types"
+
+        # Create the fuel map legend
+        for i in range(len(colors)):
+            legend_label = QLabel()
+            legend_label.setText(fuel_types[i])
+            self.fuel_type_grid_layout.addWidget(legend_label, i, 0)
+
+            legend_label.setFixedSize(65, 20)
+
+            g_view = QGraphicsView()
+
+            pallete = g_view.palette()
+            pallete.setColor(g_view.backgroundRole(), colors[i])
+            g_view.setPalette(pallete)
+            g_view.setMaximumSize(25, 10)
+
+            self.fuel_type_grid_layout.addWidget(g_view, i, 1)
+
+        self.scrollArea_3.setWidget(self.fuel_type_grid_layout_widget)
+
+    def x_range_return_pressed(self):
+        self.check_x_range()
+
+    def y_range_return_pressed(self):
+        self.check_y_range()
+
+    def check_x_range(self):
+
+        x_min = self.x_range_min_line_edit.text()
+        x_max = self.x_range_max_line_edit.text()
+
+        f_map_x_max = self._fuel_map_editor.f_map_x_max()
+        f_map_x_min = self._fuel_map_editor.f_map_x_min()
+
+        # Ensure the coordinates are within a valid range
+        valid_range = self.check_range_input(x_min, x_max, f_map_x_min, f_map_x_max)
+
+        if valid_range:
+
+            column_numbers = self._fuel_map_editor.column_numbers()
+            x_min = int(x_min)
+            x_max = int(x_max)
+
+            # Ensure the coordinates correspond to proper fuel map coordinates
+            if x_min not in column_numbers or x_max not in column_numbers:
+                QMessageBox.information(self, 'Non numeric range', 'At least one of the x range inputs not a valid fuel '
+                                                                   'map coordinate<br>Please input a valid coordinate.')
+                return False
+
+            return True
+
+        return False
+
+    def check_y_range(self):
+
+        y_min = self.y_range_min_line_edit.text()
+        y_max = self.y_range_max_line_edit.text()
+
+        f_map_y_max = self._fuel_map_editor.f_map_y_max()
+        f_map_y_min = self._fuel_map_editor.f_map_y_min()
+
+        # Ensure the coordinates are within a valid range
+        valid_range = self.check_range_input(y_min, y_max, f_map_y_min, f_map_y_max)
+
+        if valid_range:
+
+            row_numbers = self._fuel_map_editor.row_numbers()
+            y_min = int(y_min)
+            y_max = int(y_max)
+
+            # Ensure the coordinates correspond to proper fuel map coordinates
+            if y_min not in row_numbers or y_max not in row_numbers:
+                QMessageBox.information(self, 'Non numeric range', 'At least one of the y range inputs not a valid fuel '
+                                                                   'map coordinate<br>Please input a valid coordinate.')
+                return False
+
+            return True
+
+        return False
+
+    def check_range_input(self, usr_min, usr_max, f_map_min, f_map_max):
+
+        # Check if one of the inputs is empty
+        if len(usr_min) == 0 or len(usr_max) == 0:
+            return False
+
+        # Ensure both of the inputs are valid numbers
+        if not util.is_number(usr_min) or not util.is_number(usr_max):
+            QMessageBox.information(self, 'Non numeric range', 'At least one of the range inputs is non-numeric'
+                                                               '<br>Please input a numerical range.')
+            self.x_range_min_line_edit.setFocus()
+            return False
+
+        usr_min = float(usr_min)
+        usr_max = float(usr_max)
+
+        # Ensure both of the inputs are integers(they should essentially be parts of a coordinate)
+        if not usr_min.is_integer() or not usr_max.is_integer():
+            QMessageBox.information(self, 'Non integer range', 'At least one of the range inputs is not an integer.'
+                                                               '<br>Please input an integer range.')
+            return False
+
+        # Ensure the start of the range is not larger than the end
+        if usr_min > usr_max:
+            QMessageBox.information(self, 'Invalid range', 'The first range input cannot be larger than the second.'
+                                                           '<br>Please input a valid range.')
+            return False
+
+        usr_min = int(usr_min)
+        usr_max = int(usr_max)
+
+        if usr_max > f_map_max or usr_min < f_map_min:
+            QMessageBox.information(self, 'Invalid range', 'At least one of the range inputs is outside of the fuel map coordinates'
+                                                           '<br>Please input a valid range.')
+            return False
+
+        return True
 
 
 def follow(thefile):
@@ -301,7 +522,7 @@ def follow(thefile):
     while True:
         line = thefile.readline()
         if not line:
+            qApp.processEvents()  # Helps keep gui responsive
             time.sleep(0.1)
-            qApp.processEvents()
             continue
         yield line
