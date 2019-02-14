@@ -725,7 +725,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="fuel_type_legend_label_3">
+          <widget class="QLabel" name="ign_pointlegend_label">
            <property name="text">
             <string>Ignition Point Map Legend:</string>
            </property>
@@ -804,7 +804,7 @@
             </spacer>
            </item>
            <item row="0" column="2">
-            <widget class="QLineEdit" name="x_range_min_line_edit_3"/>
+            <widget class="QLineEdit" name="x_range_ign_point_min_line_edit"/>
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_11">
@@ -817,14 +817,14 @@
             </widget>
            </item>
            <item row="1" column="4">
-            <widget class="QLineEdit" name="y_range_max_line_edit_3">
+            <widget class="QLineEdit" name="y_range_ign_point_max_line_edit">
              <property name="placeholderText">
               <string/>
              </property>
             </widget>
            </item>
            <item row="0" column="4">
-            <widget class="QLineEdit" name="x_range_max_line_edit_3"/>
+            <widget class="QLineEdit" name="x_range_ign_point_max_line_edit"/>
            </item>
            <item row="0" column="0">
             <widget class="QLabel" name="label_12">
@@ -844,7 +844,7 @@
             </widget>
            </item>
            <item row="1" column="2">
-            <widget class="QLineEdit" name="y_range_min_line_edit_3"/>
+            <widget class="QLineEdit" name="y_range_ign_point_min_line_edit"/>
            </item>
            <item row="0" column="3">
             <widget class="QLabel" name="label_14">
@@ -900,7 +900,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QComboBox" name="fuel_type_combo_box_3">
+            <widget class="QComboBox" name="ign_point_combo_box">
              <property name="currentText">
               <string>No-Ignition</string>
              </property>
@@ -1015,6 +1015,29 @@
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QScrollArea" name="ign_point_scroll_area">
+    <property name="geometry">
+     <rect>
+      <x>9</x>
+      <y>50</y>
+      <width>581</width>
+      <height>511</height>
+     </rect>
+    </property>
+    <property name="widgetResizable">
+     <bool>true</bool>
+    </property>
+    <widget class="QWidget" name="ign_point_scroll_area_widget_contents">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>579</width>
+       <height>509</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

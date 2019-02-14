@@ -34,12 +34,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # Hide scroll area
         self.fuel_map_grid_scroll_area.hide()
+        self.ign_point_scroll_area.hide()
 
         # Disable export of files until one is loaded
         self.action_export_fuel_map.setEnabled(False)
         self.action_export_dem.setEnabled(False)
+
         self.fuel_type_legend_tab.setEnabled(False)
         self.ignition_point_legend_tab.setEnabled(False)
+
+        self.tab_widget.currentChanged.connect(self.__tab_changed)
 
         # Hide and reset progress bar
         self.hide_and_reset_progress()
@@ -52,6 +56,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.y_range_min_line_edit.returnPressed.connect(self.y_range_return_pressed)
 
         self.modify_fuel_map_button.clicked.connect(self.__modify_fuel_map)
+        self.modify_ign_points_button.clicked.connect(self.__modify_ignition_map)
 
         # Initialize fds object
         self._fds = Fds()
@@ -196,8 +201,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __modify_fuel_map(self):
 
         # Ensure x and y range are valid
-        if self.check_x_range():
-            if self.check_y_range():
+        if self.check_fuel_map_x_range():
+            if self.check_fuel_map_y_range():
                 print('valid coordinate range')
 
                 x_min = int(self.x_range_min_line_edit.text())
@@ -210,6 +215,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
                 # Modify the fuel map
                 self._fuel_map_editor.modify_range(x_min, x_max, y_min, y_max, fuel_type)
+
+    def __modify_ignition_map(self):
+
+        # Ensure x and y range are valid
+        if self.check_fuel_map_x_range():
+            if self.check_fuel_map_y_range():
+                print('valid coordinate range')
+
+                x_min = int(self.x_range_min_line_edit.text())
+                x_max = int(self.x_range_max_line_edit.text())
+
+                y_min = int(self.y_range_min_line_edit.text())
+                y_max = int(self.y_range_max_line_edit.text())
+
+                ignition_type = self.fuel_type_combo_box.currentIndex()
+
+                # Modify the fuel map
+                self._ignition_point_editor.modify_range(x_min, x_max, y_min, y_max, ignition_type)
 
     def __import_fuel_map(self):
 
@@ -257,7 +280,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         if file:
             self._ignition_point_editor = IgnitionPointEditor(file)
-            self.fuel_map_grid_scroll_area.setWidget(self._ignition_point_editor)
+            self.ign_point_scroll_area.setWidget(self._ignition_point_editor)
             self.setup_ignition_point_map_legend()
 
             # Enable relevant widgets
@@ -268,7 +291,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.tab_widget.setCurrentIndex(2)
 
             # Show relevant scroll area
-            self.fuel_map_grid_scroll_area.show()
+            # self.ign_point_scroll_area.show()
+            # self.fuel_map_grid_scroll_area.hide()
 
     def __export_digital_elevation_model(self):
 
@@ -286,6 +310,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         else:
             return
+
+    @QtCore.pyqtSlot(int, name='__tab_changed')
+    def __tab_changed(self, new_tab_index):
+
+        if new_tab_index == 1 and self.tab_widget.widget(new_tab_index).isEnabled():
+            self.ign_point_scroll_area.hide()
+            self.fuel_map_grid_scroll_area.show()
+
+        elif new_tab_index == 2 and self.tab_widget.widget(new_tab_index).isEnabled():
+            self.fuel_map_grid_scroll_area.hide()
+            self.ign_point_scroll_area.show()
 
     def import_environment(self):
 
@@ -489,12 +524,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.ignition_point_map_legend_scroll_area.setWidget(self.ignition_point_type_grid_layout_widget)
 
     def x_range_return_pressed(self):
-        self.check_x_range()
+        self.check_fuel_map_x_range()
 
     def y_range_return_pressed(self):
-        self.check_y_range()
+        self.check_fuel_map_y_range()
 
-    def check_x_range(self):
+    def check_fuel_map_x_range(self):
 
         usr_x_min = self.x_range_min_line_edit.text()
         usr_x_max = self.x_range_max_line_edit.text()
@@ -502,6 +537,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         f_map_x_max = self._fuel_map_editor.grid_x_max()
         f_map_x_min = self._fuel_map_editor.grid_x_min()
 
+        # TODO: Move this into fuel map editor / ascii grid editor??
         # Ensure the coordinates are within a valid range
         valid_range = self.check_range_input(usr_x_min, usr_x_max, f_map_x_min, f_map_x_max)
 
@@ -521,7 +557,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         return False
 
-    def check_y_range(self):
+    def check_fuel_map_y_range(self):
 
         y_min = self.y_range_min_line_edit.text()
         y_max = self.y_range_max_line_edit.text()
@@ -542,6 +578,63 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if y_min not in row_numbers or y_max not in row_numbers:
                 QMessageBox.information(self, 'Non numeric range', 'At least one of the y range inputs not a valid fuel '
                                                                    'map coordinate<br>Please input a valid coordinate.')
+                return False
+
+            return True
+
+        return False
+
+    def check_ign_point_x_range(self):
+
+        usr_x_min = self.x_range_ign_point_min_line_edit.text()
+        usr_x_max = self.x_range_ign_point_max_line_edit.text()
+
+        ign_point_x_min = self._ignition_point_editor.grid_x_min()
+        ign_point_x_max = self._ignition_point_editor.grid_x_max()
+
+        # TODO: Move this into fuel map editor / ascii grid editor??
+        # Ensure the coordinates are within a valid range
+        valid_range = self.check_range_input(usr_x_min, usr_x_max, ign_point_x_min, ign_point_x_max)
+
+        if valid_range:
+
+            column_numbers = self._ignition_point_editor.column_numbers()
+            usr_x_min = int(usr_x_min)
+            usr_x_max = int(usr_x_max)
+
+            # Ensure the coordinates correspond to proper fuel map coordinates
+            if usr_x_min not in column_numbers or usr_x_max not in column_numbers:
+                QMessageBox.information(self, 'Non numeric range',
+                                        'At least one of the x range inputs not a valid fuel '
+                                        'map coordinate<br>Please input a valid coordinate.')
+                return False
+
+            return True
+
+        return False
+
+    def check_ign_point_y_range(self):
+
+        y_min = self.y_range_ign_point_min_line_edit.text()
+        y_max = self.y_range_ign_point_max_line_edit.text()
+
+        ign_point_y_min = self._ignition_point_editor.grid_y_min()
+        ign_point_y_max = self._ignition_point_editor.grid_y_max()
+
+        # Ensure the coordinates are within a valid range
+        valid_range = self.check_range_input(y_min, y_max, ign_point_y_min, ign_point_y_max)
+
+        if valid_range:
+
+            row_numbers = self._ignition_point_editor.row_numbers()
+            y_min = int(y_min)
+            y_max = int(y_max)
+
+            # Ensure the coordinates correspond to proper fuel map coordinates
+            if y_min not in row_numbers or y_max not in row_numbers:
+                QMessageBox.information(self, 'Non numeric range',
+                                        'At least one of the y range inputs not a valid fuel '
+                                        'map coordinate<br>Please input a valid coordinate.')
                 return False
 
             return True
