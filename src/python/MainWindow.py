@@ -39,6 +39,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # FIXME: re-enable when this gets implemented:
         self.action_import_dem.setEnabled(False)
+        self.action_export_summary_file.setEnabled(False)
+        self.action_import_summary_file.setEnabled(False)
+        self.action_export_environment.setEnabled(False)
+        self.add_type_button.setEnabled(False)
+        self.remove_type_button.setEnabled(False)
 
         # Hide and reset progress bar
         self.hide_and_reset_progress()
@@ -83,7 +88,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     # Use objectName as identifier so as to ensure uniqueness of identifier
                     identifier = action.objectName()
                     action.triggered.connect(lambda state, x=identifier: self.handle_button(x))
-                    action.triggered.connect(lambda state, x=identifier: self.__handle_file_button(x))
 
     # FIXME: make static or remove from class altogether if we do not need to access anything in main window
     @QtCore.pyqtSlot(str)
@@ -180,13 +184,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # TODO: Log null dialog?
             dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)  # Ensure resources are freed when dlg closes
             dialog.exec_()  # Executes dialog
-
-    # FIXME: make better name for this function
-    # FIXME: make static or remove from class altogether if we do not need to access anything in main window
-    @QtCore.pyqtSlot(str)
-    def __handle_file_button(self, identifier):
-        # FIXME: ignore identifiers that will not be handled
-        print(identifier, 'Not implemented')
 
     def __modify_fuel_map(self):
 

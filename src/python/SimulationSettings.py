@@ -13,12 +13,12 @@ class SimulationSettings:
     KV_SEP = ':'
 
     DEF_NUM_SIMS = 5  # FIXME: figure out reasonable default
-    DEF_SIM_DURATION = 60.0  # FIXME: figure out reasonable default
+    DEF_SIM_DURATION = 100.0  # FIXME: figure out reasonable default
     DEF_WIND_SPEED = 0.0  # FIXME: figure out reasonable default
     DEF_WIND_DIR = 45.0  # FIXME: figure out reasonable default
 
     MAX_SIMS = 20  # FIXME: figure out reasonable maximum
-    MAX_DURATION = 20  # FIXME: figure out reasonable maximum
+    MAX_DURATION = 1000  # FIXME: figure out reasonable maximum
 
     MAX_WIND_DIR = 360.0  # FIXME: could try to bring number back to w/in 0-360?
 
