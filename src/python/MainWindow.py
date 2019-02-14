@@ -247,7 +247,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # Open FileDialog in user's current working directory, with fds file filter
         file, file_filter = QFileDialog.getOpenFileName(self, 'Import Environment', user_settings.working_dir,
-                                                        filter="fds (*.fds *.txt)")
+                                                        filter="fds (*.fds)")
 
         # TODO: actually import FDS file
         # TODO: if FDS file import is successful, modify current_env_label
@@ -354,7 +354,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # TODO: try catch until .out file is found
 
         # Give Wfds some time to spin up
-        time.sleep(2)
+        time.sleep(5)
 
         for line in follow(open(out_dir + os.sep + self._fds.job() + '.out', 'r')):
 
