@@ -40,10 +40,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.action_export_fuel_map.setEnabled(False)
         self.action_export_dem.setEnabled(False)
 
+        # Disable running simulation until something is loaded
+        self.action_run_sim.setEnabled(False)
+
         self.fuel_type_legend_tab.setEnabled(False)
         self.ignition_point_legend_tab.setEnabled(False)
 
         self.tab_widget.currentChanged.connect(self.__tab_changed)
+
+        # FIXME: remove when this gets implemented:
+        self.action_import_summary_file.setEnabled(False)
+        self.action_export_summary_file.setEnabled(False)
+        self.action_export_environment.setEnabled(False)
+        self.simulation_settings_widget.setEnabled(False)
+
 
         # Hide and reset progress bar
         self.hide_and_reset_progress()
@@ -248,6 +258,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # Enable relevant widgets
             self.action_export_fuel_map.setEnabled(True)
             self.fuel_type_legend_tab.setEnabled(True)
+            self.action_run_sim.setEnabled(True)
 
             # Set current tab to fuel type legend
             self.tab_widget.setCurrentIndex(1)
@@ -286,13 +297,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # Enable relevant widgets
             self.action_export_dem.setEnabled(True)
             self.ignition_point_legend_tab.setEnabled(True)
+            self.action_run_sim.setEnabled(True)
 
             # Set current tab to fuel type legend
             self.tab_widget.setCurrentIndex(2)
-
-            # Show relevant scroll area
-            # self.ign_point_scroll_area.show()
-            # self.fuel_map_grid_scroll_area.hide()
 
     def __export_digital_elevation_model(self):
 
@@ -349,6 +357,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 return
 
             QMessageBox.information(self, 'Import successful', 'Environment imported successfully.')
+            self.action_run_sim.setEnabled(True)
 
     def run_simulation(self):
 
