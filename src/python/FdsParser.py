@@ -30,7 +30,9 @@ class FdsParser:
                 line = line.replace('\n', '')
 
                 self._lines.append(line)
-                print(line,)
+
+                # FIXME: remove, when this is finished
+                # print(line,)
 
                 if len(line) == 0 or line[0] == '-' or line[0] == 'c' or line[0] == ' ':
                     continue
