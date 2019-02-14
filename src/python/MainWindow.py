@@ -290,10 +290,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # Set current tab to fuel type legend
             self.tab_widget.setCurrentIndex(2)
 
-            # Show relevant scroll area
-            # self.ign_point_scroll_area.show()
-            # self.fuel_map_grid_scroll_area.hide()
-
     def __export_digital_elevation_model(self):
 
         user_settings = UserSettings()
