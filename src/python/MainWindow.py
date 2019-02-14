@@ -69,11 +69,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Initialize fds_file to be None
         self.smv_file = None
 
+        sim_settings = SimulationSettings('default.sim_settings')
+
         # Initialize fields with simulation settings values
-        self.num_sim_line_edit.setText(str(SimulationSettings.DEF_NUM_SIMS))
-        self.sim_duration_line_edit.setText(str(SimulationSettings.DEF_SIM_DURATION))
-        self.wind_speed_line_edit.setText(str(SimulationSettings.DEF_WIND_SPEED))
-        self.wind_direction_line_edit.setText(str(SimulationSettings.DEF_WIND_DIR))
+        self.num_sim_line_edit.setText(str(sim_settings.num_sims))
+        self.sim_duration_line_edit.setText(str(sim_settings.sim_duration))
+        self.wind_speed_line_edit.setText(str(sim_settings.wind_speed))
+        self.wind_direction_line_edit.setText(str(sim_settings.wind_direction))
 
         for child in self.menubar.children():
             if type(child) is QtWidgets.QMenu:

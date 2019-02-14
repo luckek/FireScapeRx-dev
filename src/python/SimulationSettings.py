@@ -6,6 +6,7 @@ from UserSettings import UserSettings
 from math import cos, sin
 from Utility import is_number
 
+
 class SimulationSettings:
 
     FILE_EXT = '.sim_settings'
