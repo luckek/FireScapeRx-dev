@@ -351,13 +351,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Make progress bar visible
         self.progress_bar.show()
 
-        # TODO: try catch until .out file is found
-
-        # Give Wfds some time to spin up
-        # time.sleep(3)
+        # We need to give WFDS some time to create the proper .out so that we may
+        # read from it and update the progress bar.
+        # Since everyone has different hardware, this seems to be the most sensible solution.
+        # Could get caught in an infinite while loop if .out is never made, but we expect this file to be present
+        # as part of WFDS' 'interface'
 
         wait = True
-
         while wait:
 
             try:
@@ -384,12 +384,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             except FileNotFoundError:
                 logger.log(logger.INFO, 'Sleep')
+                qApp.processEvents()  # Helps keep gui responsive
                 time.sleep(0.1)
 
 
         # TODO: could get pid from popen and check it or something here.
         # May also be useful to get pid for things such as killing if FireScape Rx is
         # terminated prematurely
+
         # If we reach here, simulation should be done.
         logger.log(logger.INFO, "Simulation complete")
 
