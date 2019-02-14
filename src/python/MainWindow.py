@@ -354,7 +354,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # TODO: try catch until .out file is found
 
         # Give Wfds some time to spin up
-        time.sleep(5)
+        time.sleep(3)
 
         for line in follow(open(out_dir + os.sep + self._fds.job() + '.out', 'r')):
 
@@ -486,7 +486,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if not util.is_number(usr_min) or not util.is_number(usr_max):
             QMessageBox.information(self, 'Non numeric range', 'At least one of the range inputs is non-numeric'
                                                                '<br>Please input a numerical range.')
-            self.x_range_min_line_edit.setFocus()
             return False
 
         usr_min = float(usr_min)
