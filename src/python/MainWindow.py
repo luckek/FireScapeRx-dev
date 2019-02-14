@@ -1,3 +1,7 @@
+# NOTE:
+# dem = digital elevation model
+#
+
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox, qApp, QLabel, QGraphicsView, QWidget, QGridLayout
 from gui.Ui_MainWindow import Ui_MainWindow
@@ -89,7 +93,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._output_file_types = []
 
         # Initialize fds_file to be None
-        self.smv_file = None
+        self._smv_file = None
 
         # Initialize fields with simulation settings values
         self.num_sim_line_edit.setText(str(SimulationSettings.DEF_NUM_SIMS))
@@ -130,7 +134,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
 
         elif identifier == 'action_import_dem':
-            self.__import_digital_elevation_model()
+            self.__import_dem()
             return
 
         elif identifier == 'action_export_summary':
@@ -153,7 +157,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.__export_fuel_map()
 
         elif identifier == 'action_export_dem':
-            print(identifier, 'not implemented')
+            self.__export_dem()
             return
 
         elif identifier == 'action_run_sim':
@@ -210,16 +214,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def __modify_fuel_map(self):
 
+        x_min_str = self.x_range_min_line_edit.text()
+        x_max_str = self.x_range_max_line_edit.text()
+
+        y_min_str = self.y_range_min_line_edit.text()
+        y_max_str = self.y_range_max_line_edit.text()
+
         # Ensure x and y range are valid
-        if self.__check_fl_map_x_rng():
-            if self.__check_fl_map_y_rng():
+        if self.__check_fl_map_x_rng(x_min_str, x_max_str):
+            if self.__check_fl_map_y_rng(y_min_str, y_max_str):
                 print('valid coordinate range')
 
-                x_min = int(self.x_range_min_line_edit.text())
-                x_max = int(self.x_range_max_line_edit.text())
+                x_min = int(x_min_str)
+                x_max = int(x_max_str)
 
-                y_min = int(self.y_range_min_line_edit.text())
-                y_max = int(self.y_range_max_line_edit.text())
+                y_min = int(y_min_str)
+                y_max = int(y_max_str)
 
                 fuel_type = self.fuel_type_combo_box.currentIndex()
 
@@ -228,18 +238,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def __modify_ignition_map(self):
 
+        x_min_str = self.x_range_min_line_edit.text()
+        x_max_str = self.x_range_max_line_edit.text()
+
+        y_min_str = self.y_range_min_line_edit.text()
+        y_max_str = self.y_range_max_line_edit.text()
+
         # Ensure x and y range are valid
-        if self.__check_fl_map_x_rng():
-            if self.__check_fl_map_y_rng():
+        if self.__check_ign_pt_x_rng(x_min_str, x_max_str):
+            if self.__check_ign_pt_y_rng(y_min_str, y_max_str):
                 print('valid coordinate range')
 
-                x_min = int(self.x_range_min_line_edit.text())
-                x_max = int(self.x_range_max_line_edit.text())
+                x_min = int(x_min_str)
+                x_max = int(x_max_str)
 
-                y_min = int(self.y_range_min_line_edit.text())
-                y_max = int(self.y_range_max_line_edit.text())
+                y_min = int(y_min_str)
+                y_max = int(y_max_str)
 
-                ignition_type = self.fuel_type_combo_box.currentIndex()
+                ignition_type = self.ign_point_combo_box.currentIndex()
 
                 # Modify the fuel map
                 self._ignition_point_editor.modify_range(x_min, x_max, y_min, y_max, ignition_type)
@@ -281,10 +297,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self._fuel_map_editor.save(file)
             QMessageBox.information(self, "Export successful", "Fuel map successfully exported")
 
-        else:
-            return
-
-    def __import_digital_elevation_model(self):
+    def __import_dem(self):
 
         user_settings = UserSettings()
         file_filter = 'Ascii GRID file (*' + ' *'.join(AsciiParser.FILE_EXT) + ')'
@@ -305,7 +318,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # Set current tab to fuel type legend
             self.tab_widget.setCurrentIndex(2)
 
-    def __export_digital_elevation_model(self):
+    def __export_dem(self):
 
         user_settings = UserSettings()
         file_filter = 'Ascii GRID file (*' + ' *'.join(AsciiParser.FILE_EXT) + ')'
@@ -318,9 +331,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             self._fuel_map_editor.save(file)
             QMessageBox.information(self, "Export successful", "Digital elevation model successfully exported")
-
-        else:
-            return
 
     @QtCore.pyqtSlot(int, name='__tab_changed')
     def __tab_changed(self, new_tab_index):
@@ -543,10 +553,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __y_rng_ret_pressed(self):
         self.__check_fl_map_y_rng()
 
-    def __check_fl_map_x_rng(self):
-
-        usr_x_min = self.x_range_min_line_edit.text()
-        usr_x_max = self.x_range_max_line_edit.text()
+    def __check_fl_map_x_rng(self, usr_x_min, usr_x_max):
 
         f_map_x_max = self._fuel_map_editor.grid_x_max()
         f_map_x_min = self._fuel_map_editor.grid_x_min()
@@ -571,25 +578,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         return False
 
-    def __check_fl_map_y_rng(self):
-
-        y_min = self.y_range_min_line_edit.text()
-        y_max = self.y_range_max_line_edit.text()
+    def __check_fl_map_y_rng(self, usr_y_min, usr_y_max):
 
         f_map_y_max = self._fuel_map_editor.grid_y_max()
         f_map_y_min = self._fuel_map_editor.grid_y_min()
 
         # Ensure the coordinates are within a valid range
-        valid_range = self.__check_rng_input(y_min, y_max, f_map_y_min, f_map_y_max)
+        valid_range = self.__check_rng_input(usr_y_min, usr_y_max, f_map_y_min, f_map_y_max)
 
         if valid_range:
 
             row_numbers = self._fuel_map_editor.row_numbers()
-            y_min = int(y_min)
-            y_max = int(y_max)
+            usr_y_min = int(usr_y_min)
+            usr_y_max = int(usr_y_max)
 
             # Ensure the coordinates correspond to proper fuel map coordinates
-            if y_min not in row_numbers or y_max not in row_numbers:
+            if usr_y_min not in row_numbers or usr_y_max not in row_numbers:
                 QMessageBox.information(self, 'Non numeric range', 'At least one of the y range inputs not a valid fuel '
                                                                    'map coordinate<br>Please input a valid coordinate.')
                 return False
@@ -598,17 +602,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         return False
 
-    def __check_ign_pt_x_rng(self):
+    def __check_ign_pt_x_rng(self, usr_x_min, usr_x_max):
 
-        usr_x_min = self.x_range_ign_point_min_line_edit.text()
-        usr_x_max = self.x_range_ign_point_max_line_edit.text()
-
-        ign_point_x_min = self._ignition_point_editor.grid_x_min()
-        ign_point_x_max = self._ignition_point_editor.grid_x_max()
+        ign_pt_x_min = self._ignition_point_editor.grid_x_min()
+        ign_pt_x_max = self._ignition_point_editor.grid_x_max()
 
         # TODO: Move this into fuel map editor / ascii grid editor??
         # Ensure the coordinates are within a valid range
-        valid_range = self.__check_rng_input(usr_x_min, usr_x_max, ign_point_x_min, ign_point_x_max)
+        valid_range = self.__check_rng_input(usr_x_min, usr_x_max, ign_pt_x_min, ign_pt_x_max)
 
         if valid_range:
 
@@ -627,25 +628,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         return False
 
-    def __check_ign_pt_y_rng(self):
+    def __check_ign_pt_y_rng(self, usr_y_min, usr_y_max):
 
-        y_min = self.y_range_ign_point_min_line_edit.text()
-        y_max = self.y_range_ign_point_max_line_edit.text()
-
-        ign_point_y_min = self._ignition_point_editor.grid_y_min()
-        ign_point_y_max = self._ignition_point_editor.grid_y_max()
+        ign_pt_y_min = self._ignition_point_editor.grid_y_min()
+        ign_pt_y_max = self._ignition_point_editor.grid_y_max()
 
         # Ensure the coordinates are within a valid range
-        valid_range = self.__check_rng_input(y_min, y_max, ign_point_y_min, ign_point_y_max)
+        valid_range = self.__check_rng_input(usr_y_min, usr_y_max, ign_pt_y_min, ign_pt_y_max)
 
         if valid_range:
 
             row_numbers = self._ignition_point_editor.row_numbers()
-            y_min = int(y_min)
-            y_max = int(y_max)
+            usr_y_min = int(usr_y_min)
+            usr_y_max = int(usr_y_max)
 
             # Ensure the coordinates correspond to proper fuel map coordinates
-            if y_min not in row_numbers or y_max not in row_numbers:
+            if usr_y_min not in row_numbers or usr_y_max not in row_numbers:
                 QMessageBox.information(self, 'Non numeric range',
                                         'At least one of the y range inputs not a valid fuel '
                                         'map coordinate<br>Please input a valid coordinate.')
