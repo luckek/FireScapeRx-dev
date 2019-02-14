@@ -1,6 +1,7 @@
 # NOTE:
 # dem = digital elevation model
-#
+# fl = fuel
+# smv = smokeview
 
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox, qApp, QLabel, QGraphicsView, QWidget, QGridLayout, QDesktopWidget
@@ -46,9 +47,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Disable export of files until one is loaded
         self.action_export_fuel_map.setEnabled(False)
         self.action_export_dem.setEnabled(False)
-
-        # Disable running simulation until something is loaded
-        self.action_run_sim.setEnabled(False)
+        self.action_export_summary_file.setEnabled(False)
+        self.action_export_environment.setEnabled(False)
 
         self.fuel_type_legend_tab.setEnabled(False)
         self.ignition_point_legend_tab.setEnabled(False)
@@ -58,8 +58,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # FIXME: remove when this gets implemented:
         self.action_import_summary_file.setEnabled(False)
-        self.action_export_summary_file.setEnabled(False)
-        self.action_export_environment.setEnabled(False)
         self.action_create_environment.setEnabled(False)
 
         # Hide and reset progress bar
@@ -278,7 +276,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.action_export_fuel_map.setEnabled(True)
             self.fuel_type_legend_tab.setEnabled(True)
             self.simulation_settings_tab.setEnabled(True)
-            self.action_run_sim.setEnabled(True)
 
             # Set current tab to fuel type legend
             self.tab_widget.setCurrentIndex(1)
@@ -313,7 +310,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             # Enable relevant widgets
             self.action_export_dem.setEnabled(True)
-            self.action_run_sim.setEnabled(True)
 
             self.ignition_point_legend_tab.setEnabled(True)
             self.simulation_settings_tab.setEnabled(True)
@@ -374,7 +370,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             QMessageBox.information(self, 'Import successful', 'Environment imported successfully.')
 
-            self.action_run_sim.setEnabled(True)
             self.simulation_settings_widget.setEnabled(True)
 
     def __run_simulation(self):
