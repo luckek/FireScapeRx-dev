@@ -737,7 +737,6 @@
      <string>Export</string>
     </property>
     <addaction name="action_export_environment"/>
-    <addaction name="action_export_simulation"/>
     <addaction name="action_export_summary_file"/>
     <addaction name="action_export_fuel_map"/>
     <addaction name="action_export_dem"/>
@@ -767,7 +766,6 @@
      <string>Import</string>
     </property>
     <addaction name="action_import_environment"/>
-    <addaction name="action_import_simulation"/>
     <addaction name="action_import_summary_file"/>
     <addaction name="action_import_fuel_map"/>
     <addaction name="action_import_dem"/>
