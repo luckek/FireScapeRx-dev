@@ -45,6 +45,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.tab_widget.currentChanged.connect(self.__tab_changed)
 
+        # FIXME: re-enable when this gets implemented:
+        self.action_import_dem.setEnabled(False)
+        self.action_export_summary_file.setEnabled(False)
+        self.action_import_summary_file.setEnabled(False)
+        self.action_export_environment.setEnabled(False)
+        self.add_type_button.setEnabled(False)
+        self.remove_type_button.setEnabled(False)
+        self.action_create_environment.setEnabled(False)
+
         # Hide and reset progress bar
         self.hide_and_reset_progress()
 
@@ -81,11 +90,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Initialize fds_file to be None
         self.smv_file = None
 
+        sim_settings = SimulationSettings('default.sim_settings')
+
         # Initialize fields with simulation settings values
-        self.num_sim_line_edit.setText(str(SimulationSettings.DEF_NUM_SIMS))
-        self.sim_duration_line_edit.setText(str(SimulationSettings.DEF_SIM_DURATION))
-        self.wind_speed_line_edit.setText(str(SimulationSettings.DEF_WIND_SPEED))
-        self.wind_direction_line_edit.setText(str(SimulationSettings.DEF_WIND_DIR))
+        self.num_sim_line_edit.setText(str(sim_settings.num_sims))
+        self.sim_duration_line_edit.setText(str(sim_settings.sim_duration))
+        self.wind_speed_line_edit.setText(str(sim_settings.wind_speed))
+        self.wind_direction_line_edit.setText(str(sim_settings.wind_direction))
 
         for child in self.menubar.children():
             if type(child) is QtWidgets.QMenu:
@@ -93,7 +104,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     # Use objectName as identifier so as to ensure uniqueness of identifier
                     identifier = action.objectName()
                     action.triggered.connect(lambda state, x=identifier: self.handle_button(x))
-                    action.triggered.connect(lambda state, x=identifier: self.__handle_file_button(x))
 
     # FIXME: make static or remove from class altogether if we do not need to access anything in main window
     @QtCore.pyqtSlot(str)
@@ -108,7 +118,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
 
         elif identifier == 'action_import_environment':
-            print(identifier, 'not implemented')
+            self.import_environment()
             return
 
         elif identifier == 'action_import_simulation':
@@ -190,13 +200,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # TODO: Log null dialog?
             dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)  # Ensure resources are freed when dlg closes
             dialog.exec_()  # Executes dialog
-
-    # FIXME: make better name for this function
-    # FIXME: make static or remove from class altogether if we do not need to access anything in main window
-    @QtCore.pyqtSlot(str)
-    def __handle_file_button(self, identifier):
-        # FIXME: ignore identifiers that will not be handled
-        print(identifier, 'Not implemented')
 
     def __modify_fuel_map(self):
 
@@ -324,7 +327,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # Open FileDialog in user's current working directory, with fds file filter
         file, file_filter = QFileDialog.getOpenFileName(self, 'Import Environment', user_settings.working_dir,
-                                                        filter="fds (*.fds *.txt)")
+                                                        filter="fds (*.fds)")
 
         # TODO: actually import FDS file
         # TODO: if FDS file import is successful, modify current_env_label
@@ -428,38 +431,53 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Make progress bar visible
         self.progress_bar.show()
 
-        # TODO: try catch until .out file is found
+        # We need to give WFDS some time to create the proper .out so that we may
+        # read from it and update the progress bar.
+        # Since everyone has different hardware, this seems to be the most sensible solution.
+        # Could get caught in an infinite while loop if .out is never made, but we expect this file to be present
+        # as part of WFDS' 'interface'
 
-        # Give Wfds some time to spin up
-        time.sleep(2)
+        wait = True
+        while wait:
 
-        for line in follow(open(out_dir + os.sep + self._fds.job() + '.out', 'r')):
+            try:
 
-            line = line.replace(' ', '').replace('\n', '')
+                for line in follow(open(out_dir + os.sep + self._fds.job() + '.out', 'r')):
 
-            # Break if we hit STOP because simulation is over
-            if line.startswith('STOP'):
-                break
+                    line = line.replace(' ', '').replace('\n', '')
 
-            if line.startswith('Timestep'):
-                timestep_kv, sim_time_kv = line.split(',')
+                    # Break if we hit STOP because simulation is over
+                    if line.startswith('STOP'):
+                        break
 
-                # Not currently used, could be later?
-                timestep_int = timestep_kv.split(':')[1]
-                sim_time_float = float(sim_time_kv.split(':')[1].replace('s', ''))
+                    if line.startswith('Timestep'):
+                        timestep_kv, sim_time_kv = line.split(',')
 
-                # Figure out percentage and update progress bar
-                loading = (sim_time_float / t_end) * 100
-                self.progress_bar.setValue(loading)
+                        # Not currently used, could be later?
+                        timestep_int = timestep_kv.split(':')[1]
+                        sim_time_float = float(sim_time_kv.split(':')[1].replace('s', ''))
+
+                        # Figure out percentage and update progress bar
+                        loading = (sim_time_float / t_end) * 100
+                        self.progress_bar.setValue(loading)
+                wait = False
+
+            except FileNotFoundError:
+                logger.log(logger.INFO, 'Sleep')
+                qApp.processEvents()  # Helps keep gui responsive
+                time.sleep(0.1)
+
 
         # TODO: could get pid from popen and check it or something here.
         # May also be useful to get pid for things such as killing if FireScape Rx is
         # terminated prematurely
+
         # If we reach here, simulation should be done.
         logger.log(logger.INFO, "Simulation complete")
 
-        self.hide_and_reset_progress()
+        self.progress_bar.setValue(100)
         QMessageBox.information(self, 'Simulation Complete', 'Simulation(s) completed.')
+        self.hide_and_reset_progress()
 
     def hide_and_reset_progress(self):
 
@@ -647,7 +665,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if not util.is_number(usr_min) or not util.is_number(usr_max):
             QMessageBox.information(self, 'Non numeric range', 'At least one of the range inputs is non-numeric'
                                                                '<br>Please input a numerical range.')
-            self.x_range_min_line_edit.setFocus()
             return False
 
         usr_min = float(usr_min)
