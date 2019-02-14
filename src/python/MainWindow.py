@@ -124,7 +124,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
 
         elif identifier == 'action_import_environment':
-            print(identifier, 'not implemented')
+            self.__import_environment()
             return
 
         elif identifier == 'action_import_simulation':
@@ -369,9 +369,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 QMessageBox.information(self, "Import Not Successful", "Fds file {0} could not be found".format(file))
                 return
 
-            QMessageBox.information(self, 'Import successful', 'Environment imported successfully.')
-
+            self.sim_title_label.setText('Simulation Title: ' + self._fds.job_name())
             self.simulation_settings_widget.setEnabled(True)
+            QMessageBox.information(self, 'Import successful', 'Environment imported successfully.')
 
     def __run_simulation(self):
 
