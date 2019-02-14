@@ -96,7 +96,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
 
         elif identifier == 'action_import_environment':
-            print(identifier, 'not implemented')
+            self.import_environment()
             return
 
         elif identifier == 'action_import_simulation':
