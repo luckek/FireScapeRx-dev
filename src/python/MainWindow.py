@@ -3,7 +3,7 @@
 #
 
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox, qApp, QLabel, QGraphicsView, QWidget, QGridLayout
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox, qApp, QLabel, QGraphicsView, QWidget, QGridLayout, QDesktopWidget
 from gui.Ui_MainWindow import Ui_MainWindow
 from UserSettingsForm import UserSettingsForm, UserSettings
 from AboutDialog import AboutDialog
@@ -31,6 +31,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # Set up the user interface from Designer.
         self.setupUi(self)
+
+        # Center main application window
+        util.center_window(self)
 
         # Create the fuel map editor variable
         self._fuel_map_editor = None

@@ -1,7 +1,6 @@
 import os
 import subprocess
-from PyQt5.QtWidgets import QFileDialog
-
+from PyQt5.QtWidgets import QFileDialog, QDesktopWidget
 
 # FIXME: can rename to more useful method name
 # eg if it is used to validate positive floats, could be called positive float validator
@@ -102,3 +101,11 @@ def is_number(s):
         return True
     except ValueError:
         return False
+
+
+def center_window(window):
+
+    qt_rectangle = window.frameGeometry()
+    center_point = QDesktopWidget().availableGeometry().center()
+    qt_rectangle.moveCenter(center_point)
+    window.move(qt_rectangle.topLeft())
