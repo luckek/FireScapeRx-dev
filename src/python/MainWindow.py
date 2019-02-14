@@ -45,6 +45,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.fuel_type_legend_tab.setEnabled(False)
         self.ignition_point_legend_tab.setEnabled(False)
+        self.simulation_settings_widget.setEnabled(False)
 
         self.tab_widget.currentChanged.connect(self.__tab_changed)
 
@@ -52,8 +53,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.action_import_summary_file.setEnabled(False)
         self.action_export_summary_file.setEnabled(False)
         self.action_export_environment.setEnabled(False)
-        self.simulation_settings_widget.setEnabled(False)
-
+        self.action_create_environment.setEnabled(False)
 
         # Hide and reset progress bar
         self.hide_and_reset_progress()
@@ -258,6 +258,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # Enable relevant widgets
             self.action_export_fuel_map.setEnabled(True)
             self.fuel_type_legend_tab.setEnabled(True)
+            self.simulation_settings_tab.setEnabled(True)
             self.action_run_sim.setEnabled(True)
 
             # Set current tab to fuel type legend
@@ -296,8 +297,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             # Enable relevant widgets
             self.action_export_dem.setEnabled(True)
-            self.ignition_point_legend_tab.setEnabled(True)
             self.action_run_sim.setEnabled(True)
+
+            self.ignition_point_legend_tab.setEnabled(True)
+            self.simulation_settings_tab.setEnabled(True)
 
             # Set current tab to fuel type legend
             self.tab_widget.setCurrentIndex(2)
@@ -357,7 +360,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 return
 
             QMessageBox.information(self, 'Import successful', 'Environment imported successfully.')
+
             self.action_run_sim.setEnabled(True)
+            self.simulation_settings_widget.setEnabled(True)
 
     def run_simulation(self):
 
