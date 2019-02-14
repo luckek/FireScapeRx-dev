@@ -38,12 +38,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         util.center_window(self)
 
         # Create the fuel map editor variable
-        self._fuel_map_editor = None
-        self._ignition_point_editor = None
+        self._fl_map_editor = None
+        self._ign_pt_editor = None
 
         # Hide scroll area
-        self.fuel_map_grid_scroll_area.hide()
-        self.ign_point_scroll_area.hide()
+        self._fl_map_grid_scroll_area.hide()
+        self._ign_pt_scroll_area.hide()
 
         # Disable export of files until one is loaded
         self.action_export_fuel_map.setEnabled(False)
@@ -51,11 +51,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.action_export_summary_file.setEnabled(False)
         self.action_export_environment.setEnabled(False)
 
-        self.fuel_type_legend_tab.setEnabled(False)
+        self._fl_type_lgnd_tab.setEnabled(False)
         self.ignition_point_legend_tab.setEnabled(False)
-        self.simulation_settings_widget.setEnabled(False)
+        self._sim_settings_widget.setEnabled(False)
 
-        self.tab_widget.currentChanged.connect(self.__tab_changed)
+        self._tab_widget.currentChanged.connect(self.__tab_changed)
 
         # FIXME: re-enable when this gets implemented:
         self.action_import_summary_file.setEnabled(False)
@@ -232,7 +232,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 fuel_type = self.fuel_type_combo_box.currentIndex()
 
                 # Modify the fuel map
-                self._fuel_map_editor.modify_range(x_min, x_max, y_min, y_max, fuel_type)
+                self._fl_map_editor.modify_range(x_min, x_max, y_min, y_max, fuel_type)
 
     def __modify_ignition_map(self):
 
@@ -256,7 +256,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 ignition_type = self.ign_point_combo_box.currentIndex()
 
                 # Modify the fuel map
-                self._ignition_point_editor.modify_range(x_min, x_max, y_min, y_max, ignition_type)
+                self._ign_pt_editor.modify_range(x_min, x_max, y_min, y_max, ignition_type)
 
     def __import_fuel_map(self):
 
@@ -265,20 +265,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         file, filt = QFileDialog.getOpenFileName(self, 'Open File', user_settings.working_dir, file_filter)
 
         if file:
-            self._fuel_map_editor = FuelMapEditor(file)
-            self.fuel_map_grid_scroll_area.setWidget(self._fuel_map_editor)
+            self._fl_map_editor = FuelMapEditor(file)
+            self._fl_map_grid_scroll_area.setWidget(self._fl_map_editor)
             self.__setup_fl_map_lgnd()
 
             # Enable relevant widgets
             self.action_export_fuel_map.setEnabled(True)
-            self.fuel_type_legend_tab.setEnabled(True)
-            self.simulation_settings_tab.setEnabled(True)
+            self._fl_type_lgnd_tab.setEnabled(True)
+            self._sim_settings_tab.setEnabled(True)
 
             # Set current tab to fuel type legend
-            self.tab_widget.setCurrentIndex(1)
+            self._tab_widget.setCurrentIndex(1)
 
             # Show relevant scroll area
-            self.fuel_map_grid_scroll_area.show()
+            self._fl_map_grid_scroll_area.show()
 
     def __export_fuel_map(self):
 
@@ -291,7 +291,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if not file.endswith('.asc') or not file.endswith('.grd'):
                 file += AsciiParser.FILE_EXT[0]
 
-            self._fuel_map_editor.save(file)
+            self._fl_map_editor.save(file)
             QMessageBox.information(self, "Export successful", "Fuel map successfully exported")
 
     def __import_dem(self):
@@ -301,18 +301,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         file, filt = QFileDialog.getOpenFileName(self, 'Open File', user_settings.working_dir, file_filter)
 
         if file:
-            self._ignition_point_editor = IgnitionPointEditor(file)
-            self.ign_point_scroll_area.setWidget(self._ignition_point_editor)
+            self._ign_pt_editor = IgnitionPointEditor(file)
+            self._ign_pt_scroll_area.setWidget(self._ign_pt_editor)
             self._setup_ign_pt_map_lgnd()
 
             # Enable relevant widgets
             self.action_export_dem.setEnabled(True)
 
             self.ignition_point_legend_tab.setEnabled(True)
-            self.simulation_settings_tab.setEnabled(True)
+            self._sim_settings_tab.setEnabled(True)
 
             # Set current tab to fuel type legend
-            self.tab_widget.setCurrentIndex(2)
+            self._tab_widget.setCurrentIndex(2)
 
     def __export_dem(self):
 
@@ -325,19 +325,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if not file.endswith('.asc') or not file.endswith('.grd'):
                 file += AsciiParser.FILE_EXT[0]
 
-            self._fuel_map_editor.save(file)
+            self._fl_map_editor.save(file)
             QMessageBox.information(self, "Export successful", "Digital elevation model successfully exported")
 
     @QtCore.pyqtSlot(int, name='__tab_changed')
     def __tab_changed(self, new_tab_index):
 
-        if new_tab_index == 1 and self.tab_widget.widget(new_tab_index).isEnabled():
-            self.ign_point_scroll_area.hide()
-            self.fuel_map_grid_scroll_area.show()
+        if new_tab_index == 1 and self._tab_widget.widget(new_tab_index).isEnabled():
+            self._ign_pt_scroll_area.hide()
+            self._fl_map_grid_scroll_area.show()
 
-        elif new_tab_index == 2 and self.tab_widget.widget(new_tab_index).isEnabled():
-            self.fuel_map_grid_scroll_area.hide()
-            self.ign_point_scroll_area.show()
+        elif new_tab_index == 2 and self._tab_widget.widget(new_tab_index).isEnabled():
+            self._fl_map_grid_scroll_area.hide()
+            self._ign_pt_scroll_area.show()
 
     def __import_environment(self):
 
@@ -365,8 +365,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 QMessageBox.information(self, "Import Not Successful", "Fds file {0} could not be found".format(file))
                 return
 
-            self.sim_title_label.setText('Simulation Title: ' + self._fds.job_name())
-            self.simulation_settings_widget.setEnabled(True)
+            self._sim_title_label.setText('Simulation Title: ' + self._fds.job_name())
+            self._sim_settings_widget.setEnabled(True)
             QMessageBox.information(self, 'Import successful', 'Environment imported successfully.')
 
     def __run_simulation(self):
@@ -449,7 +449,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         t_end = float(self._fds.sim_time())
 
         # Make progress bar visible
-        self.progress_bar.show()
+        self._progress_bar.show()
 
         # We need to give WFDS some time to create the proper .out so that we may
         # read from it and update the progress bar.
@@ -479,7 +479,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
                         # Figure out percentage and update progress bar
                         loading = (sim_time_float / t_end) * 100
-                        self.progress_bar.setValue(loading)
+                        self._progress_bar.setValue(loading)
                 wait = False
 
             except FileNotFoundError:
@@ -495,20 +495,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # If we reach here, simulation should be done.
         logger.log(logger.INFO, "Simulation complete")
 
-        self.progress_bar.setValue(100)
+        self._progress_bar.setValue(100)
         QMessageBox.information(self, 'Simulation Complete', 'Simulation(s) completed.')
         self.hide_and_reset_progress()
 
     def __hide_and_reset_progress(self):
 
         # Hide progress bar and reset it
-        self.progress_bar.hide()
-        self.progress_bar.setValue(0)
+        self._progress_bar.hide()
+        self._progress_bar.setValue(0)
 
     def __setup_fl_map_lgnd(self):
 
-        colors = self._fuel_map_editor.colors()
-        fuel_types = self._fuel_map_editor.fuel_types()
+        colors = self._fl_map_editor.colors()
+        fuel_types = self._fl_map_editor.fuel_types()
 
         assert len(colors) == len(fuel_types), "Length of colors != length of fuel_types"
 
@@ -529,12 +529,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             self.fuel_type_grid_layout.addWidget(g_view, i, 1)
 
-        self.scrollArea_3.setWidget(self.fuel_type_grid_layout_widget)
+        self._fl_type_lgnd_scroll_area.setWidget(self.fuel_type_grid_layout_widget)
 
     def _setup_ign_pt_map_lgnd(self):
 
-        colors = self._ignition_point_editor.colors()
-        fuel_types = self._ignition_point_editor.fuel_types()
+        colors = self._ign_pt_editor.colors()
+        fuel_types = self._ign_pt_editor.fuel_types()
 
         assert len(colors) == len(fuel_types), "Length of colors != length of fuel_types"
 
@@ -565,8 +565,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def __check_fl_map_x_rng(self, usr_x_min, usr_x_max):
 
-        f_map_x_max = self._fuel_map_editor.grid_x_max()
-        f_map_x_min = self._fuel_map_editor.grid_x_min()
+        f_map_x_max = self._fl_map_editor.grid_x_max()
+        f_map_x_min = self._fl_map_editor.grid_x_min()
 
         # TODO: Move this into fuel map editor / ascii grid editor??
         # Ensure the coordinates are within a valid range
@@ -574,7 +574,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         if valid_range:
 
-            column_numbers = self._fuel_map_editor.column_numbers()
+            column_numbers = self._fl_map_editor.column_numbers()
             usr_x_min = int(usr_x_min)
             usr_x_max = int(usr_x_max)
 
@@ -590,15 +590,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def __check_fl_map_y_rng(self, usr_y_min, usr_y_max):
 
-        f_map_y_max = self._fuel_map_editor.grid_y_max()
-        f_map_y_min = self._fuel_map_editor.grid_y_min()
+        f_map_y_max = self._fl_map_editor.grid_y_max()
+        f_map_y_min = self._fl_map_editor.grid_y_min()
 
         # Ensure the coordinates are within a valid range
         valid_range = self.__check_rng_input(usr_y_min, usr_y_max, f_map_y_min, f_map_y_max)
 
         if valid_range:
 
-            row_numbers = self._fuel_map_editor.row_numbers()
+            row_numbers = self._fl_map_editor.row_numbers()
             usr_y_min = int(usr_y_min)
             usr_y_max = int(usr_y_max)
 
@@ -614,8 +614,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def __check_ign_pt_x_rng(self, usr_x_min, usr_x_max):
 
-        ign_pt_x_min = self._ignition_point_editor.grid_x_min()
-        ign_pt_x_max = self._ignition_point_editor.grid_x_max()
+        ign_pt_x_min = self._ign_pt_editor.grid_x_min()
+        ign_pt_x_max = self._ign_pt_editor.grid_x_max()
 
         # TODO: Move this into fuel map editor / ascii grid editor??
         # Ensure the coordinates are within a valid range
@@ -623,7 +623,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         if valid_range:
 
-            column_numbers = self._ignition_point_editor.column_numbers()
+            column_numbers = self._ign_pt_editor.column_numbers()
             usr_x_min = int(usr_x_min)
             usr_x_max = int(usr_x_max)
 
@@ -640,15 +640,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def __check_ign_pt_y_rng(self, usr_y_min, usr_y_max):
 
-        ign_pt_y_min = self._ignition_point_editor.grid_y_min()
-        ign_pt_y_max = self._ignition_point_editor.grid_y_max()
+        ign_pt_y_min = self._ign_pt_editor.grid_y_min()
+        ign_pt_y_max = self._ign_pt_editor.grid_y_max()
 
         # Ensure the coordinates are within a valid range
         valid_range = self.__check_rng_input(usr_y_min, usr_y_max, ign_pt_y_min, ign_pt_y_max)
 
         if valid_range:
 
-            row_numbers = self._ignition_point_editor.row_numbers()
+            row_numbers = self._ign_pt_editor.row_numbers()
             usr_y_min = int(usr_y_min)
             usr_y_max = int(usr_y_max)
 

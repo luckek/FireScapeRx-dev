@@ -14,7 +14,7 @@
    <string>FireScape Rx</string>
   </property>
   <widget class="QWidget" name="central_widget">
-   <widget class="QScrollArea" name="fuel_map_grid_scroll_area">
+   <widget class="QScrollArea" name="_fl_map_grid_scroll_area">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -37,7 +37,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QProgressBar" name="progress_bar">
+   <widget class="QProgressBar" name="_progress_bar">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -50,7 +50,7 @@
      <number>24</number>
     </property>
    </widget>
-   <widget class="QTabWidget" name="tab_widget">
+   <widget class="QTabWidget" name="_tab_widget">
     <property name="geometry">
      <rect>
       <x>600</x>
@@ -68,11 +68,11 @@
       <height>15</height>
      </size>
     </property>
-    <widget class="QWidget" name="simulation_settings_tab">
+    <widget class="QWidget" name="_sim_settings_tab">
      <attribute name="title">
       <string>Simulation Settings</string>
      </attribute>
-     <widget class="QScrollArea" name="scroll_area">
+     <widget class="QScrollArea" name="_sim_settings_scroll_area">
       <property name="geometry">
        <rect>
         <x>0</x>
@@ -84,7 +84,7 @@
       <property name="widgetResizable">
        <bool>true</bool>
       </property>
-      <widget class="QWidget" name="simulation_settings_widget">
+      <widget class="QWidget" name="_sim_settings_widget">
        <property name="geometry">
         <rect>
          <x>0</x>
@@ -340,7 +340,7 @@
       </widget>
      </widget>
     </widget>
-    <widget class="QWidget" name="fuel_type_legend_tab">
+    <widget class="QWidget" name="_fl_type_lgnd_tab">
      <attribute name="title">
       <string>Fuel Map</string>
      </attribute>
@@ -400,7 +400,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QScrollArea" name="scrollArea_3">
+          <widget class="QScrollArea" name="_fl_type_lgnd_scroll_area">
            <property name="widgetResizable">
             <bool>true</bool>
            </property>
@@ -409,8 +409,8 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>98</width>
-              <height>28</height>
+              <width>317</width>
+              <height>78</height>
              </rect>
             </property>
            </widget>
@@ -751,8 +751,8 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>98</width>
-              <height>28</height>
+              <width>317</width>
+              <height>109</height>
              </rect>
             </property>
            </widget>
@@ -1005,7 +1005,7 @@
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QLabel" name="sim_title_label">
+      <widget class="QLabel" name="_sim_title_label">
        <property name="text">
         <string>Simulation Title:</string>
        </property>
@@ -1016,7 +1016,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QScrollArea" name="ign_point_scroll_area">
+   <widget class="QScrollArea" name="_ign_pt_scroll_area">
     <property name="geometry">
      <rect>
       <x>10</x>
