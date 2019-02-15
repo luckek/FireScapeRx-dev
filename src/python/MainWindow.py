@@ -67,11 +67,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.__hide_and_reset_progress()
 
         # Setup validation for fuel map editor inputs
-        self.x_range_max_line_edit.returnPressed.connect(self.__x_rng_ret_pressed)
-        self.x_range_min_line_edit.returnPressed.connect(self.__x_rng_ret_pressed)
+        self._x_rng_ign_pt_max_line_edit.returnPressed.connect(self.__x_rng_ret_pressed)
+        self._x_rng_ign_pt_min_line_edit.returnPressed.connect(self.__x_rng_ret_pressed)
 
-        self.y_range_max_line_edit.returnPressed.connect(self.__y_rng_ret_pressed)
-        self.y_range_min_line_edit.returnPressed.connect(self.__y_rng_ret_pressed)
+        self._y_rng_ign_pt_max_line_edit.returnPressed.connect(self.__y_rng_ret_pressed)
+        self._y_rng_ign_pt_min_line_edit.returnPressed.connect(self.__y_rng_ret_pressed)
 
         self.modify_fuel_map_button.clicked.connect(self.__modify_fuel_map)
         self.modify_ign_points_button.clicked.connect(self.__modify_ignition_map)
@@ -81,16 +81,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._fds_exec = self._fds.fds_exec
 
         # Setup and hide the fuel type legend grid
-        self.fuel_type_grid_layout_widget = QWidget(self)
-        self.fuel_type_grid_layout = QGridLayout(self.fuel_type_grid_layout_widget)
+        self._fl_type_grid_layout_widget = QWidget(self)
+        self._fl_type_grid_layout = QGridLayout(self._fl_type_grid_layout_widget)
 
-        # HIDE THIS or it will cause problems with GUI (cant click on part of menubar)
-        self.fuel_type_grid_layout_widget.hide()
+        # HIDE THIS or it will cause problems with GUI (cant click on part of menu bar)
+        self._fl_type_grid_layout_widget.hide()
 
         # Setup and hide the ignition point type legend grid
-        self.ignition_point_type_grid_layout_widget = QWidget(self)
-        self.ignition_point_type_grid_layout = QGridLayout(self.ignition_point_type_grid_layout_widget)
-        self.ignition_point_type_grid_layout_widget.hide()
+        self._ign_pt_type_grid_layout_widget = QWidget(self)
+        self._ign_pt_type_grid_layout = QGridLayout(self._ign_pt_type_grid_layout_widget)
+        self._ign_pt_type_grid_layout_widget.hide()
 
         # TODO: make use of this variable
         # Initialize selected output file types
@@ -102,21 +102,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         sim_settings = SimulationSettings('default.sim_settings')
 
         # Initialize fields with simulation settings values
-        self.num_sim_line_edit.setText(str(sim_settings.num_sims))
-        self.sim_duration_line_edit.setText(str(sim_settings.sim_duration))
-        self.wind_speed_line_edit.setText(str(sim_settings.wind_speed))
-        self.wind_direction_line_edit.setText(str(sim_settings.wind_direction))
+        self._num_sim_line_edit.setText(str(sim_settings.num_sims))
+        self._sim_duration_line_edit.setText(str(sim_settings.sim_duration))
+        self._wind_speed_line_edit.setText(str(sim_settings.wind_speed))
+        self._wind_direction_line_edit.setText(str(sim_settings.wind_direction))
 
-        for child in self.menubar.children():
+        for child in self._menu_bar.children():
             if type(child) is QtWidgets.QMenu:
                 for action in child.actions():
                     # Use objectName as identifier so as to ensure uniqueness of identifier
                     identifier = action.objectName()
-                    action.triggered.connect(lambda state, x=identifier: self.handle_button(x))
+                    action.triggered.connect(lambda state, x=identifier: self.__handle_button(x))
 
     # FIXME: make static or remove from class altogether if we do not need to access anything in main window
     @QtCore.pyqtSlot(str)
-    def handle_button(self, identifier):
+    def __handle_button(self, identifier):
 
         dialog = None
 
@@ -212,11 +212,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def __modify_fuel_map(self):
 
-        x_min_str = self.x_range_min_line_edit.text()
-        x_max_str = self.x_range_max_line_edit.text()
+        x_min_str = self._x_rng_min_fl_line_edit.text()
+        x_max_str = self._x_rng_max_fl_line_edit.text()
 
-        y_min_str = self.y_range_min_line_edit.text()
-        y_max_str = self.y_range_max_line_edit.text()
+        y_min_str = self._y_rng_min_fl_line_edit.text()
+        y_max_str = self._y_rng_max_fl_line_edit.text()
 
         # Ensure x and y range are valid
         if self.__check_fl_map_x_rng(x_min_str, x_max_str):
@@ -229,18 +229,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 y_min = int(y_min_str)
                 y_max = int(y_max_str)
 
-                fuel_type = self.fuel_type_combo_box.currentIndex()
+                fuel_type = self._fl_type_combo_box.currentIndex()
 
                 # Modify the fuel map
                 self._fl_map_editor.modify_range(x_min, x_max, y_min, y_max, fuel_type)
 
     def __modify_ignition_map(self):
 
-        x_min_str = self.x_range_min_line_edit.text()
-        x_max_str = self.x_range_max_line_edit.text()
+        x_min_str = self._x_rng_ign_pt_min_line_edit.text()
+        x_max_str = self._x_rng_ign_pt_max_line_edit.text()
 
-        y_min_str = self.y_range_min_line_edit.text()
-        y_max_str = self.y_range_max_line_edit.text()
+        y_min_str = self._y_rng_ign_pt_min_line_edit.text()
+        y_max_str = self._y_rng_ign_pt_max_line_edit.text()
 
         # Ensure x and y range are valid
         if self.__check_ign_pt_x_rng(x_min_str, x_max_str):
@@ -253,7 +253,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 y_min = int(y_min_str)
                 y_max = int(y_max_str)
 
-                ignition_type = self.ign_point_combo_box.currentIndex()
+                ignition_type = self._ign_pt_combo_box.currentIndex()
 
                 # Modify the fuel map
                 self._ign_pt_editor.modify_range(x_min, x_max, y_min, y_max, ignition_type)
@@ -516,7 +516,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for i in range(len(colors)):
             legend_label = QLabel()
             legend_label.setText(fuel_types[i])
-            self.fuel_type_grid_layout.addWidget(legend_label, i, 0)
+            self._fl_type_grid_layout.addWidget(legend_label, i, 0)
 
             legend_label.setFixedSize(65, 20)
 
@@ -527,9 +527,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             g_view.setPalette(pallete)
             g_view.setMaximumSize(25, 10)
 
-            self.fuel_type_grid_layout.addWidget(g_view, i, 1)
+            self._fl_type_grid_layout.addWidget(g_view, i, 1)
 
-        self._fl_type_lgnd_scroll_area.setWidget(self.fuel_type_grid_layout_widget)
+        self._fl_type_lgnd_scroll_area.setWidget(self._fl_type_grid_layout_widget)
 
     def _setup_ign_pt_map_lgnd(self):
 
@@ -542,7 +542,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for i in range(len(colors)):
             legend_label = QLabel()
             legend_label.setText(fuel_types[i])
-            self.ignition_point_type_grid_layout.addWidget(legend_label, i, 0)
+            self._ign_pt_type_grid_layout.addWidget(legend_label, i, 0)
 
             legend_label.setFixedSize(65, 20)
 
@@ -553,9 +553,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             g_view.setPalette(pallete)
             g_view.setMaximumSize(25, 10)
 
-            self.ignition_point_type_grid_layout.addWidget(g_view, i, 1)
+            self._ign_pt_type_grid_layout.addWidget(g_view, i, 1)
 
-        self.ignition_point_map_legend_scroll_area.setWidget(self.ignition_point_type_grid_layout_widget)
+        self.ignition_point_map_legend_scroll_area.setWidget(self._ign_pt_type_grid_layout_widget)
 
     def __x_rng_ret_pressed(self):
         self.__check_fl_map_x_rng()

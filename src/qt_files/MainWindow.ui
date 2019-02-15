@@ -161,7 +161,7 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QLineEdit" name="num_sim_line_edit"/>
+            <widget class="QLineEdit" name="_num_sim_line_edit"/>
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="sim_duration_label">
@@ -174,7 +174,7 @@
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QLineEdit" name="sim_duration_line_edit"/>
+            <widget class="QLineEdit" name="_sim_duration_line_edit"/>
            </item>
           </layout>
          </item>
@@ -236,7 +236,7 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QLineEdit" name="wind_speed_line_edit"/>
+            <widget class="QLineEdit" name="_wind_speed_line_edit"/>
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="wind_direction_label">
@@ -249,7 +249,7 @@
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QLineEdit" name="wind_direction_line_edit"/>
+            <widget class="QLineEdit" name="_wind_direction_line_edit"/>
            </item>
           </layout>
          </item>
@@ -493,7 +493,7 @@
             </spacer>
            </item>
            <item row="0" column="2">
-            <widget class="QLineEdit" name="x_range_min_line_edit"/>
+            <widget class="QLineEdit" name="_x_rng_min_fl_line_edit"/>
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_2">
@@ -506,14 +506,14 @@
             </widget>
            </item>
            <item row="1" column="4">
-            <widget class="QLineEdit" name="y_range_max_line_edit">
+            <widget class="QLineEdit" name="_y_rng_max_fl_line_edit">
              <property name="placeholderText">
               <string/>
              </property>
             </widget>
            </item>
            <item row="0" column="4">
-            <widget class="QLineEdit" name="x_range_max_line_edit"/>
+            <widget class="QLineEdit" name="_x_rng_max_fl_line_edit"/>
            </item>
            <item row="0" column="0">
             <widget class="QLabel" name="label">
@@ -533,7 +533,7 @@
             </widget>
            </item>
            <item row="1" column="2">
-            <widget class="QLineEdit" name="y_range_min_line_edit"/>
+            <widget class="QLineEdit" name="_y_rng_min_fl_line_edit"/>
            </item>
            <item row="0" column="3">
             <widget class="QLabel" name="label_4">
@@ -589,7 +589,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QComboBox" name="fuel_type_combo_box">
+            <widget class="QComboBox" name="_fl_type_combo_box">
              <property name="currentText">
               <string>Untreated</string>
              </property>
@@ -804,7 +804,7 @@
             </spacer>
            </item>
            <item row="0" column="2">
-            <widget class="QLineEdit" name="x_range_ign_point_min_line_edit"/>
+            <widget class="QLineEdit" name="_x_rng_ign_pt_min_line_edit"/>
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_11">
@@ -817,14 +817,14 @@
             </widget>
            </item>
            <item row="1" column="4">
-            <widget class="QLineEdit" name="y_range_ign_point_max_line_edit">
+            <widget class="QLineEdit" name="_y_rng_ign_pt_max_line_edit">
              <property name="placeholderText">
               <string/>
              </property>
             </widget>
            </item>
            <item row="0" column="4">
-            <widget class="QLineEdit" name="x_range_ign_point_max_line_edit"/>
+            <widget class="QLineEdit" name="_x_rng_ign_pt_max_line_edit"/>
            </item>
            <item row="0" column="0">
             <widget class="QLabel" name="label_12">
@@ -844,7 +844,7 @@
             </widget>
            </item>
            <item row="1" column="2">
-            <widget class="QLineEdit" name="y_range_ign_point_min_line_edit"/>
+            <widget class="QLineEdit" name="_y_rng_ign_pt_min_line_edit"/>
            </item>
            <item row="0" column="3">
             <widget class="QLabel" name="label_14">
@@ -900,7 +900,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QComboBox" name="ign_point_combo_box">
+            <widget class="QComboBox" name="_ign_pt_combo_box">
              <property name="currentText">
               <string>No-Ignition</string>
              </property>
@@ -1040,7 +1040,7 @@
     </widget>
    </widget>
   </widget>
-  <widget class="QMenuBar" name="menubar">
+  <widget class="QMenuBar" name="_menu_bar">
    <property name="geometry">
     <rect>
      <x>0</x>
