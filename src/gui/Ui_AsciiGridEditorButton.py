@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QPushButton
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import pyqtSlot, Qt
 
 
 class Ui_AsciiGridEditorButton(QPushButton):
@@ -20,6 +20,9 @@ class Ui_AsciiGridEditorButton(QPushButton):
 
         self._set_color(init_color)
         self.clicked.connect(self.button_click)
+
+        # Removes blue 'selection' border
+        self.setFocusPolicy(Qt.NoFocus)
 
     @pyqtSlot(bool, name='button_clicked')
     def button_click(self):
