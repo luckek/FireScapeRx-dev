@@ -10,7 +10,7 @@ class Ui_AsciiGridEditor(QWidget):
         QWidget.__init__(self)
 
         # Create and configure grid layout
-        self.gridLayoutWidget = QWidget(self)
-        self.gridLayout = QGridLayout(self.gridLayoutWidget)
-        self.gridLayout.setContentsMargins(0, 0, 0, 0)
-        self.gridLayout.setSpacing(0)
+        self._grid_layout_widget = QWidget(self)
+        self._grid_layout = QGridLayout(self._grid_layout_widget)
+        self._grid_layout.setContentsMargins(0, 0, 0, 0)
+        self._grid_layout.setSpacing(0)

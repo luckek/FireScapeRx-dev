@@ -12,9 +12,9 @@ class IgnitionPointEditor(AsciiGridEditor):
         for i in range(1, self._nrows + 1):
             button_row = []
             for j in range(1, self._ncols + 1):
-                button = IgnitionPointEditorButton(self.gridLayoutWidget, self.BUTTON_SIZE)
+                button = IgnitionPointEditorButton(self._grid_layout_widget, self.BUTTON_SIZE)
 
-                self.gridLayout.addWidget(button, i, j)
+                self._grid_layout.addWidget(button, i, j)
                 button_row.append(button)
 
             self._ascii_button_grid.append(button_row)
@@ -28,8 +28,10 @@ class IgnitionPointEditor(AsciiGridEditor):
                 if current_data == self._ascii_parser.no_data_val:
                     current_button.color = -1
 
-    def colors(self):
+    @staticmethod
+    def colors():
         return IgnitionPointEditorButton.colors + list(IgnitionPointEditorButton.no_data_color)
 
-    def fuel_types(self):
+    @staticmethod
+    def fuel_types():
         return ['No Ignition', 'Ignition', 'No data']

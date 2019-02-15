@@ -1,8 +1,6 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QDialog
 from gui.Ui_SelectOutputFileTypes import Ui_SelectOutputFileTypes
-from UserSettings import *
-import os.path as osp
 
 
 class SelectOutputFileTypesForm(QDialog, Ui_SelectOutputFileTypes):
@@ -18,15 +16,15 @@ class SelectOutputFileTypesForm(QDialog, Ui_SelectOutputFileTypes):
         for file_type in self.FILE_TYPES:
             check_box = QtWidgets.QCheckBox(file_type, parent=self.verticalLayoutWidget)
             check_box.setObjectName(file_type)
-            self.verticalLayout.addWidget(check_box)
+            self._file_type_vert_layout.addWidget(check_box)
             self._check_box_list.append(check_box)
 
     def get_file_types(self):
         out_list = []
         if self.exec_() == QDialog.Accepted:
             # Get the selected output file types
-            for box in self.verticalLayout.children():
-                if type(box) is QtWidgets.QCheckBox and box.isChecked():
-                    out_list.append(box.text())
+            for output_file_type in self._file_type_vert_layout.children():
+                if output_file_type.isChecked():
+                    out_list.append(output_file_type.text())
 
         return out_list

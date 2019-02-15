@@ -32,10 +32,10 @@ class AsciiGridEditor(Ui_AsciiGridEditor):
 
             self._row_set.add(int(current_y_val))
 
-            label = QLabel(parent=self.gridLayoutWidget, text=str(int(current_y_val)))
+            label = QLabel(parent=self._grid_layout_widget, text=str(int(current_y_val)))
             label.setFixedSize(self.BUTTON_SIZE, self.BUTTON_SIZE)
             label.setAlignment(Qt.AlignCenter)
-            self.gridLayout.addWidget(label, i, 0)
+            self._grid_layout.addWidget(label, i, 0)
 
             current_y_val -= cell_size
 
@@ -51,10 +51,10 @@ class AsciiGridEditor(Ui_AsciiGridEditor):
 
             self._col_set.add(current_x_val)
 
-            label = QLabel(parent=self.gridLayoutWidget, text=str(int(current_x_val)))
+            label = QLabel(parent=self._grid_layout_widget, text=str(int(current_x_val)))
             label.setFixedSize(self.BUTTON_SIZE, self.BUTTON_SIZE)
             label.setAlignment(Qt.AlignCenter)
-            self.gridLayout.addWidget(label, 0, i)
+            self._grid_layout.addWidget(label, 0, i)
 
             current_x_val += cell_size
 

@@ -15,15 +15,15 @@ class UserSettingsForm(QDialog, Ui_Dialog):
 
         self.user_settings = UserSettings()
 
-        #Initalize fields with user settings values
-        self.output_dir_line_edit.setText(osp.abspath(str(self.user_settings.output_dir)))
-        self.working_dir_line_edit.setText(osp.abspath(str(self.user_settings.working_dir)))
-        self.sim_duration_line_edit.setText(str(self.user_settings.sim_duration))
-        self.num_sims_line_edit.setText(str(self.user_settings.num_sims))
+        # Initalize fields with user settings values
+        self._output_dir_line_edit.setText(osp.abspath(str(self.user_settings.output_dir)))
+        self._working_dir_line_edit.setText(osp.abspath(str(self.user_settings.working_dir)))
+        self._sim_duration_line_edit.setText(str(self.user_settings.sim_duration))
+        self._num_sims_line_edit.setText(str(self.user_settings.num_sims))
 
         # Set line edits to read only
-        self.output_dir_line_edit.setReadOnly(True)
-        self.working_dir_line_edit.setReadOnly(True)
+        self._output_dir_line_edit.setReadOnly(True)
+        self._working_dir_line_edit.setReadOnly(True)
 
         # Clicked signal emits a bool that is passed with the lambda,
         # Which is why the dummy variable checked is there.
@@ -32,7 +32,7 @@ class UserSettingsForm(QDialog, Ui_Dialog):
 
         self.button_box.accepted.connect(self.save_user_settings)
 
-        self.output_dir_line_edit.returnPressed.connect(self.ret_pressed)
+        self._output_dir_line_edit.returnPressed.connect(self.ret_pressed)
 
     def ret_pressed(self):
         print('Return')
@@ -41,10 +41,10 @@ class UserSettingsForm(QDialog, Ui_Dialog):
     def save_user_settings(self):
 
         # Modify user settings to whatever the user has modified them to be
-        self.user_settings.output_dir = self.output_dir_line_edit.text()
-        self.user_settings.working_dir = self.working_dir_line_edit.text()
-        self.user_settings.sim_duration = self.sim_duration_line_edit.text()
-        self.user_settings.num_sims = self.num_sims_line_edit.text()
+        self.user_settings.output_dir = self._output_dir_line_edit.text()
+        self.user_settings.working_dir = self._working_dir_line_edit.text()
+        self.user_settings.sim_duration = self._sim_duration_line_edit.text()
+        self.user_settings.num_sims = self._num_sims_line_edit.text()
 
         self.user_settings.save_user_settings()
 
