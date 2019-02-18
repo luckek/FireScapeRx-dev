@@ -497,7 +497,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self._progress_bar.setValue(100)
         QMessageBox.information(self, 'Simulation Complete', 'Simulation(s) completed.')
-        self.hide_and_reset_progress()
+        self.__hide_and_reset_progress()
 
     def __hide_and_reset_progress(self):
 
