@@ -222,8 +222,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         file_filter = 'txt (*.txt)'
         file, filt = QFileDialog.getSaveFileName(self, 'Save File', user_settings.working_dir, file_filter)
 
+        # Write to file
         with open(file, 'w') as f:
-
+            #TODO: Find out what should go in this file
             f.write('SUMMARY FILE')
 
 
