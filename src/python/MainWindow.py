@@ -117,20 +117,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             print(identifier, 'not implemented')
             return
 
-        elif identifier == 'action_export_summary':
-            print(identifier, 'not implemented')
+        elif identifier == 'action_export_summary_file':
+            self._export_summary()
             return
 
         elif identifier == 'action_export_environment':
-            print(identifier, 'not implemented')
-            return
-
-        elif identifier == 'action_export_simulation':
-            print(identifier, 'not implemented')
-            return
-
-        elif identifier == 'action_export_summary':
-            print(identifier, 'not implemented')
+            self._export_environment()
             return
 
         elif identifier == 'action_export_fuel_map':
@@ -224,6 +216,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # Show relevant scroll area
             self.fuel_map_grid_scroll_area.show()
 
+    def _export_summary(self):
+
+        user_settings = UserSettings()
+        file_filter = 'txt (*.txt)'
+        file, filt = QFileDialog.getSaveFileName(self, 'Save File', user_settings.working_dir, file_filter)
+
+        with open(file, 'w') as f:
+
+            f.write('SUMMARY FILE')
+
+
+    def _export_environment(self):
+
+        #Set up Save File Dialog Box
+        user_settings = UserSettings()
+        file_filter = 'fds (*.fds)'
+        file, filt = QFileDialog.getSaveFileName(self, 'Save File', user_settings.working_dir, file_filter)
+
+        # Save File
+        self._fds.save(file)
+
+
+
     def __export_fuel_map(self):
 
         user_settings = UserSettings()
@@ -267,6 +282,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 QMessageBox.information(self, "Import Not Successful", "Fds file {0} could not be found".format(file))
                 return
 
+            # Enable relevant widgits
+            self.action_export_environment.setEnabled(True)
+
             QMessageBox.information(self, 'Import successful', 'Environment imported successfully.')
 
     def run_simulation(self):
@@ -275,6 +293,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             logger.log(logger.INFO, 'Run simulation...')
 
             self.run_wfds()
+
+            #enable relevant widgets
+            self.action_export_summary_file.setEnabled(True)
 
         else:
 
