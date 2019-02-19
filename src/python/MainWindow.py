@@ -218,22 +218,40 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def _export_summary(self):
 
+        # Set up Save File Dialog Box
         user_settings = UserSettings()
+        sim_settings = SimulationSettings("default.sim_settings")
         file_filter = 'txt (*.txt)'
-        file, filt = QFileDialog.getSaveFileName(self, 'Save File', user_settings.working_dir, file_filter)
+        simName = self._fds.job() #Get simulation name
+        fname = os.path.join(user_settings.working_dir, simName + " Summary") # set directory and default file name based on simulation name
+        file, filt = QFileDialog.getSaveFileName(self, 'Save File', fname, file_filter)
+
+        # Define Variable to be written to file
+        simFName = self._fds.job()
+        simName = self._fds.job_name()
+        simTime = str(sim_settings._sim_duration)
 
         # Write to file
-        with open(file, 'w') as f:
-            #TODO: Find out what should go in this file
-            f.write('SUMMARY FILE')
+        if file:
+            if not file.endswith(".txt"):
+                file += ".txt"
+
+            with open(file, 'w') as f:
+                #TODO: Find out what should go in this file
+                f.write('SUMMARY FILE\n')
+                f.write("Simulation File Name: " + simFName + "\n")
+                f.write("Simulation Title: " + simName + "\n")
+                f.write("Simulation Duration: " + simTime + "\n")
 
 
     def _export_environment(self):
 
-        #Set up Save File Dialog Box
+        # Set up Save File Dialog Box
         user_settings = UserSettings()
         file_filter = 'fds (*.fds)'
-        file, filt = QFileDialog.getSaveFileName(self, 'Save File', user_settings.working_dir, file_filter)
+        simName = self._fds.job() # Get simulation name
+        fname = os.path.join(user_settings.working_dir, simName + " Environment") # Set directory and default file name based on simulation name
+        file, filt = QFileDialog.getSaveFileName(self, 'Save File', fname, file_filter)
 
         # Save File
         self._fds.save(file)
