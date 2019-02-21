@@ -27,8 +27,8 @@ class Ui_AsciiGridEditorButton(QPushButton):
     @pyqtSlot(bool, name='button_clicked')
     def button_click(self):
 
-        if self.color == len(self.colors) - 1:
-            self._set_color(0)
+        if self.color == len(self.colors):
+            self._set_color(1)
 
         else:
             self._color += 1
@@ -51,6 +51,6 @@ class Ui_AsciiGridEditorButton(QPushButton):
             pallete.setColor(self.backgroundRole(), self.no_data_color[0])
 
         else:
-            pallete.setColor(self.backgroundRole(), self.colors[self._color])
+            pallete.setColor(self.backgroundRole(), self.colors[self._color - 1])
 
         self.setPalette(pallete)
