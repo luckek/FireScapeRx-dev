@@ -1060,6 +1060,7 @@
      <string>File</string>
     </property>
     <addaction name="action_create_environment"/>
+    <addaction name="action_ascii_to_fds"/>
    </widget>
    <widget class="QMenu" name="menu_export">
     <property name="title">
@@ -1220,6 +1221,11 @@
    </property>
    <property name="toolTip">
     <string>Export the currently loaded Digital Elevation Model</string>
+   </property>
+  </action>
+  <action name="action_ascii_to_fds">
+   <property name="text">
+    <string>Ascii to FDS</string>
    </property>
   </action>
  </widget>

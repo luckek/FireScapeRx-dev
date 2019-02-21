@@ -478,7 +478,10 @@ class Ui_MainWindow(object):
         self.action_export_fuel_map.setObjectName("action_export_fuel_map")
         self.action_export_dem = QtWidgets.QAction(MainWindow)
         self.action_export_dem.setObjectName("action_export_dem")
+        self.action_ascii_to_fds = QtWidgets.QAction(MainWindow)
+        self.action_ascii_to_fds.setObjectName("action_ascii_to_fds")
         self.menu_file.addAction(self.action_create_environment)
+        self.menu_file.addAction(self.action_ascii_to_fds)
         self.menu_export.addAction(self.action_export_environment)
         self.menu_export.addAction(self.action_export_summary_file)
         self.menu_export.addAction(self.action_export_fuel_map)
@@ -579,4 +582,5 @@ class Ui_MainWindow(object):
         self.action_export_fuel_map.setToolTip(_translate("MainWindow", "Export the currently loaded Fuel Map"))
         self.action_export_dem.setText(_translate("MainWindow", "Digital Elevation Model"))
         self.action_export_dem.setToolTip(_translate("MainWindow", "Export the currently loaded Digital Elevation Model"))
+        self.action_ascii_to_fds.setText(_translate("MainWindow", "Ascii to FDS"))
 
