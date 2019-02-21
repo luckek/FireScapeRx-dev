@@ -8,9 +8,9 @@ from Utility import linspace
 
 class AsciiGridEditor(Ui_AsciiGridEditor):
 
-    def __init__(self, ascii_fname):
+    def __init__(self, parent, ascii_fname):
 
-        Ui_AsciiGridEditor.__init__(self)
+        Ui_AsciiGridEditor.__init__(self, parent)
 
         self._ascii_parser = AsciiParser(ascii_fname)
         self._ascii_parser.read()
@@ -59,6 +59,10 @@ class AsciiGridEditor(Ui_AsciiGridEditor):
             current_x_val += cell_size
 
         self._ascii_button_grid = []
+        self.setWidget(self._grid_layout_widget)
+
+    # FIXME:
+    # def setup_grid()
 
     def button_values_grid(self):
 
@@ -146,3 +150,6 @@ class AsciiGridEditor(Ui_AsciiGridEditor):
         t_map = self.index_to_point_map()
 
         return {b: a for a, b in t_map.items()}
+
+    def parser(self):
+        return self._ascii_parser

@@ -4,9 +4,9 @@ from FuelMapEditorButton import FuelMapEditorButton
 
 class FuelMapEditor(AsciiGridEditor):
 
-    def __init__(self, ascii_fname):
+    def __init__(self, parent, ascii_fname):
 
-        super().__init__(ascii_fname)
+        super().__init__(parent, ascii_fname)
 
         # Create grid of buttons
         for i in range(1, self._nrows + 1):

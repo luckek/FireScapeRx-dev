@@ -1,16 +1,18 @@
-from PyQt5.QtWidgets import QWidget, QGridLayout
+from PyQt5.QtWidgets import QScrollArea, QGridLayout, QWidget
+from PyQt5 import QtCore
 
 
-class Ui_AsciiGridEditor(QWidget):
+class Ui_AsciiGridEditor(QScrollArea):
 
     BUTTON_SIZE = 25
 
-    def __init__(self):
+    def __init__(self, parent):
 
-        QWidget.__init__(self)
+        QScrollArea.__init__(self, parent=parent)
 
         # Create and configure grid layout
         self._grid_layout_widget = QWidget(self)
         self._grid_layout = QGridLayout(self._grid_layout_widget)
         self._grid_layout.setContentsMargins(0, 0, 0, 0)
         self._grid_layout.setSpacing(0)
+        self.setGeometry(QtCore.QRect(10, 70, 580, 510))

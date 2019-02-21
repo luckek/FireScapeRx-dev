@@ -37,13 +37,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Center main application window
         util.center_window(self)
 
+        # TODO: init editor with no file here
         # Create the fuel map editor variable
         self._fl_map_editor = None
         self._ign_pt_editor = None
-
-        # Hide scroll area
-        self._fl_map_grid_scroll_area.hide()
-        self._ign_pt_scroll_area.hide()
 
         # Disable export of files until one is loaded
         self.action_export_fuel_map.setEnabled(False)
@@ -229,7 +226,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 y_min = int(y_min_str)
                 y_max = int(y_max_str)
 
-                fuel_type = self._fl_type_combo_box.currentIndex()
+                fuel_type = self._fl_type_combo_box.currentIndex() + 1
 
                 # Modify the fuel map
                 self._fl_map_editor.modify_range(x_min, x_max, y_min, y_max, fuel_type)
@@ -265,8 +262,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         file, filt = QFileDialog.getOpenFileName(self, 'Open File', user_settings.working_dir, file_filter)
 
         if file:
-            self._fl_map_editor = FuelMapEditor(file)
-            self._fl_map_grid_scroll_area.setWidget(self._fl_map_editor)
+            # FIXME: make two fixed size widgets or something for fuel map and ignition point editor, they now have own scroll area
+            # FIXME: increase SIZE when there are lots of cells in fuel map and ignition
+            self._fl_map_editor = FuelMapEditor(self, file)
+            self._fl_map_editor.setEnabled(True)
+
             self.__setup_fl_map_lgnd()
 
             # Enable relevant widgets
@@ -276,9 +276,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             # Set current tab to fuel type legend
             self._tab_widget.setCurrentIndex(1)
-
-            # Show relevant scroll area
-            self._fl_map_grid_scroll_area.show()
 
     def __export_fuel_map(self):
 
@@ -301,8 +298,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         file, filt = QFileDialog.getOpenFileName(self, 'Open File', user_settings.working_dir, file_filter)
 
         if file:
-            self._ign_pt_editor = IgnitionPointEditor(file)
-            self._ign_pt_scroll_area.setWidget(self._ign_pt_editor)
+            self._ign_pt_editor = IgnitionPointEditor(self, file)
+            self._ign_pt_editor.setEnabled(True)
+
             self._setup_ign_pt_map_lgnd()
 
             # Enable relevant widgets
@@ -332,12 +330,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __tab_changed(self, new_tab_index):
 
         if new_tab_index == 1 and self._tab_widget.widget(new_tab_index).isEnabled():
-            self._ign_pt_scroll_area.hide()
-            self._fl_map_grid_scroll_area.show()
+
+            if self._ign_pt_editor is not None:
+                self._ign_pt_editor.hide()
+
+            if self._fl_map_editor is not None:
+                self._fl_map_editor.show()
 
         elif new_tab_index == 2 and self._tab_widget.widget(new_tab_index).isEnabled():
-            self._fl_map_grid_scroll_area.hide()
-            self._ign_pt_scroll_area.show()
+
+            if self._ign_pt_editor is not None:
+                self._ign_pt_editor.show()
+
+            if self._fl_map_editor is not None:
+                self._fl_map_editor.hide()
 
     def __import_environment(self):
 
