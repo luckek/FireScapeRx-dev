@@ -5,26 +5,16 @@ TITLE='Level set simulation of AU experiment C064' /
       VEG_LEVEL_SET_COUPLED=.TRUE.
       VEG_LEVEL_SET_SURFACE_HEATFLUX=.TRUE.
       VEG_LEVEL_SET_THERMAL_ELEMENTS=.FALSE.
-      U0=5 / 
+      U0=5 /
+
 &TIME T_END=2 /
 
 - 150 m by 150 m; dx=dy=1m
 &MESH IJK=150,150,20, XB=-25,125,-75,75,0,20 /
 
-- 4 meshes checkerboard
-c&MULT ID='lower',DX=50,DY=50,DZ=20,I_LOWER=0,I_UPPER=2,J_LOWER=0,J_UPPER=2,K_LOWER=0,K_UPPER=0 /
-c&MESH IJK=50,50,20, XB=-75,-25,-75,-25,0,20,MULT_ID='lower' /
-
 - GRASS AU experiment C064
   head ROS from AU experiments
   flank and back ROS are assumed.
-cSURF ID        = 'GRASS'
-      VEG_LEVEL_SET_SPREAD = .TRUE.
-      VEG_LSET_ROS_HEAD    = 1.48
-      VEG_LSET_ROS_FLANK   = 0.175
-      VEG_LSET_ROS_BACK    = 0.1
-      VEG_LSET_WIND_EXP    = 1.00
-      RGB                  = 122,117,48 /
 
 - "Farsite"
 &SURF ID = 'GRASS'
@@ -96,11 +86,11 @@ cVENT XB= -2,104, 54, 75,0,0,SURF_ID='NO BURN GRASS' /
 &RAMP ID='RAMPVEL',T=0.0,F=0.0 /
 &RAMP ID='RAMPVEL',T=0.5,F=1.0 /
 
-!&VENT XB= -75,-75,-75, 75, 0,20,SURF_ID='wind' / xmin
-!&VENT XB=  75, 75,-75, 75, 0,20,SURF_ID='OPEN' /
-!&VENT XB= -75, 75,-75,-75, 0,20,SURF_ID='OPEN' /
-!&VENT XB= -75, 75, 75, 75, 0,20,SURF_ID='OPEN' /
-!&VENT XB= -75, 75,-75, 75,20,20,SURF_ID='OPEN' /
+&VENT XB= -75,-75,-75, 75,  0, 20,SURF_ID='wind' / xmin
+!&VENT XB=  75, 75,-75, 75,  0, 20,SURF_ID='OPEN' /
+&VENT XB= -75, 75,-75,-75,  0, 20,SURF_ID='OPEN' /
+&VENT XB= -75, 75, 75, 75,  0, 20,SURF_ID='OPEN' /
+&VENT XB= -75, 75,-75, 75, 20, 20,SURF_ID='OPEN' /
 
 -- Output
 &DUMP DT_SLCF=0.1,DT_BNDF=0.1,DT_PART=0.1,DT_ISOF=0.1,DT_PL3D=200 /
