@@ -129,11 +129,17 @@ class AsciiParser:
     def x_min(self):
         return self._xllcorner + int(self._cell_size / 2)
 
+    def x_min_val(self):
+        return self._xllcorner
+
     def y_max(self):
         return self.cell_size * self._nrows
 
     def y_min(self):
         return self._yllcorner + int(self._cell_size / 2)
+
+    def y_min_val(self):
+        return self._yllcorner
 
     def has_file(self):
         return self._fname is not None
