@@ -50,7 +50,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self._fl_type_lgnd_tab.setEnabled(False)
         self.ignition_point_legend_tab.setEnabled(False)
-        self._sim_settings_widget.setEnabled(False)
+        self._sim_settings_tab.setEnabled(False)
 
         self._tab_widget.currentChanged.connect(self.__tab_changed)
 
@@ -372,7 +372,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 return
 
             self._sim_title_label.setText('Simulation Title: ' + self._fds.job_name())
-            self._sim_settings_widget.setEnabled(True)
+            self._sim_settings_tab.setEnabled(True)
             QMessageBox.information(self, 'Import successful', 'Environment imported successfully.')
 
     def __run_simulation(self):
@@ -536,6 +536,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self._fl_type_grid_layout.addWidget(g_view, i, 1)
 
         self._fl_type_lgnd_scroll_area.setWidget(self._fl_type_grid_layout_widget)
+        self._fl_type_lgnd_tab.setEnabled(True)
 
     def _setup_ign_pt_map_lgnd(self):
 
@@ -562,6 +563,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self._ign_pt_type_grid_layout.addWidget(g_view, i, 1)
 
         self.ignition_point_map_legend_scroll_area.setWidget(self._ign_pt_type_grid_layout_widget)
+        self.ignition_point_legend_tab.setEnabled(True)
 
     def __x_rng_ret_pressed(self):
         self.__check_fl_map_x_rng()
