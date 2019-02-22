@@ -14,6 +14,7 @@ from AsciiParser import AsciiParser
 from FuelMapEditor import FuelMapEditor
 from IgnitionPointEditor import IgnitionPointEditor
 from Fds import Fds
+from AsciiToFds import AsciiToFds
 import os
 import os.path as osp
 import Utility as util
@@ -47,6 +48,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.action_export_dem.setEnabled(False)
         self.action_export_summary_file.setEnabled(False)
         self.action_export_environment.setEnabled(False)
+        self.action_ascii_to_fds.setEnabled(False)
 
         self._fl_type_lgnd_tab.setEnabled(False)
         self.ignition_point_legend_tab.setEnabled(False)
@@ -122,6 +124,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if identifier == 'action_create_environment':
             print(identifier, 'not implemented')
             return
+
+        elif identifier == 'action_ascii_to_fds':
+
+            self.__ascii_to_fds()
 
         elif identifier == 'action_import_environment':
             self.__import_environment()
@@ -271,8 +277,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             # Enable relevant widgets
             self.action_export_fuel_map.setEnabled(True)
-            self._fl_type_lgnd_tab.setEnabled(True)
-            self._sim_settings_tab.setEnabled(True)
+
+            # This means that a DEM has already been loaded,
+            # so the user can now convert to FDS file
+            if self._ign_pt_editor:
+                self._sim_settings_tab.setEnabled(True)
+                self.action_ascii_to_fds.setEnabled(True)
 
             # Set current tab to fuel type legend
             self._tab_widget.setCurrentIndex(1)
@@ -306,8 +316,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # Enable relevant widgets
             self.action_export_dem.setEnabled(True)
 
-            self.ignition_point_legend_tab.setEnabled(True)
-            self._sim_settings_tab.setEnabled(True)
+            # This means that a fuel map has already been loaded,
+            # so the user can now convert to FDS file
+            if self._fl_map_editor:
+                self._sim_settings_tab.setEnabled(True)
+                self.action_ascii_to_fds.setEnabled(True)
 
             # Set current tab to fuel type legend
             self._tab_widget.setCurrentIndex(2)
@@ -707,6 +720,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return False
 
         return True
+
+    def __ascii_to_fds(self):
+
+        # Note: normally, this would be dangerous as
+        # either of these could be None, but since the user
+        # cannot access this function until both are loaded
+
+        # TODO: ensure that DEM and fuel map are both same size
+        # idea: user cannot load fuel map that is not same size as DEM and vice versa
+        fl_map_parser = self._fl_map_editor.parser()
+        dem_parser = self._ign_pt_editor.parser()
+
+        sim_settings = SimulationSettings('default.sim_settings')
+
+        ascii_fds_converter = AsciiToFds(fl_map_parser, dem_parser, sim_settings)
+        ascii_fds_converter.save(self._fl_map_editor.button_values_grid())
 
 
 def follow(thefile):
