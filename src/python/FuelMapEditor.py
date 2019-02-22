@@ -6,6 +6,8 @@ class FuelMapEditor(AsciiGridEditor):
 
     def __init__(self, parent, ascii_fname):
 
+        # TODO: create enum for fuel type(would make code clearer, easier to read)
+
         super().__init__(parent, ascii_fname)
 
         # Create grid of buttons
