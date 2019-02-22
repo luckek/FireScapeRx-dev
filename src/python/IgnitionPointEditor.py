@@ -12,7 +12,7 @@ class IgnitionPointEditor(AsciiGridEditor):
         for i in range(1, self._nrows + 1):
             button_row = []
             for j in range(1, self._ncols + 1):
-                button = IgnitionPointEditorButton(self._grid_layout_widget, self.BUTTON_SIZE)
+                button = IgnitionPointEditorButton(self._grid_layout_widget, self.BUTTON_SIZE, init_color=1)
 
                 self._grid_layout.addWidget(button, i, j)
                 button_row.append(button)
@@ -22,11 +22,8 @@ class IgnitionPointEditor(AsciiGridEditor):
         for i in range(self._nrows):
             for j in range(self._ncols):
 
-                current_button = self._ascii_button_grid[i][j]
-                current_data = self._ascii_parser.data_table[i][j]
-
-                if current_data == self._ascii_parser.no_data_val:
-                    current_button.color = -1
+                if self._ascii_parser.data_table[i][j] == self._ascii_parser.no_data_val:
+                    self._ascii_button_grid[i][j].color = -1
 
     @staticmethod
     def colors():
