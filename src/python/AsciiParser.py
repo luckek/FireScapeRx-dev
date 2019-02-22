@@ -1,6 +1,6 @@
 class AsciiParser:
 
-    FILE_EXT = ['.asc', '.grd']
+    FILE_EXT = '.asc'
 
     def __init__(self, fname):
 

@@ -258,7 +258,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __import_fuel_map(self):
 
         user_settings = UserSettings()
-        file_filter = 'Ascii GRID file (*' + ' *'.join(AsciiParser.FILE_EXT) + ')'
+        file_filter = 'Ascii file (*' + AsciiParser.FILE_EXT + ')'
         file, filt = QFileDialog.getOpenFileName(self, 'Open File', user_settings.working_dir, file_filter)
 
         if file:
@@ -280,13 +280,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __export_fuel_map(self):
 
         user_settings = UserSettings()
-        file_filter = 'Ascii GRID file (*' + ' *'.join(AsciiParser.FILE_EXT) + ')'
+        file_filter = 'Ascii file (*' + AsciiParser.FILE_EXT + ')'
         file, filt = QFileDialog.getSaveFileName(self, 'Save File', user_settings.working_dir, file_filter)
 
         if file:
 
-            if not file.endswith('.asc') or not file.endswith('.grd'):
-                file += AsciiParser.FILE_EXT[0]
+            if not file.endswith('.asc'):
+                file += AsciiParser.FILE_EXT
 
             self._fl_map_editor.save(file)
             QMessageBox.information(self, "Export successful", "Fuel map successfully exported")
@@ -294,7 +294,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __import_dem(self):
 
         user_settings = UserSettings()
-        file_filter = 'Ascii GRID file (*' + ' *'.join(AsciiParser.FILE_EXT) + ')'
+        file_filter = 'Ascii file (*' + AsciiParser.FILE_EXT + ')'
         file, filt = QFileDialog.getOpenFileName(self, 'Open File', user_settings.working_dir, file_filter)
 
         if file:
@@ -315,15 +315,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __export_dem(self):
 
         user_settings = UserSettings()
-        file_filter = 'Ascii GRID file (*' + ' *'.join(AsciiParser.FILE_EXT) + ')'
+        file_filter = 'Ascii file (*' + AsciiParser.FILE_EXT + ')'
         file, filt = QFileDialog.getSaveFileName(self, 'Save File', user_settings.working_dir, file_filter)
 
         if file:
 
-            if not file.endswith('.asc') or not file.endswith('.grd'):
-                file += AsciiParser.FILE_EXT[0]
+            if not file.endswith('.asc'):
+                file += AsciiParser.FILE_EXT
 
-            self._fl_map_editor.save(file)
+            self._ign_pt_editor.save(file)
             QMessageBox.information(self, "Export successful", "Digital elevation model successfully exported")
 
     @QtCore.pyqtSlot(int, name='__tab_changed')
