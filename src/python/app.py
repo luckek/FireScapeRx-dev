@@ -1,7 +1,9 @@
-import sys
-from PyQt5.QtWidgets import QApplication
-from MainWindow import MainWindow
 import logging as logger
+import sys
+
+from PyQt5.QtWidgets import QApplication
+
+from MainWindow import MainWindow
 
 
 def main(argv):
