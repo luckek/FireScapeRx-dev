@@ -9,6 +9,6 @@ class FuelMapEditorButton(Ui_AsciiGridEditorButton):
 
     no_data_color = [QColor(Qt.black)]
 
-    def __init__(self, parent, bttn_size, init_color=0, name=None):
+    def __init__(self, parent, bttn_size, init_color=1, name=None):
 
         super().__init__(parent, bttn_size, init_color, name)

@@ -18,7 +18,7 @@ class AsciiGridEditor(Ui_AsciiGridEditor):
         self._nrows = self._ascii_parser.nrows
         self._ncols = self._ascii_parser.ncols
 
-        cell_size = int(self._ascii_parser.cell_size)
+        cell_size = self._ascii_parser.cell_size
 
         # Record set of column coordinates
         self._row_set = set()
@@ -43,7 +43,7 @@ class AsciiGridEditor(Ui_AsciiGridEditor):
         self._col_set = set()
 
         # Rows start at min coordinate value
-        init_x_val = self._ascii_parser.xllcorner + int(cell_size / 2.0)
+        init_x_val = self._ascii_parser.xllcorner + (cell_size / 2)
         current_x_val = init_x_val
 
         # Setup column labels for editor

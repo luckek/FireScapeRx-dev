@@ -270,6 +270,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if file:
             # FIXME: make two fixed size widgets or something for fuel map and ignition point editor, they now have own scroll area
             # FIXME: increase SIZE when there are lots of cells in fuel map and ignition
+
+            if self._fl_map_editor:
+                self._fl_map_editor.deleteLater()
+                # self._fl_map_editor.hide()
+
             self._fl_map_editor = FuelMapEditor(self, file)
             self._fl_map_editor.setEnabled(True)
 
@@ -286,6 +291,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             # Set current tab to fuel type legend
             self._tab_widget.setCurrentIndex(1)
+
+            # Tab index might not change, so __tab_changed will never get called
+            self._fl_map_editor.show()
 
     def __export_fuel_map(self):
 
@@ -308,6 +316,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         file, filt = QFileDialog.getOpenFileName(self, 'Open File', user_settings.working_dir, file_filter)
 
         if file:
+
+            if self._ign_pt_editor:
+                self._ign_pt_editor.deleteLater()
+
             self._ign_pt_editor = IgnitionPointEditor(self, file)
             self._ign_pt_editor.setEnabled(True)
 
@@ -324,6 +336,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             # Set current tab to fuel type legend
             self._tab_widget.setCurrentIndex(2)
+            self._ign_pt_editor.show()
 
     def __export_dem(self):
 

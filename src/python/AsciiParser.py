@@ -10,13 +10,13 @@ class AsciiParser:
         self._nrows = 0
         self._xllcorner = 0.0
         self._yllcorner = 0.0
-        self._cell_size = 0.0
+        self._cell_size = 0
         self._NODATA_value = 0.0
         self._data_table = []
 
     def read(self):
         with open(self._fname) as f:
-            for line in f.readlines():
+            for line in f:
 
                 line = line.replace('\n', '')
 
@@ -24,31 +24,26 @@ class AsciiParser:
                     continue
 
                 if line.startswith('ncols'):
-                    cols_str = line.split(' ')[-1]
-                    self._ncols = int(cols_str.replace(' ', ''))
+                    self._ncols = int(line.split(' ')[-1])
 
                 elif line.startswith('nrows'):
-                    cols_str = line.split(' ')[-1]
-                    self._nrows = int(cols_str.replace(' ', ''))
+                    self._nrows = int(line.split(' ')[-1])
 
                 elif line.startswith('xllcorner'):
-                    cols_str = line.split(' ')[-1]
-                    self._xllcorner = float(cols_str.replace(' ', ''))
+                    self._xllcorner = float(line.split(' ')[-1])
 
                 elif line.startswith('yllcorner'):
-                    cols_str = line.split(' ')[-1]
-                    self._yllcorner = float(cols_str.replace(' ', ''))
+                    self._yllcorner = float(line.split(' ')[-1])
 
                 elif line.startswith('cellsize'):
-                    cols_str = line.split(' ')[-1]
-                    self._cell_size = float(cols_str.replace(' ', ''))
+                    self._cell_size = int(float(line.split(' ')[-1]))
 
                 elif line.startswith('NODATA_value'):
                     cols_str = line.split(' ')[-1]
                     self._NODATA_value = int(cols_str.replace(' ', ''))
 
                 else:
-                    self._data_table.append([int(x)for x in line.split(' ')])
+                    self._data_table.append([float(x)for x in line.split(' ')])
 
     def save(self, new_fname=None):
 
