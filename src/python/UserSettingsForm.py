@@ -48,6 +48,12 @@ class UserSettingsForm(QDialog, Ui_Dialog):
 
         self.user_settings.save_user_settings()
 
+    def output_dir_line_edit(self):
+        return self._output_dir_line_edit
+
+    def working_dir_line_edit(self):
+        return self._output_dir_line_edit
+
 
 @QtCore.pyqtSlot(tuple, name='button_clicked')
 def button_clicked(args):
@@ -62,7 +68,7 @@ def button_clicked(args):
     # Make sure user chose a directory
     if new_directory:
         if output_dir_pressed:
-            state.output_dir_line_edit.setText(new_directory)
+            state.output_dir_line_edit().setText(new_directory)
 
         else:
-            state.working_dir_line_edit.setText(new_directory)
+            state.working_dir_line_edit().setText(new_directory)
