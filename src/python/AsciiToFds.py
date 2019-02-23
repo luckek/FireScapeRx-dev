@@ -1,5 +1,6 @@
-from Point import Point
 from Fds import *
+from Point import Point
+
 
 class AsciiToFds:
 

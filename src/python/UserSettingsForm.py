@@ -1,9 +1,11 @@
-from PyQt5 import QtCore
-from PyQt5.QtWidgets import QDialog, QFileDialog
-from gui.Ui_UserSettings import Ui_Dialog
-from UserSettings import *
 import os.path as osp
+
+from PyQt5 import QtCore
+from PyQt5.QtWidgets import QDialog
+
+from UserSettings import *
 from Utility import get_directory
+from gui.Ui_UserSettings import Ui_Dialog
 
 
 class UserSettingsForm(QDialog, Ui_Dialog):

@@ -2,8 +2,9 @@
 # Unfortunately, this cannot be strictly enforced in python
 
 import os.path as osp
-from UserSettings import UserSettings
 from math import cos, sin
+
+from UserSettings import UserSettings
 from Utility import is_number
 
 

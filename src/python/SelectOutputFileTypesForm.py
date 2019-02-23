@@ -1,5 +1,6 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QDialog
+
 from gui.Ui_SelectOutputFileTypes import Ui_SelectOutputFileTypes
 
 

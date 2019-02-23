@@ -1,9 +1,9 @@
-from PyQt5.QtWidgets import QLabel
 from PyQt5.QtCore import Qt
-from gui.Ui_AsciIGridEditor import Ui_AsciiGridEditor
-from gui.Ui_AsciiGridEditorButton import Ui_AsciiGridEditorButton
+from PyQt5.QtWidgets import QLabel
+
 from AsciiParser import AsciiParser
 from Utility import linspace
+from gui.Ui_AsciIGridEditor import Ui_AsciiGridEditor
 
 
 class AsciiGridEditor(Ui_AsciiGridEditor):

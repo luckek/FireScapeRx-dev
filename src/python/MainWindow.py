@@ -3,24 +3,26 @@
 # fl = fuel
 # smv = smokeview
 
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox, qApp, QLabel, QGraphicsView, QWidget, QGridLayout, QDesktopWidget
-from gui.Ui_MainWindow import Ui_MainWindow
-from UserSettingsForm import UserSettingsForm, UserSettings
-from AboutDialog import AboutDialog
-from SimulationSettings import SimulationSettings
-from SelectOutputFileTypesForm import SelectOutputFileTypesForm
-from AsciiParser import AsciiParser
-from FuelMapEditor import FuelMapEditor
-from IgnitionPointEditor import IgnitionPointEditor
-from Fds import Fds
-from AsciiToFds import AsciiToFds
+import logging as logger
 import os
 import os.path as osp
-import Utility as util
 import sys
-import logging as logger
 import time
+
+from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox, qApp, QLabel, QGraphicsView, QWidget, QGridLayout
+
+import Utility as util
+from AboutDialog import AboutDialog
+from AsciiParser import AsciiParser
+from AsciiToFds import AsciiToFds
+from Fds import Fds
+from FuelMapEditor import FuelMapEditor
+from IgnitionPointEditor import IgnitionPointEditor
+from SelectOutputFileTypesForm import SelectOutputFileTypesForm
+from SimulationSettings import SimulationSettings
+from UserSettingsForm import UserSettingsForm, UserSettings
+from gui.Ui_MainWindow import Ui_MainWindow
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):

@@ -1,5 +1,5 @@
-from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtCore import pyqtSlot, Qt
+from PyQt5.QtWidgets import QPushButton
 
 
 class Ui_AsciiGridEditorButton(QPushButton):

@@ -1,5 +1,5 @@
-from PyQt5.QtWidgets import QScrollArea, QGridLayout, QWidget
 from PyQt5 import QtCore
+from PyQt5.QtWidgets import QScrollArea, QGridLayout, QWidget
 
 
 class Ui_AsciiGridEditor(QScrollArea):

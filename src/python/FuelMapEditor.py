@@ -1,6 +1,5 @@
 from AsciiGridEditor import AsciiGridEditor
 from FuelMapEditorButton import FuelMapEditorButton
-from PyQt5.QtWidgets import qApp
 
 
 class FuelMapEditor(AsciiGridEditor):

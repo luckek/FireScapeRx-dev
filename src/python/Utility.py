@@ -1,6 +1,8 @@
 import os
 import subprocess
+
 from PyQt5.QtWidgets import QFileDialog, QDesktopWidget
+
 
 # FIXME: can rename to more useful method name
 # eg if it is used to validate positive floats, could be called positive float validator
@@ -77,6 +79,7 @@ def linspace(start, end, number_points, increment=-1):
 
     return out
 
+
 def execute(cmd, cwd, out_file):
     """Execute the given command, from within the given current working directory"""
 
@@ -93,8 +96,6 @@ def meters_per_cell(meters, number_cells):
     return meters / number_cells
 
 
-# FIXME: possible soln for checking whether or not value is number
-# TODO: Move this into utility class?
 def is_number(s):
     try:
         float(s)
