@@ -117,7 +117,7 @@ class FdsParser:
             # Calculate mesh size
             mesh_i = self._x_end // self._cell_size
             mesh_j = self._y_end // self._cell_size
-            mesh_k = 126  # FIXME: Calculate this: z_max / cell_size
+            mesh_k = self._z_end // self._cell_size
 
             ijk_str = ','.join([str(int(mesh_i)), str(int(mesh_j)), str(int(mesh_k))])
             xb_str = ','.join([str(int(self._x_start)), str(int(self._x_end)), str(int(self._y_start)),
@@ -239,3 +239,19 @@ class FdsParser:
     @y_end.setter
     def y_end(self, new_y):
         self._y_end = new_y
+
+    @property
+    def z_start(self):
+        return self._z_start
+
+    @z_start.setter
+    def z_start(self, new_z):
+        self._z_start = new_z
+
+    @property
+    def z_end(self):
+        return self._z_end
+
+    @z_end.setter
+    def z_end(self, new_z):
+        self._z_end = new_z

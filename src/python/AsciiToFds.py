@@ -14,6 +14,20 @@ class AsciiToFds:
         self._nrows = fuel_map.nrows
         self._ncols = fuel_map.ncols
 
+        dat_table = self._dem.data_table
+
+        # TODO: ensure that NODATA value does not screw things up
+        # One liner to get max and min of data table
+        tbl_min = min([min(x) for x in dat_table])
+
+        # This 'zeroes out' elevation so the lowest elevation is 0 m.
+        # NOTE: We do this even when tbl_min = 0.0 so that the elevation values are rounded
+        for i in range(len(dat_table)):
+            dat_table[i] = [round(x - tbl_min) for x in dat_table[i]]
+
+        # Round to nearest tens
+        self._tbl_max = round(max([max(x) for x in dat_table]), -1)
+
         # FIXME:
         #self._spatial_translator = SpatialTranslator(fuel_map)
 
@@ -39,6 +53,8 @@ class AsciiToFds:
         # FIXME: LS template has no name, so user must choose a name when converting
         # idea: populate save file dialog with .asc filename(as suggested / default filename)
 
+        cells_above_max_z = 10
+
         # Calculate area mapping
         area_map = self.__convert(fuel_map_grid)
 
@@ -57,6 +73,9 @@ class AsciiToFds:
 
         new_fds_file.y_start = fuel_map.y_min_val()
         new_fds_file.y_end = fuel_map.y_max()
+
+        new_fds_file.z_start = 0  # This should always be true, because we subtract min from DEM table
+        new_fds_file.z_end = self._tbl_max + (cells_above_max_z * self._fuel_map.cell_size)
 
         # FIXME: add ignition points
 
