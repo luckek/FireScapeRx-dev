@@ -65,15 +65,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Hide and reset progress bar
         self.__hide_and_reset_progress()
 
+        # TODO: we might not need this since we check on button press
         # Setup validation for fuel map editor inputs
-        self._x_rng_ign_pt_max_line_edit.returnPressed.connect(self.__x_rng_ret_pressed)
-        self._x_rng_ign_pt_min_line_edit.returnPressed.connect(self.__x_rng_ret_pressed)
+        # self._x_rng_min_fl_line_edit.returnPressed.connect(self.__x_rng_ret_pressed())
+        # self._x_rng_max_fl_line_edit.returnPressed.connect(self.__x_rng_ret_pressed())
 
-        self._y_rng_ign_pt_max_line_edit.returnPressed.connect(self.__y_rng_ret_pressed)
-        self._y_rng_ign_pt_min_line_edit.returnPressed.connect(self.__y_rng_ret_pressed)
+        # self._y_rng_min_fl_line_edit.returnPressed.connect(self.__y_rng_ret_pressed())
+        # self._y_rng_max_fl_line_edit.returnPressed.connect(self.__y_rng_ret_pressed())
 
         self.modify_fuel_map_button.clicked.connect(self.__modify_fuel_map)
-        self.modify_ign_points_button.clicked.connect(self.__modify_ignition_map)
+        self.modify_ign_pts_button.clicked.connect(self.__modify_ignition_map)
 
         # Initialize fds object
         self._fds = Fds()
@@ -239,27 +240,66 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def __modify_ignition_map(self):
 
-        x_min_str = self._x_rng_ign_pt_min_line_edit.text()
-        x_max_str = self._x_rng_ign_pt_max_line_edit.text()
+        axis = self._ign_pt_axis_combo_box.currentText()
 
-        y_min_str = self._y_rng_ign_pt_min_line_edit.text()
-        y_max_str = self._y_rng_ign_pt_max_line_edit.text()
+        usr_min_str = self._ign_pt_rng_min_line_edit.text()
+        usr_max_str = self._ign_pt_rng_max_line_edit.text()
 
-        # Ensure x and y range are valid
-        if self.__check_ign_pt_x_rng(x_min_str, x_max_str):
-            if self.__check_ign_pt_y_rng(y_min_str, y_max_str):
-                print('valid coordinate range')
+        row_col_str = self._ign_pt_row_col_line_edit.text()
 
-                x_min = int(x_min_str)
-                x_max = int(x_max_str)
+        # TODO: validate these
+        t_start_str = self._ign_pt_t_start_line_edit.text()
+        t_end_str = self._ign_pt_t_end_line_edit.text()
 
-                y_min = int(y_min_str)
-                y_max = int(y_max_str)
+        # check time here b/c it is common to both cases
+        if self.__check_ign_pt_t_rng(t_start_str, t_end_str):
 
-                ignition_type = self._ign_pt_combo_box.currentIndex()
+            t_start = float(t_start_str)
+            t_end = float(t_end_str)
 
-                # Modify the fuel map
-                self._ign_pt_editor.modify_range(x_min, x_max, y_min, y_max, ignition_type)
+            if axis == 'Horizontal':
+
+                if self.__check_ign_pt_x_rng(usr_min_str, usr_max_str):
+
+                    # TODO: could probably make a check row / check col function to speed this up a bit
+                    if self.__check_ign_pt_y_rng(row_col_str, row_col_str):
+
+                        x_min = int(usr_min_str)
+                        x_max = int(usr_max_str)
+
+                        y_min = int(row_col_str)
+                        y_max = int(row_col_str)
+
+                        ignition_type = self._ign_pt_add_rm_combo_box.currentIndex()
+
+                        # Modify the ignition points
+
+                        if self._ign_pt_editor.modify_range(x_min, x_max, y_min, y_max, t_start, t_end, ignition_type) is 'OVERLAP':
+                            QMessageBox.information(self, "Overlapping Fire Lines", "Fire Lines may not overlap. If you "
+                                                                                    "prefer this line, please delete the "
+                                                                                    "old one")
+
+            elif axis == 'Vertical':
+
+                if self.__check_ign_pt_y_rng(usr_min_str, usr_max_str):
+
+                    # TODO: could probably make a check row / check col function to speed this up a bit
+                    if self.__check_ign_pt_x_rng(row_col_str, row_col_str):
+
+                        x_min = int(row_col_str)
+                        x_max = int(row_col_str)
+
+                        y_min = int(usr_min_str)
+                        y_max = int(usr_max_str)
+
+                        ignition_type = self._ign_pt_add_rm_combo_box.currentIndex()
+
+                        # Modify the ignition points
+                        if self._ign_pt_editor.modify_range(x_min, x_max, y_min, y_max, t_start, t_end, ignition_type) is 'OVERLAP':
+                            QMessageBox.information(self, "Overlapping Fire Lines",
+                                                    "Fire Lines may not overlap. If you "
+                                                    "prefer this line, please delete the "
+                                                    "old one")
 
     def __import_fuel_map(self):
 
@@ -592,10 +632,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.ignition_point_legend_tab.setEnabled(True)
 
     def __x_rng_ret_pressed(self):
-        self.__check_fl_map_x_rng()
+
+        usr_x_min = self._x_rng_min_fl_line_edit.text()
+        usr_x_max = self._x_rng_max_fl_line_edit.text()
+
+        self.__check_fl_map_x_rng(usr_x_min, usr_x_max)
 
     def __y_rng_ret_pressed(self):
-        self.__check_fl_map_y_rng()
+
+        usr_y_min = self._y_rng_min_fl_line_edit.text()
+        usr_y_max = self._y_rng_max_fl_line_edit.text()
+
+        self.__check_fl_map_y_rng(usr_y_min, usr_y_max)
 
     def __check_fl_map_x_rng(self, usr_x_min, usr_x_max):
 
@@ -741,6 +789,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # cannot access this function until both are loaded
 
         # TODO: ensure that DEM and fuel map are both same size
+        # TODO: ensure that t_end of all fire lines is < sim duration
         # idea: user cannot load fuel map that is not same size as DEM and vice versa
         fl_map_parser = self._fl_map_editor.parser()
         dem_parser = self._ign_pt_editor.parser()
@@ -749,6 +798,45 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         ascii_fds_converter = AsciiToFds(fl_map_parser, dem_parser, sim_settings)
         ascii_fds_converter.save(self._fl_map_editor.button_values_grid())
+
+    def __check_ign_pt_t_rng(self, t_start, t_end):
+
+        # Check if one of the inputs is empty
+        if len(t_start) == 0 or len(t_end) == 0:
+            return False
+
+        # Ensure both of the inputs are valid numbers
+        if not util.is_number(t_start) or not util.is_number(t_end):
+            QMessageBox.information(self, 'Non numeric range', 'At least one of the time range inputs is non-numeric'
+                                                               '<br>Please input a numerical range.')
+            return False
+
+        usr_min = float(t_start)
+        usr_max = float(t_end)
+
+        # Ensure the start of the range is not larger than the end
+        if usr_min > usr_max:
+            QMessageBox.information(self, 'Invalid range', 'The first time range input cannot be larger than the second.'
+                                                           '<br>Please input a valid time range.')
+            return False
+
+        if usr_min < 0:
+            QMessageBox.information(self, 'Negative Time Value',
+                                    'Time Start is negative. Please enter a valid start time')
+
+        sim_time = self._sim_duration_line_edit.text()
+
+        if sim_time:
+
+            t_max = float(sim_time)
+
+            if usr_max > t_max:
+                QMessageBox.information(self, 'Invalid time',
+                                        'The second time range input cannot be greater than the currently specified simulation duration'
+                                        '<br>Please input a valid range.')
+                return False
+
+        return True
 
 
 def follow(thefile):
