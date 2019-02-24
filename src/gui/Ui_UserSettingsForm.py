@@ -8,16 +8,16 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class Ui_Dialog(object):
-    def setupUi(self, Dialog):
-        Dialog.setObjectName("Dialog")
-        Dialog.resize(422, 225)
-        self.button_box = QtWidgets.QDialogButtonBox(Dialog)
+class Ui_UserSettingsForm(object):
+    def setupUi(self, UserSettingsForm):
+        UserSettingsForm.setObjectName("UserSettingsForm")
+        UserSettingsForm.resize(422, 225)
+        self.button_box = QtWidgets.QDialogButtonBox(UserSettingsForm)
         self.button_box.setGeometry(QtCore.QRect(60, 170, 341, 32))
         self.button_box.setOrientation(QtCore.Qt.Horizontal)
         self.button_box.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.button_box.setObjectName("button_box")
-        self.gridLayoutWidget = QtWidgets.QWidget(Dialog)
+        self.gridLayoutWidget = QtWidgets.QWidget(UserSettingsForm)
         self.gridLayoutWidget.setGeometry(QtCore.QRect(40, 10, 361, 151))
         self.gridLayoutWidget.setObjectName("gridLayoutWidget")
         self.grid_layout = QtWidgets.QGridLayout(self.gridLayoutWidget)
@@ -54,18 +54,20 @@ class Ui_Dialog(object):
         self._num_sims_line_edit.setObjectName("_num_sims_line_edit")
         self.grid_layout.addWidget(self._num_sims_line_edit, 3, 2, 1, 1)
 
-        self.retranslateUi(Dialog)
-        self.button_box.accepted.connect(Dialog.accept)
-        self.button_box.rejected.connect(Dialog.reject)
-        QtCore.QMetaObject.connectSlotsByName(Dialog)
+        self.retranslateUi(UserSettingsForm)
+        self.button_box.accepted.connect(UserSettingsForm.accept)
+        self.button_box.rejected.connect(UserSettingsForm.reject)
+        QtCore.QMetaObject.connectSlotsByName(UserSettingsForm)
 
-    def retranslateUi(self, Dialog):
+    def retranslateUi(self, UserSettingsForm):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
-        self.output_dir_label.setText(_translate("Dialog", "Output Directory"))
-        self.working_dir_button.setText(_translate("Dialog", "WD"))
-        self.working_dir_label.setText(_translate("Dialog", "Working Directory"))
-        self.sim_duration_label.setText(_translate("Dialog", "Simulation Duration"))
-        self.output_dir_button.setText(_translate("Dialog", "OD"))
-        self.num_sims_label.setText(_translate("Dialog", "Number of Simulations"))
+        UserSettingsForm.setWindowTitle(_translate("UserSettingsForm", "FireScape Rx - User Settings"))
+        self.output_dir_label.setText(_translate("UserSettingsForm", "Output Directory"))
+        self.working_dir_button.setToolTip(_translate("UserSettingsForm", "Select a new Working Directory"))
+        self.working_dir_button.setText(_translate("UserSettingsForm", "Browse..."))
+        self.working_dir_label.setText(_translate("UserSettingsForm", "Working Directory"))
+        self.sim_duration_label.setText(_translate("UserSettingsForm", "Simulation Duration"))
+        self.output_dir_button.setToolTip(_translate("UserSettingsForm", "Select a new Output Directory"))
+        self.output_dir_button.setText(_translate("UserSettingsForm", "Browse..."))
+        self.num_sims_label.setText(_translate("UserSettingsForm", "Number of Simulations"))
 
