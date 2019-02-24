@@ -1,6 +1,6 @@
 from AsciiGridEditor import AsciiGridEditor
 from FuelMapEditorButton import FuelMapEditorButton
-from PyQt5.QtWidgets import qApp
+from Utility import linspace
 
 
 class FuelMapEditor(AsciiGridEditor):
@@ -39,3 +39,32 @@ class FuelMapEditor(AsciiGridEditor):
     @staticmethod
     def fuel_types():
         return ['Untreated', 'Treated', 'No data']
+
+    def modify_range(self, x_min, x_max, y_min, y_max, value):
+
+        # Figure out how many points we need
+        x_range_length = int((x_max - x_min) / self._ascii_parser.cell_size) + 1
+        y_range_length = int((y_max - y_min) / self._ascii_parser.cell_size) + 1
+
+        # Get those points, respectively
+        x_points = linspace(x_min, x_max, x_range_length, self._ascii_parser.cell_size)
+        y_points = linspace(y_min, y_max, y_range_length, self._ascii_parser.cell_size)
+
+        x_points = [int(x) for x in x_points]
+        y_points = [int(y) for y in y_points]
+
+        points_list = []
+
+        # Create full list of points we want to modify
+        for x_point in x_points:
+            for y_point in y_points:
+                points_list.append((x_point, y_point))
+
+        # Get dictionary to translate from (x,y) -> (i,j)
+        t_map = self.point_to_index_map()
+        button_grid = self._ascii_button_grid
+
+        # Modify the fuel map grip
+        for point in points_list:
+            i, j = t_map[point]
+            button_grid[i][j].color = value
