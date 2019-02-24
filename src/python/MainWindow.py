@@ -99,14 +99,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Initialize fds_file to be None
         self._smv_file = None
 
-        sim_settings = SimulationSettings('default.sim_settings')
-
-        # Initialize fields with simulation settings values
-        self._num_sim_line_edit.setText(str(sim_settings.num_sims))
-        self._sim_duration_line_edit.setText(str(sim_settings.sim_duration))
-        self._wind_speed_line_edit.setText(str(sim_settings.wind_speed))
-        self._wind_direction_line_edit.setText(str(sim_settings.wind_direction))
-
         for child in self._menu_bar.children():
             if type(child) is QtWidgets.QMenu:
                 for action in child.actions():
@@ -326,7 +318,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # This means that a DEM has already been loaded,
             # so the user can now convert to FDS file
             if self._ign_pt_editor:
-                self._sim_settings_tab.setEnabled(True)
+                self.__init_sim_settings()
                 self.action_ascii_to_fds.setEnabled(True)
 
             # Set current tab to fuel type legend
@@ -371,7 +363,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # This means that a fuel map has already been loaded,
             # so the user can now convert to FDS file
             if self._fl_map_editor:
-                self._sim_settings_tab.setEnabled(True)
+                self.__init_sim_settings()
                 self.action_ascii_to_fds.setEnabled(True)
 
             # Set current tab to fuel type legend
@@ -391,6 +383,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             self._ign_pt_editor.save(file)
             QMessageBox.information(self, "Export successful", "Digital elevation model successfully exported")
+
+    def __init_sim_settings(self):
+
+        if not self._sim_settings_tab.isEnabled():
+
+            self._sim_settings_tab.setEnabled(True)
+
+            sim_settings = SimulationSettings('default.sim_settings')
+
+            # Initialize fields with simulation settings values
+            self._num_sim_line_edit.setText(str(sim_settings.num_sims))
+            self._sim_duration_line_edit.setText(str(sim_settings.sim_duration))
+            self._wind_speed_line_edit.setText(str(sim_settings.wind_speed))
+            self._wind_direction_line_edit.setText(str(sim_settings.wind_direction))
 
     @QtCore.pyqtSlot(int, name='__tab_changed')
     def __tab_changed(self, new_tab_index):
@@ -438,7 +444,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 return
 
             self._sim_title_label.setText('Simulation Title: ' + self._fds.job_name())
-            self._sim_settings_tab.setEnabled(True)
+
+            self.__init_sim_settings()
+
             QMessageBox.information(self, 'Import successful', 'Environment imported successfully.')
 
     def __run_simulation(self):
