@@ -5,7 +5,6 @@ class FdsParser:
 
     file_ext = '.fds'
 
-    # TODO: figure out what is optional, create mechanism to deal with that
     def __init__(self):
         self._lines = list()
 
@@ -27,7 +26,6 @@ class FdsParser:
         self._y_start = 0
         self._y_end = 0
 
-        # FIXME: actually use these
         self._z_start = 0
         self._z_end = 0
 
@@ -58,7 +56,6 @@ class FdsParser:
                 if len(line) == 0 or line[0] == '-' or line[0] == 'c' or line[0] == ' ':
                     continue
 
-                # FIXME: check this
                 if line.startswith('&HEAD'):
 
                     self._head = line

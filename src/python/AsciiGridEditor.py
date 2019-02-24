@@ -24,15 +24,15 @@ class AsciiGridEditor(Ui_AsciiGridEditor):
         self._row_set = set()
 
         # Columns start at max coordinate value
-        init_y_val = self._ascii_parser.yllcorner + (int((cell_size * self._nrows) - int(cell_size / 2.0)))
+        init_y_val = int(self._ascii_parser.yllcorner) + cell_size * self._nrows - cell_size // 2
         current_y_val = init_y_val
 
         # Setup row labels for editor
         for i in range(1, self._nrows + 1):
 
-            self._row_set.add(int(current_y_val))
+            self._row_set.add(current_y_val)
 
-            label = QLabel(parent=self._grid_layout_widget, text=str(int(current_y_val)))
+            label = QLabel(parent=self._grid_layout_widget, text=str(current_y_val))
             label.setFixedSize(self.BUTTON_SIZE, self.BUTTON_SIZE)
             label.setAlignment(Qt.AlignCenter)
             self._grid_layout.addWidget(label, i, 0)
@@ -43,7 +43,7 @@ class AsciiGridEditor(Ui_AsciiGridEditor):
         self._col_set = set()
 
         # Rows start at min coordinate value
-        init_x_val = self._ascii_parser.xllcorner + (cell_size / 2)
+        init_x_val = int(self._ascii_parser.xllcorner) + cell_size // 2
         current_x_val = init_x_val
 
         # Setup column labels for editor
@@ -51,7 +51,7 @@ class AsciiGridEditor(Ui_AsciiGridEditor):
 
             self._col_set.add(current_x_val)
 
-            label = QLabel(parent=self._grid_layout_widget, text=str(int(current_x_val)))
+            label = QLabel(parent=self._grid_layout_widget, text=str(current_x_val))
             label.setFixedSize(self.BUTTON_SIZE, self.BUTTON_SIZE)
             label.setAlignment(Qt.AlignCenter)
             self._grid_layout.addWidget(label, 0, i)

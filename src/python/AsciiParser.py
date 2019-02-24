@@ -11,7 +11,7 @@ class AsciiParser:
         self._xllcorner = 0.0
         self._yllcorner = 0.0
         self._cell_size = 0
-        self._NODATA_value = 0.0
+        self._NODATA_value = 0
         self._data_table = []
 
     def read(self):
@@ -122,7 +122,7 @@ class AsciiParser:
         return self.cell_size * self._ncols
 
     def x_min(self):
-        return self._xllcorner + int(self._cell_size / 2)
+        return self._xllcorner + self._cell_size // 2
 
     def x_min_val(self):
         return self._xllcorner
@@ -131,7 +131,7 @@ class AsciiParser:
         return self.cell_size * self._nrows
 
     def y_min(self):
-        return self._yllcorner + int(self._cell_size / 2)
+        return self._yllcorner + self._cell_size // 2
 
     def y_min_val(self):
         return self._yllcorner
