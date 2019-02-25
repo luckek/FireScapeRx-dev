@@ -487,9 +487,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         os.mkdir(out_dir)
 
+        #TODO: Determine alternate save method or remove export fds file
         # Save the input file that was used to run the simulation
-        save_fname = osp.join(out_dir, fds_fname + Fds.file_ext())
-        self._fds.save(save_fname)
+        #save_fname = osp.join(out_dir, fds_fname + Fds.file_ext())
+        #self._fds.save(save_fname)
 
         logger.log(logger.INFO, 'Running simulation')
 
