@@ -35,6 +35,18 @@ class FireLine:
     def same(self, rhs):
         return self.points_set() == rhs.points_set()
 
+    def start_coor(self):
+        return self._points_list[0]
+
+    def end_coor(self):
+        return self._points_list[-1]
+
+    def start_time(self):
+        return self._times_list[0]
+
+    def end_time(self):
+        return self._times_list[-1]
+
     def __getitem__(self, i):
 
         return self._points_list[i], self._times_list[i]
