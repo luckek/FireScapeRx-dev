@@ -753,6 +753,45 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         return False
 
+    def __check_ign_pt_t_rng(self, t_start, t_end):
+
+        # Check if one of the inputs is empty
+        if len(t_start) == 0 or len(t_end) == 0:
+            return False
+
+        # Ensure both of the inputs are valid numbers
+        if not util.is_number(t_start) or not util.is_number(t_end):
+            QMessageBox.information(self, 'Non numeric range', 'At least one of the time range inputs is non-numeric'
+                                                               '<br>Please input a numerical range.')
+            return False
+
+        usr_min = float(t_start)
+        usr_max = float(t_end)
+
+        # Ensure the start of the range is not larger than the end
+        if usr_min > usr_max:
+            QMessageBox.information(self, 'Invalid range', 'The first time range input cannot be larger than the second.'
+                                                           '<br>Please input a valid time range.')
+            return False
+
+        if usr_min < 0:
+            QMessageBox.information(self, 'Negative Time Value',
+                                    'Time Start is negative. Please enter a valid start time')
+
+        sim_time = self._sim_duration_line_edit.text()
+
+        if sim_time:
+
+            t_max = float(sim_time)
+
+            if usr_max > t_max:
+                QMessageBox.information(self, 'Invalid time',
+                                        'The second time range input cannot be greater than the currently specified simulation duration'
+                                        '<br>Please input a valid range.')
+                return False
+
+        return True
+
     def __check_rng_input(self, usr_min, usr_max, f_map_min, f_map_max):
 
         # Check if one of the inputs is empty
@@ -797,54 +836,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # cannot access this function until both are loaded
 
         # TODO: ensure that DEM and fuel map are both same size
-        # TODO: ensure that t_end of all fire lines is < sim duration
         # idea: user cannot load fuel map that is not same size as DEM and vice versa
+
+        # Note: Logically, this is where we would ensure that all of the fire line times
+        # are less than the simulation duration, however WFDS does not care weather or not such
+        # ignition points are present, hence we do not entirely care either.
         fl_map_parser = self._fl_map_editor.parser()
         dem_parser = self._ign_pt_editor.parser()
 
         sim_settings = SimulationSettings('default.sim_settings')
 
+        # TODO: set current environment as the created one, if creation is successful
         ascii_fds_converter = AsciiToFds(fl_map_parser, dem_parser, sim_settings)
         ascii_fds_converter.save(self._fl_map_editor.button_values_grid())
-
-    def __check_ign_pt_t_rng(self, t_start, t_end):
-
-        # Check if one of the inputs is empty
-        if len(t_start) == 0 or len(t_end) == 0:
-            return False
-
-        # Ensure both of the inputs are valid numbers
-        if not util.is_number(t_start) or not util.is_number(t_end):
-            QMessageBox.information(self, 'Non numeric range', 'At least one of the time range inputs is non-numeric'
-                                                               '<br>Please input a numerical range.')
-            return False
-
-        usr_min = float(t_start)
-        usr_max = float(t_end)
-
-        # Ensure the start of the range is not larger than the end
-        if usr_min > usr_max:
-            QMessageBox.information(self, 'Invalid range', 'The first time range input cannot be larger than the second.'
-                                                           '<br>Please input a valid time range.')
-            return False
-
-        if usr_min < 0:
-            QMessageBox.information(self, 'Negative Time Value',
-                                    'Time Start is negative. Please enter a valid start time')
-
-        sim_time = self._sim_duration_line_edit.text()
-
-        if sim_time:
-
-            t_max = float(sim_time)
-
-            if usr_max > t_max:
-                QMessageBox.information(self, 'Invalid time',
-                                        'The second time range input cannot be greater than the currently specified simulation duration'
-                                        '<br>Please input a valid range.')
-                return False
-
-        return True
 
 
 def follow(thefile):
