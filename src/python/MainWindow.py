@@ -237,7 +237,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         row_col_str = self._ign_pt_row_col_line_edit.text()
 
-        # TODO: validate these
         t_start_str = self._ign_pt_t_start_line_edit.text()
         t_end_str = self._ign_pt_t_end_line_edit.text()
 
