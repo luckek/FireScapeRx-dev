@@ -1,6 +1,6 @@
 from Point import Point
 from Fds import *
-
+from math import inf
 
 class AsciiToFds:
 
@@ -17,9 +17,19 @@ class AsciiToFds:
 
         dat_table = self._dem.data_table
 
-        # TODO: ensure that NODATA value does not screw things up
+        # TODO: find better way to do this
+        # NOTE: we replace NO_DATA values with inf here so that we may properly calculate the table minimum
+        dat_table_mod = []
+        for row in dat_table:
+            for i, value in enumerate(row):
+
+                if value == self._dem.no_data_val:
+                    row[i] = inf
+
+            dat_table_mod.append(row)
+
         # One liner to get max and min of data table
-        tbl_min = min([min(x) for x in dat_table])
+        tbl_min = min([min(x) for x in dat_table_mod])
 
         # This 'zeroes out' elevation so the lowest elevation is 0 m.
         # NOTE: We do this even when tbl_min = 0.0 so that the elevation values are rounded
