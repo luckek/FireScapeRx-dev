@@ -136,9 +136,25 @@ class FdsParser:
             f.write(part_id_str)
 
             f.write("-- Ignitor fire\n")
-            # FIXME: Write ignitor fires out here
+            for i, ign_cell in enumerate(self._vent):
 
-            f.write("-- Vegetation\n")
+                p1, p2, ign_time = ign_cell
+
+                x1 = p1.x
+                y1 = p1.y
+                z1 = p1.z
+
+                x2 = p2.x
+                y2 = p2.y
+                z2 = p2.z
+
+                ign_id = 'P' + str(i)
+                xb_str = ','.join([str(int(x1)), str(int(x2)), str(int(y1)), str(int(y2)), str(int(z1)), str(z2)])
+
+                f.write("&SURF ID='" + ign_id + "',VEG_LSET_IGNITE_TIME=" + str(ign_time) + ",RGB=255,0,0 /\n")
+                f.write("&VENT XB=" + xb_str + ",SURF_ID='" + ign_id + "' /\n")
+
+            f.write("\n-- Vegetation\n")
             for surf_id in self._obst_dict:
                 for veg in self._obst_dict[surf_id]:
 
@@ -178,8 +194,8 @@ class FdsParser:
         head_str = self._head.split('=')[1].replace('/', '').replace("'", '').strip(' ')
         return head_str
 
-    def add_vent(self, p1, p2, surf_id):
-        self._vent.append((p1, p2, surf_id))
+    def add_ign_cell(self, p1, p2, time):
+        self._vent.append((p1, p2, time))
 
     def _add_obst(self, p1, p2, surf_id):
 

@@ -1,6 +1,7 @@
 from Point import Point
 from Fds import *
 
+
 class AsciiToFds:
 
     ls_template_file = os.path.abspath('../../files/test_files/fds_input/LS_template.txt')
@@ -47,7 +48,7 @@ class AsciiToFds:
 
         return self.__create_area_map(map_list)
 
-    def save(self, fuel_map_grid):
+    def save(self, fuel_map_grid, fire_lines):
         """Creates FDS object that is equivalent to current fuel map, elevation model, and simulation settings"""
 
         # FIXME: LS template has no name, so user must choose a name when converting
@@ -77,7 +78,14 @@ class AsciiToFds:
         new_fds_file.z_start = 0  # This should always be true, because we subtract min from DEM table
         new_fds_file.z_end = self._tbl_max + (cells_above_max_z * self._fuel_map.cell_size)
 
-        # FIXME: add ignition points
+        # FIXME: Test this whole routine...
+        ign_pts_and_times = self.convert_fire_lines(fire_lines)
+
+        for item in ign_pts_and_times:
+
+            p1, p2, ign_time = item
+
+            new_fds_file.add_ign_cell(p1, p2, ign_time)
 
         for key in area_map:
             for point_pair in area_map[key]:
@@ -127,6 +135,41 @@ class AsciiToFds:
         y = self._i_cache[i]
 
         return Point(x, y, 0)
+
+    # FIXME: this does not work
+    def value_to_index(self, y, x):
+
+        cell_size = self._fuel_map.cell_size
+
+        j = (x - self._fuel_map.xllcorner) / cell_size
+        i = ((y + self._fuel_map.yllcorner) + (self._nrows * cell_size)) / cell_size
+
+        return Point(j, i, 0)
+
+    # TODO: figure out something a little better
+    def index_to_point_map(self):
+
+        t_map = dict()
+
+        cell_size = self._dem.cell_size
+        init_x = self._dem.xllcorner + int(cell_size / 2)
+        init_y = self._dem.yllcorner + (int((cell_size * self._nrows) - int(cell_size / 2.0)))
+
+        current_y = init_y
+        for i in range(self._nrows):
+            current_x = init_x
+            for j in range(self._ncols):
+                t_map[(i, j)] = (int(current_x), int(current_y))
+                current_x += cell_size
+            current_y -= cell_size
+
+        return t_map
+
+    def point_to_index_map(self):
+
+        t_map = self.index_to_point_map()
+
+        return {b: a for a, b in t_map.items()}
 
     def __convert_rows_same_elevation(self, fuel_map_grid):
 
@@ -243,3 +286,35 @@ class AsciiToFds:
                     area_map[i].append((p1, p2))
 
         return area_map
+
+    def convert_fire_lines(self, fire_lines):
+
+        points_and_time = []
+
+        offset = self._fuel_map.cell_size / 2.0
+
+        t_map = self.point_to_index_map()
+
+        for f_line in fire_lines:
+
+            for l, point in enumerate(f_line.points_list()):
+
+                i, j = t_map[point]
+                x, y = point
+
+                # Create p1 and p2
+                p1 = Point(x, y, self._dem.data_table[i][j])
+                p2 = Point(x, y, self._dem.data_table[i][j])
+
+                # Offset b/c FDS wants start
+                # to end
+                p1.x -= offset
+                p1.y -= offset
+
+                p2.x += offset
+                p2.y += offset
+
+                # Append to list, mapped by fuel type
+                points_and_time.append((p1, p2, f_line.times_list()[l]))
+
+        return points_and_time

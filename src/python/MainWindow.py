@@ -58,8 +58,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # FIXME: re-enable when this gets implemented:
         self.action_import_summary_file.setEnabled(False)
-        self.add_type_button.setEnabled(False)
-        self.remove_type_button.setEnabled(False)
         self.action_create_environment.setEnabled(False)
 
         # Hide and reset progress bar
@@ -848,7 +846,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # TODO: set current environment as the created one, if creation is successful
         ascii_fds_converter = AsciiToFds(fl_map_parser, dem_parser, sim_settings)
-        ascii_fds_converter.save(self._fl_map_editor.button_values_grid())
+        ascii_fds_converter.save(self._fl_map_editor.button_values_grid(), self._ign_pt_editor.fire_lines())
 
 
 def follow(thefile):
