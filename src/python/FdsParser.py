@@ -73,6 +73,9 @@ class FdsParser:
                 if line.startswith('&TIME'):
                     self._time = line.split('=')[1].replace('/', '').strip(' ')
 
+            if not self._title:
+                self._title = util.get_filename(fds_file)
+
     def save_file(self, fds_file):
         """Function to save contents of an fds file"""
 
