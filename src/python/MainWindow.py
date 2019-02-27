@@ -854,7 +854,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             # TODO: set current environment as the created one, if creation is successful
             ascii_fds_converter = AsciiToFds(fl_map_parser, dem_parser, sim_settings)
-            ascii_fds_converter.save(self._fl_map_editor.button_values_grid(), self._ign_pt_editor.fire_lines(), file)
+            save_success = ascii_fds_converter.save(self._fl_map_editor.button_values_grid(), self._ign_pt_editor.fire_lines(), file)
+
+            if save_success:
+
+                usr_reply = QMessageBox.question(self, "Export successful", "Environment exported successfully. "
+                                                 "Would you like to set it as the current environment?",
+                                                 QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+
+                if usr_reply == QMessageBox.Yes:
+
+                    self._fds.fds_file = file
+                    self._fds.read()
+
+                    self._sim_title_label.setText('Simulation Title: ' + self._fds.job_name())
 
 
 def follow(thefile):
