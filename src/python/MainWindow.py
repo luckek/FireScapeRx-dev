@@ -390,7 +390,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             sim_settings = SimulationSettings('default.sim_settings')
 
             # Initialize fields with simulation settings values
-            self._num_sim_line_edit.setText(str(sim_settings.num_sims))
             self._sim_duration_line_edit.setText(str(sim_settings.sim_duration))
             self._wind_speed_line_edit.setText(str(sim_settings.wind_speed))
             self._wind_direction_line_edit.setText(str(sim_settings.wind_direction))
