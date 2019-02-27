@@ -19,7 +19,6 @@ class UserSettingsForm(QDialog, Ui_Dialog):
         self._output_dir_line_edit.setText(osp.abspath(str(self.user_settings.output_dir)))
         self._working_dir_line_edit.setText(osp.abspath(str(self.user_settings.working_dir)))
         self._sim_duration_line_edit.setText(str(self.user_settings.sim_duration))
-        self._num_sims_line_edit.setText(str(self.user_settings.num_sims))
 
         # Set line edits to read only
         self._output_dir_line_edit.setReadOnly(True)
@@ -44,7 +43,6 @@ class UserSettingsForm(QDialog, Ui_Dialog):
         self.user_settings.output_dir = self._output_dir_line_edit.text()
         self.user_settings.working_dir = self._working_dir_line_edit.text()
         self.user_settings.sim_duration = self._sim_duration_line_edit.text()
-        self.user_settings.num_sims = self._num_sims_line_edit.text()
 
         self.user_settings.save_user_settings()
 

@@ -43,7 +43,6 @@ class FdsParser:
 
         self._time = ''
 
-    # TODO: add ability to carry comments through
     def parse(self, fds_file):
         """Function to parse contents of an fds file, most things are parsed at a fairly high level.
         Returns true if parsing is successful"""

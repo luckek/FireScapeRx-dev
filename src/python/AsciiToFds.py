@@ -61,7 +61,6 @@ class AsciiToFds:
     def save(self, fuel_map_grid, fire_lines, save_fname):
         """Creates FDS object that is equivalent to current fuel map, elevation model, and simulation settings"""
 
-        # FIXME: LS template has no name, so user must choose a name when converting
         # idea: populate save file dialog with .asc filename(as suggested / default filename)
 
         cells_above_max_z = 10
@@ -88,7 +87,6 @@ class AsciiToFds:
         new_fds_file.z_start = 0  # This should always be true, because we subtract min from DEM table
         new_fds_file.z_end = self._tbl_max + (cells_above_max_z * self._fuel_map.cell_size)
 
-        # FIXME: Test this whole routine...
         ign_pts_and_times = self.convert_fire_lines(fire_lines)
 
         for item in ign_pts_and_times:

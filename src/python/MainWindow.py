@@ -38,7 +38,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Center main application window
         util.center_window(self)
 
-        # TODO: init editor with no file here
+        # TODO: init editor with no file here?
         # Create the fuel map editor variable
         self._fl_map_editor = None
         self._ign_pt_editor = None
@@ -104,7 +104,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     identifier = action.objectName()
                     action.triggered.connect(lambda state, x=identifier: self.__handle_button(x))
 
-    # FIXME: make static or remove from class altogether if we do not need to access anything in main window
     @QtCore.pyqtSlot(str)
     def __handle_button(self, identifier):
 
@@ -160,7 +159,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
 
         elif identifier == 'action_run_sim':
-            # TODO: run simulation num_sims number of times
             self.__run_simulation()
 
         elif identifier == 'action_view_sim':
@@ -195,12 +193,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             dialog = AboutDialog()
 
         else:
-            # TODO: Log unrecognized identifiers?
             print('UNRECOGNIZED IDENTIFIER:', identifier)
             return
 
         if dialog is not None:
-            # TODO: Log null dialog?
             dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)  # Ensure resources are freed when dlg closes
             dialog.exec_()  # Executes dialog
 
@@ -241,7 +237,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         t_end_str = self._ign_pt_t_end_line_edit.text()
 
         # check time here b/c it is common to both cases
-        if self.__check_ign_pt_t_rng(t_start_str, t_end_str):
+        if self.__validate_ign_pt_t_range(t_start_str, t_end_str):
 
             t_start = float(t_start_str)
             t_end = float(t_end_str)
@@ -250,7 +246,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
                 if self.__check_ign_pt_x_rng(usr_min_str, usr_max_str):
 
-                    # TODO: could probably make a check row / check col function to speed this up a bit
+                    # TODO: make a check row / check col function to speed this up a bit
+                    # And give more informative user feedback
                     if self.__check_ign_pt_y_rng(row_col_str, row_col_str):
 
                         x_min = int(usr_min_str)
@@ -262,7 +259,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         ignition_type = self._ign_pt_add_rm_combo_box.currentIndex()
 
                         # Modify the ignition points
-
                         if self._ign_pt_editor.modify_range(x_min, x_max, y_min, y_max, t_start, t_end, ignition_type) is 'OVERLAP':
                             QMessageBox.information(self, "Overlapping Fire Lines", "Fire Lines may not overlap. If you "
                                                                                     "prefer this line, please delete the "
@@ -774,7 +770,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         return False
 
-    def __check_ign_pt_t_rng(self, t_start, t_end):
+    def __validate_ign_pt_t_range(self, t_start, t_end):
 
         # Check if one of the inputs is empty
         if len(t_start) == 0 or len(t_end) == 0:
@@ -798,18 +794,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if usr_min < 0:
             QMessageBox.information(self, 'Negative Time Value',
                                     'Time Start is negative. Please enter a valid start time')
-
-        sim_time = self._sim_duration_line_edit.text()
-
-        if sim_time:
-
-            t_max = float(sim_time)
-
-            if usr_max > t_max:
-                QMessageBox.information(self, 'Invalid time',
-                                        'The second time range input cannot be greater than the currently specified simulation duration'
-                                        '<br>Please input a valid range.')
-                return False
 
         return True
 
@@ -876,7 +860,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             sim_settings = SimulationSettings('default.sim_settings')
 
-            # TODO: set current environment as the created one, if creation is successful
             ascii_fds_converter = AsciiToFds(fl_map_parser, dem_parser, sim_settings)
             save_success = ascii_fds_converter.save(self._fl_map_editor.button_values_grid(), self._ign_pt_editor.fire_lines(), file)
 

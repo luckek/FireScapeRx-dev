@@ -61,9 +61,6 @@ class AsciiGridEditor(Ui_AsciiGridEditor):
         self._ascii_button_grid = []
         self.setWidget(self._grid_layout_widget)
 
-    # FIXME:
-    # def setup_grid()
-
     def button_values_grid(self):
 
         fuel_map_grid = []

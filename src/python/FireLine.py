@@ -1,6 +1,3 @@
-from Point import Point
-
-
 class FireLine:
 
     def __init__(self, points_list, times):
