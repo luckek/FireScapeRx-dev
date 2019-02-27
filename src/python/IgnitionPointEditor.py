@@ -98,7 +98,7 @@ class IgnitionPointEditor(AsciiGridEditor):
                     for point in points_list:
                         i, j = t_map[point]
                         button_grid[i][j].color = value
-                        break
+                    break
 
     def fire_lines(self):
         return self._fire_lines
