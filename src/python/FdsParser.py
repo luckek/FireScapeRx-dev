@@ -103,18 +103,17 @@ class FdsParser:
                   "VEG_LSET_CANOPY_FMC=1\nVEG_LSET_WAF_SHELTERED = 0.18\nVEG_LSET_CANOPY_BULK_DENSITY= 0.037\n" \
                   "VEG_LSET_CANOPY_HEIGHT= 23\nVEG_LSET_CANOPY_BASE_HEIGHT = 11\n" \
                   "VEG_LSET_ROTHFM10_ZEROWINDSLOPE_ROS = 0.007118\nPART_ID='TE'\nNPPC = 1\nVEL = -0.01" \
-                  "\nRGB=122,117,48 /\n\n"
+                  "\nRGB=0,0,0 /\n\n"
 
         # FIXME: This could be made more general... currently hard coded from JFSP run 1
         part_id_str = "-- Thermal Elements\n&PART ID='TE',\nAGE=9999,\nTE_BURNTIME=2.5,\nMASSLESS=.TRUE.," \
                       "\nSAMPLING_FACTOR=30,\nCOLOR='BLACK' /\n\n"
 
         fds_fname = util.get_filename(fds_file)
-        if self._head == '':
-            self._head = fds_fname
 
-        if self._title == '':
-            self._title = fds_fname
+        # FIXME: this could be a little different / more general?
+        self._head = fds_fname
+        self._title = fds_fname
 
         with open(fds_file, 'w') as f:
 
