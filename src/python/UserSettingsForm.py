@@ -52,7 +52,7 @@ class UserSettingsForm(QDialog, Ui_Dialog):
         return self._output_dir_line_edit
 
     def working_dir_line_edit(self):
-        return self._output_dir_line_edit
+        return self._working_dir_line_edit
 
 
 @QtCore.pyqtSlot(tuple, name='button_clicked')
