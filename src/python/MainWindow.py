@@ -590,7 +590,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         assert len(colors) == len(fuel_types), "Length of colors != length of fuel_types"
 
         # Create the fuel map legend
-
         res_label = QLabel()
         res_label.setText('Resolution')
         res_label.setFixedSize(65, 20)
@@ -629,8 +628,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         assert len(colors) == len(fuel_types), "Length of colors != length of fuel_types"
 
-        # Create the fuel map legend
-
+        # Create the ignition point legend
         res_label = QLabel()
         res_label.setText('Resolution')
         res_label.setFixedSize(65, 20)
