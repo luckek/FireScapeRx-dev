@@ -95,8 +95,7 @@ class AsciiToFds:
                 new_fds_file.add_veg_cell(p1, p2, key)
 
         # new_fds_file should now have all relevant info
-
-        new_fds_file.save_file(save_fname)  # FIXME: let user pick name
+        return new_fds_file.save_file(save_fname)
 
     # FIXME: put this kind of stuff into own class?
     # could be 'spatial translator' or something cool

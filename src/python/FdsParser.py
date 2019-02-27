@@ -28,7 +28,6 @@ class FdsParser:
         self._y_start = 0
         self._y_end = 0
 
-        # FIXME: actually use these
         self._z_start = 0
         self._z_end = 0
 
@@ -56,6 +55,13 @@ class FdsParser:
 
                 self._lines.append(line)
 
+                title_idx = line.find('TITLE')
+
+                if title_idx != -1:
+                    sub_str = line[title_idx:].replace('/', '').replace("'", '').strip()
+
+                    self._title = sub_str.split("=")[1]
+
                 if len(line) == 0 or line[0] == '-' or line[0] == 'c' or line[0] == ' ':
                     continue
 
@@ -64,11 +70,8 @@ class FdsParser:
 
                     self._head = line
 
-                if line.startswith('TITLE'):
-                    self._title = line
-
                 if line.startswith('&TIME'):
-                    self._time = line
+                    self._time = line.split('=')[1].replace('/', '').strip(' ')
 
     def save_file(self, fds_file):
         """Function to save contents of an fds file"""
@@ -112,7 +115,7 @@ class FdsParser:
 
         with open(fds_file, 'w') as f:
 
-            f.write("&HEAD CHID='" + self._head + "',TITLE='" + self._title + ' /\n\n')
+            f.write("&HEAD CHID='" + self._head + "',TITLE='" + self._title + "' /\n\n")
 
             # Calculate mesh size
             mesh_i = self._x_end // self._cell_size
@@ -162,14 +165,15 @@ class FdsParser:
 
                     x1 = p1.x
                     y1 = p1.y
-                    z1 = p1.z  # FIXME: pull from DEM(could probably incorporate into point class)
+                    z1 = p1.z
 
                     x2 = p2.x
                     y2 = p2.y
-                    z2 = p2.z  # FIXME: pull from DEM(could probably incorporate into point class)
+                    z2 = p2.z
 
                     xb_str = ','.join([str(int(x1)), str(int(x2)), str(int(y1)), str(int(y2)), str(int(z1)), str(z2)])
                     f.write("&OBST XB=" + xb_str + ", SURF_ID='" + surf_id + "' /\n")
+
             f.write('\n')
 
             f.write("-- Outputs\n")
@@ -178,16 +182,16 @@ class FdsParser:
             f.write("-- END of Input file\n")
             f.write("&TAIL /")
 
+        return True
+
     # TODO: create setters for these values
     @property
     def time(self):
-        t_end_str = self._time.split('=')[1].replace('/', '').strip(' ')
-        return t_end_str
+        return self._time
 
     @property
     def title(self):
-        title_str = self._title.split('=')[1].replace('/', '').replace("'", '').strip(' ')
-        return title_str
+        return self._title
 
     @property
     def head(self):
