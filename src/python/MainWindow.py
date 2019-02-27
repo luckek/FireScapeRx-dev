@@ -590,10 +590,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         assert len(colors) == len(fuel_types), "Length of colors != length of fuel_types"
 
         # Create the fuel map legend
+
+        res_label = QLabel()
+        res_label.setText('Resolution')
+        res_label.setFixedSize(65, 20)
+
+        self._fl_type_grid_layout.addWidget(res_label, 0, 0)
+
+        res = QLabel()
+        res.setText(str(self._fl_map_editor.resolution()) + 'm')
+        res.setMaximumSize(35, 10)
+
+        self._fl_type_grid_layout.addWidget(res, 0, 1)
+
         for i in range(len(colors)):
             legend_label = QLabel()
             legend_label.setText(fuel_types[i])
-            self._fl_type_grid_layout.addWidget(legend_label, i, 0)
+            self._fl_type_grid_layout.addWidget(legend_label, i + 1, 0)
 
             legend_label.setFixedSize(65, 20)
 
@@ -604,7 +617,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             g_view.setPalette(pallete)
             g_view.setMaximumSize(25, 10)
 
-            self._fl_type_grid_layout.addWidget(g_view, i, 1)
+            self._fl_type_grid_layout.addWidget(g_view, i + 1, 1)
 
         self._fl_type_lgnd_scroll_area.setWidget(self._fl_type_grid_layout_widget)
         self._fl_type_lgnd_tab.setEnabled(True)
@@ -617,10 +630,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         assert len(colors) == len(fuel_types), "Length of colors != length of fuel_types"
 
         # Create the fuel map legend
+
+        res_label = QLabel()
+        res_label.setText('Resolution')
+        res_label.setFixedSize(65, 20)
+
+        self._ign_pt_type_grid_layout.addWidget(res_label, 0, 0)
+
+        res = QLabel()
+        res.setText(str(self._ign_pt_editor.resolution()) + 'm')
+        res.setMaximumSize(35, 10)
+
+        self._ign_pt_type_grid_layout.addWidget(res, 0, 1)
+
         for i in range(len(colors)):
             legend_label = QLabel()
             legend_label.setText(fuel_types[i])
-            self._ign_pt_type_grid_layout.addWidget(legend_label, i, 0)
+            self._ign_pt_type_grid_layout.addWidget(legend_label, i + 1, 0)
 
             legend_label.setFixedSize(65, 20)
 
@@ -631,7 +657,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             g_view.setPalette(pallete)
             g_view.setMaximumSize(25, 10)
 
-            self._ign_pt_type_grid_layout.addWidget(g_view, i, 1)
+            self._ign_pt_type_grid_layout.addWidget(g_view, i + 1, 1)
 
         self.ignition_point_map_legend_scroll_area.setWidget(self._ign_pt_type_grid_layout_widget)
         self.ignition_point_legend_tab.setEnabled(True)

@@ -92,6 +92,9 @@ class AsciiGridEditor(Ui_AsciiGridEditor):
     def grid_y_min(self):
         return self._ascii_parser.y_min()
 
+    def resolution(self):
+        return self._ascii_parser.cell_size
+
     def row_numbers(self):
         return self._row_set
 
