@@ -48,7 +48,7 @@ class AsciiToFds:
 
         return self.__create_area_map(map_list)
 
-    def save(self, fuel_map_grid, fire_lines):
+    def save(self, fuel_map_grid, fire_lines, save_fname):
         """Creates FDS object that is equivalent to current fuel map, elevation model, and simulation settings"""
 
         # FIXME: LS template has no name, so user must choose a name when converting
@@ -96,7 +96,7 @@ class AsciiToFds:
 
         # new_fds_file should now have all relevant info
 
-        new_fds_file.save_file("test_converted_fds.fds")  # FIXME: let user pick name
+        new_fds_file.save_file(save_fname)  # FIXME: let user pick name
 
     # FIXME: put this kind of stuff into own class?
     # could be 'spatial translator' or something cool

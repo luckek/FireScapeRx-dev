@@ -332,7 +332,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         if file:
 
-            if not file.endswith('.asc'):
+            if not file.endswith(AsciiParser.FILE_EXT):
                 file += AsciiParser.FILE_EXT
 
             self._fl_map_editor.save(file)
@@ -375,7 +375,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         if file:
 
-            if not file.endswith('.asc'):
+            if not file.endswith(AsciiParser.FILE_EXT):
                 file += AsciiParser.FILE_EXT
 
             self._ign_pt_editor.save(file)
@@ -835,17 +835,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # TODO: ensure that DEM and fuel map are both same size
         # idea: user cannot load fuel map that is not same size as DEM and vice versa
 
-        # Note: Logically, this is where we would ensure that all of the fire line times
-        # are less than the simulation duration, however WFDS does not care weather or not such
-        # ignition points are present, hence we do not entirely care either.
-        fl_map_parser = self._fl_map_editor.parser()
-        dem_parser = self._ign_pt_editor.parser()
+        # Get user's working directory
+        user_settings = UserSettings()
+        file, filt = QFileDialog.getSaveFileName(self, 'Save File', user_settings.working_dir, "fds (*.fds)")
 
-        sim_settings = SimulationSettings('default.sim_settings')
+        if file:
 
-        # TODO: set current environment as the created one, if creation is successful
-        ascii_fds_converter = AsciiToFds(fl_map_parser, dem_parser, sim_settings)
-        ascii_fds_converter.save(self._fl_map_editor.button_values_grid(), self._ign_pt_editor.fire_lines())
+            if not file.endswith(Fds.file_ext()):
+                file += Fds.file_ext()
+
+            # Note: Logically, this is where we would ensure that all of the fire line times
+            # are less than the simulation duration, however WFDS does not care weather or not such
+            # ignition points are present, hence we do not entirely care either.
+            fl_map_parser = self._fl_map_editor.parser()
+            dem_parser = self._ign_pt_editor.parser()
+
+            sim_settings = SimulationSettings('default.sim_settings')
+
+            # TODO: set current environment as the created one, if creation is successful
+            ascii_fds_converter = AsciiToFds(fl_map_parser, dem_parser, sim_settings)
+            ascii_fds_converter.save(self._fl_map_editor.button_values_grid(), self._ign_pt_editor.fire_lines(), file)
 
 
 def follow(thefile):
