@@ -298,9 +298,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             if self._fl_map_editor:
                 self._fl_map_editor.deleteLater()
-                # self._fl_map_editor.hide()
 
-            self._fl_map_editor = FuelMapEditor(self, file)
+            try:
+                self._fl_map_editor = FuelMapEditor(self, file)
+
+            except IndexError:
+                QMessageBox.information(self, "Invalid file", "A problem occurred while loading the fuel map. Please verify that the fuel map does not contain"
+                                                              " non-integer numbers")
+                self._fl_map_editor = None
+                return
+
             self._fl_map_editor.setEnabled(True)
 
             self.__setup_fl_map_lgnd()
