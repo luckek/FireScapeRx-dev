@@ -5,7 +5,6 @@ from FdsParser import FdsParser
 class Fds:
 
     # NOTE: it is not uncommon for wfds to signal IEEE_DENORMAL, this can likely be safely ignored
-
     # Path to pre-packaged fds executable
     fds_exec = os.path.join(os.path.abspath(os.pardir), 'fds_gnu_linux_64')
 
