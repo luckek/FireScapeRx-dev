@@ -834,6 +834,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         return True
 
+    def __check_sim_time(self):
+
+        sim_time = self._sim_duration_line_edit.text()
+
+        if not util.is_number(sim_time):
+            QMessageBox.information(self, "Invalid number",
+                                    "Simulation duration is not a number. Please enter a positive decimal number")
+
+            return False
+
+        sim_time = float(sim_time)
+
+        if sim_time < 0:
+            QMessageBox.information(self, "Invalid number",
+                                    "Simulation duration must be a positive decimal number.")
+
+            return False
+
+        return True
+
     def __ascii_to_fds(self):
 
         # Note: normally, this would be dangerous as
@@ -843,38 +863,43 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # TODO: ensure that DEM and fuel map are both same size
         # idea: user cannot load fuel map that is not same size as DEM and vice versa
 
-        # Get user's working directory
-        user_settings = UserSettings()
-        file, filt = QFileDialog.getSaveFileName(self, 'Save File', user_settings.working_dir, "fds (*.fds)")
+        if self.__check_sim_time():
 
-        if file:
+            # Get user's working directory
+            user_settings = UserSettings()
+            file, filt = QFileDialog.getSaveFileName(self, 'Save File', user_settings.working_dir, "fds (*.fds)")
 
-            if not file.endswith(Fds.file_ext()):
-                file += Fds.file_ext()
+            if file:
 
-            # Note: Logically, this is where we would ensure that all of the fire line times
-            # are less than the simulation duration, however WFDS does not care weather or not such
-            # ignition points are present, hence we do not entirely care either.
-            fl_map_parser = self._fl_map_editor.parser()
-            dem_parser = self._ign_pt_editor.parser()
+                if not file.endswith(Fds.file_ext()):
+                    file += Fds.file_ext()
 
-            sim_settings = SimulationSettings('default.sim_settings')
+                # Note: Logically, this is where we would ensure that all of the fire line times
+                # are less than the simulation duration, however WFDS does not care weather or not such
+                # ignition points are present, hence we do not entirely care either.
+                fl_map_parser = self._fl_map_editor.parser()
+                dem_parser = self._ign_pt_editor.parser()
+                sim_time = float(self._sim_duration_line_edit.text())
 
-            ascii_fds_converter = AsciiToFds(fl_map_parser, dem_parser, sim_settings)
-            save_success = ascii_fds_converter.save(self._fl_map_editor.button_values_grid(), self._ign_pt_editor.fire_lines(), file)
+                sim_settings = SimulationSettings('default.sim_settings')
 
-            if save_success:
+                sim_settings.sim_duration = sim_time
 
-                usr_reply = QMessageBox.question(self, "Export successful", "Environment exported successfully. "
-                                                 "Would you like to set it as the current environment?",
-                                                 QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+                ascii_fds_converter = AsciiToFds(fl_map_parser, dem_parser, sim_settings)
+                save_success = ascii_fds_converter.save(self._fl_map_editor.button_values_grid(), self._ign_pt_editor.fire_lines(), file)
 
-                if usr_reply == QMessageBox.Yes:
+                if save_success:
 
-                    self._fds.fds_file = file
-                    self._fds.read()
+                    usr_reply = QMessageBox.question(self, "Export successful", "Environment exported successfully. "
+                                                     "Would you like to set it as the current environment?",
+                                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
 
-                    self._sim_title_label.setText('Simulation Title: ' + self._fds.job_name())
+                    if usr_reply == QMessageBox.Yes:
+
+                        self._fds.fds_file = file
+                        self._fds.read()
+
+                        self._sim_title_label.setText('Simulation Title: ' + self._fds.job_name())
 
 
 def follow(thefile):
