@@ -10,15 +10,15 @@ class UserSettings:
 
     DEF_OUTPUT_DIR = '../../'
     DEF_WORKING_DIR = ''
+    DEF_DEFAULT_ENVIRONMENT = 'No environment set'
     DEF_SIM_DURATION = 100.0
-    DEF_NUM_SIMS = 5
 
     def __init__(self):
 
         self._output_dir = self.DEF_OUTPUT_DIR
         self._working_dir = self.DEF_WORKING_DIR
+        self._default_environment = self.DEF_DEFAULT_ENVIRONMENT
         self._sim_duration = self.DEF_SIM_DURATION
-        self._num_sims = self.DEF_NUM_SIMS
         self._file_exists = False
 
         # Check if user settings file already exists
@@ -50,13 +50,13 @@ class UserSettings:
                 elif key.startswith('WORKING_DIRECTORY'):
                     self._working_dir = value
 
+                # TODO: ensure environment is valid
+                elif key.startswith('DEFAULT ENVIRONMENT'):
+                    self._default_environment = value
+
                 # TODO: ensure duration is valid( < SimulationSettings.MAX_SIM_DURATION)
                 elif key.startswith('SIM_DURATION'):
                     self._sim_duration = value
-
-                # TODO: ensure number sims is valid( < SimulationSettings.MAX_NUM_SIMS)
-                elif key.startswith('NUM_SIMS'):
-                    self._num_sims = value
 
     def create_user_settings(self):
 
@@ -65,8 +65,8 @@ class UserSettings:
 
             f.write('OUTPUT_DIRECTORY' + self.KV_SEP + self._output_dir + '\n')
             f.write('WORKING_DIRECTORY' + self.KV_SEP + self._working_dir + '\n')
+            f.write('DEFAULT ENVIRONMENT' + self.KV_SEP + self._default_environment + '\n')
             f.write('SIM_DURATION' + self.KV_SEP + str(self._sim_duration) + '\n')
-            f.write('NUM_SIMS' + self.KV_SEP + str(self._num_sims) + '\n')
 
     # TODO:
     # Can make saving user settings more fancy
@@ -92,6 +92,14 @@ class UserSettings:
         self._working_dir = working_dir
 
     @property
+    def default_environment(self):
+        return self._default_environment
+
+    @default_environment.setter
+    def default_environment(self, default_environment):
+        self._default_environment = default_environment
+
+    @property
     def sim_duration(self):
         return self._sim_duration
 
@@ -99,15 +107,6 @@ class UserSettings:
     @sim_duration.setter
     def sim_duration(self, sim_duration):
         self._sim_duration = sim_duration
-
-    @property
-    def num_sims(self):
-        return self._num_sims
-
-    #TODO: validate num_sims?
-    @num_sims.setter
-    def num_sims(self, num_sims):
-        self._num_sims = num_sims
 
     @property
     def file_exists(self):

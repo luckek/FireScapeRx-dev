@@ -39,13 +39,34 @@
     </rect>
    </property>
    <layout class="QGridLayout" name="grid_layout">
-    <item row="2" column="2">
-     <widget class="QLineEdit" name="_working_dir_line_edit"/>
+    <item row="4" column="1">
+     <widget class="QLabel" name="sim_duration_label">
+      <property name="text">
+       <string>Simulation Duration</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="3">
+     <widget class="QPushButton" name="default_environment_button">
+      <property name="text">
+       <string>DE</string>
+      </property>
+     </widget>
     </item>
     <item row="1" column="1">
      <widget class="QLabel" name="output_dir_label">
       <property name="text">
        <string>Output Directory</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QLineEdit" name="_output_dir_line_edit"/>
+    </item>
+    <item row="1" column="3">
+     <widget class="QPushButton" name="output_dir_button">
+      <property name="text">
+       <string>OD</string>
       </property>
      </widget>
     </item>
@@ -56,8 +77,8 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="2">
-     <widget class="QLineEdit" name="_output_dir_line_edit"/>
+    <item row="2" column="2">
+     <widget class="QLineEdit" name="_working_dir_line_edit"/>
     </item>
     <item row="2" column="1">
      <widget class="QLabel" name="working_dir_label">
@@ -69,29 +90,15 @@
     <item row="4" column="2">
      <widget class="QLineEdit" name="_sim_duration_line_edit"/>
     </item>
-    <item row="4" column="1">
-     <widget class="QLabel" name="sim_duration_label">
-      <property name="text">
-       <string>Simulation Duration</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="3">
-     <widget class="QPushButton" name="output_dir_button">
-      <property name="text">
-       <string>OD</string>
-      </property>
-     </widget>
-    </item>
     <item row="3" column="1">
-     <widget class="QLabel" name="num_sims_label">
+     <widget class="QLabel" name="default_environment_label">
       <property name="text">
-       <string>Number of Simulations</string>
+       <string>Default Environment</string>
       </property>
      </widget>
     </item>
     <item row="3" column="2">
-     <widget class="QLineEdit" name="_num_sims_line_edit"/>
+     <widget class="QLineEdit" name="_default_environment_line_edit"/>
     </item>
    </layout>
   </widget>
