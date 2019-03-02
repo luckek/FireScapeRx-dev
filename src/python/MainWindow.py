@@ -50,7 +50,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.action_export_dem.setEnabled(False)
         self.action_export_summary_file.setEnabled(False)
         self.action_export_environment.setEnabled(False)
-        self.action_ascii_to_fds.setEnabled(False)
 
         self._fl_type_lgnd_tab.setEnabled(False)
         self.ignition_point_legend_tab.setEnabled(False)
@@ -114,12 +113,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # FIXME: ignore identifiers that will not be handled
 
         if identifier == 'action_create_environment':
-            print(identifier, 'not implemented')
+            self.__create_environment()
             return
-
-        elif identifier == 'action_ascii_to_fds':
-
-            self.__ascii_to_fds()
 
         elif identifier == 'action_import_environment':
             self.__import_environment()
@@ -321,7 +316,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # so the user can now convert to FDS file
             if self._ign_pt_editor:
                 self.__init_sim_settings()
-                self.action_ascii_to_fds.setEnabled(True)
+                self.action_create_environment.setEnabled(True)
 
             # Set current tab to fuel type legend
             self._tab_widget.setCurrentIndex(1)
@@ -366,7 +361,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # so the user can now convert to FDS file
             if self._fl_map_editor:
                 self.__init_sim_settings()
-                self.action_ascii_to_fds.setEnabled(True)
+                self.action_create_environment.setEnabled(True)
 
             # Set current tab to fuel type legend
             self._tab_widget.setCurrentIndex(2)
@@ -857,7 +852,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         return True
 
-    def __ascii_to_fds(self):
+    def __create_environment(self):
 
         # Note: normally, this would be dangerous as
         # either of these could be None, but since the user
