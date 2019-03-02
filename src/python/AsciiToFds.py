@@ -18,6 +18,8 @@ class AsciiToFds:
 
         dat_table = self._dem.data_table
 
+        # TODO: handle 'no data' values
+
         # TODO: find better way to do this
         # NOTE: we replace NO_DATA values with inf here so that we may properly calculate the table minimum
         dat_table_mod = []
@@ -34,6 +36,7 @@ class AsciiToFds:
 
         # This 'zeroes out' elevation so the lowest elevation is 0 m.
         # NOTE: We do this even when tbl_min = 0.0 so that the elevation values are rounded
+        # TODO: can't round inf...
         for i in range(len(dat_table)):
             dat_table[i] = [round(x - tbl_min) for x in dat_table[i]]
 
@@ -71,7 +74,6 @@ class AsciiToFds:
 
         # Grab levelset template:
         new_fds_file = FdsParser()
-        new_fds_file.parse(self.ls_template_file)
 
         fuel_map = self._fuel_map
 
@@ -218,6 +220,7 @@ class AsciiToFds:
 
     def __convert_rows_diff_elevation(self, fuel_map_grid):
 
+        no_dat_value = -1
         untrt_value = 1
         trt_value = 2
 
@@ -227,6 +230,7 @@ class AsciiToFds:
 
         area_map[untrt_value] = []
         area_map[trt_value] = []
+        area_map[no_dat_value] = []
 
         for i, row in enumerate(fuel_map_grid):
             for j, cell in enumerate(row):

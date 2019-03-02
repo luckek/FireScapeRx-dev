@@ -107,6 +107,10 @@ class FdsParser:
                   "VEG_LSET_ROTHFM10_ZEROWINDSLOPE_ROS = 0.007118\nPART_ID='TE'\nNPPC = 1\nVEL = -0.01" \
                   "\nRGB=0,0,0 /\n\n"
 
+        no_data_str = "&SURF ID = 'no_data'\nVEG_LEVEL_SET_SPREAD = .TRUE.\nVEG_LSET_ROS_HEAD = 0.0\n" \
+                      "VEG_LSET_ROS_FLANK = 0.0\nVEG_LSET_ROS_BACK = 0.0\nVEG_LSET_WIND_EXP = 0.0\n" \
+                      "COLOR = 'BLACK' /\n\n"
+
         # FIXME: This could be made more general... currently hard coded from JFSP run 1
         part_id_str = "-- Thermal Elements\n&PART ID='TE',\nAGE=9999,\nTE_BURNTIME=2.5,\nMASSLESS=.TRUE.," \
                       "\nSAMPLING_FACTOR=30,\nCOLOR='BLACK' /\n\n"
@@ -140,6 +144,7 @@ class FdsParser:
             f.write('-- Unique FVS stands\n')
             f.write(untrt_str)
             f.write(trt_str)
+            f.write(no_data_str)
             f.write(part_id_str)
 
             f.write("-- Ignitor fire\n")
@@ -220,7 +225,10 @@ class FdsParser:
 
         fuel_str = ''
 
-        if fuel_type == 1:
+        if fuel_type == -1:
+            fuel_str = 'no_data'
+
+        elif fuel_type == 1:
             fuel_str = 'untrt'
 
         elif fuel_type == 2:
