@@ -5,10 +5,10 @@ from PyQt5.QtWidgets import QDialog
 
 from UserSettings import *
 from Utility import get_directory
-from gui.Ui_UserSettingsForm import Ui_Dialog
+from gui.Ui_UserSettingsForm import Ui_UserSettingsForm
 
 
-class UserSettingsForm(QDialog, Ui_Dialog):
+class UserSettingsForm(QDialog, Ui_UserSettingsForm):
 
     def __init__(self):
         super(UserSettingsForm, self).__init__()
