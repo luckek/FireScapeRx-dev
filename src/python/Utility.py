@@ -90,7 +90,8 @@ def execute(cmd, cwd, out_file):
     # Popen will start the process and just return a process id(pid).
     # FIXME: See if we can replace subprocess.pipe with a file? may run into block-buffering issue again
 
-    subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+    process = subprocess.Popen(cmd, cwd=cwd, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+    return process.pid
 
 
 def meters_per_cell(meters, number_cells):

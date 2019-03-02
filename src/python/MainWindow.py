@@ -542,7 +542,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __execute_and_update(self, cmd, out_dir=None, out_file=sys.stdout):
         """Execute the given command and update the progress bar"""
 
-        util.execute(cmd=cmd, cwd=out_dir, out_file=out_file)
+        # TODO: kill this when done...
+        fds_pid = util.execute(cmd=cmd, cwd=out_dir, out_file=out_file)
 
         t_end = float(self._fds.sim_time())
 
