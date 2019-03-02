@@ -13,3 +13,11 @@ class IgnitionPointEditorButton(Ui_AsciiGridEditorButton):
     def __init__(self, parent, bttn_size, init_color=0, name=None):
 
         super().__init__(parent, bttn_size, init_color, name)
+
+        # Disconnect so user can't 'edit' button color
+        self.clicked.disconnect(self.button_click)
+
+    # This disables the 'click' animation
+    # Could install event filter, but this was quick / easy
+    def mousePressEvent(self, e):
+        pass
