@@ -293,17 +293,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # FIXME: make two fixed size widgets or something for fuel map and ignition point editor, they now have own scroll area
             # FIXME: increase SIZE when there are lots of cells in fuel map and ignition
 
+            try:
+                new_editor = FuelMapEditor(self, file)
+
+            except IndexError:
+                QMessageBox.information(self, "Invalid file", "A problem occurred while loading the fuel map. Please "
+                                                              "verify that the fuel map does not contain non-integer "
+                                                              "numbers")
+
+                return
+
+            # FIXME: if error thrown, fuel map disappears...
             if self._fl_map_editor:
                 self._fl_map_editor.deleteLater()
 
-            try:
-                self._fl_map_editor = FuelMapEditor(self, file)
-
-            except IndexError:
-                QMessageBox.information(self, "Invalid file", "A problem occurred while loading the fuel map. Please verify that the fuel map does not contain"
-                                                              " non-integer numbers")
-                self._fl_map_editor = None
-                return
+            self._fl_map_editor = new_editor
 
             self._fl_map_editor.setEnabled(True)
 
