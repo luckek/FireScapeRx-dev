@@ -333,7 +333,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if not file.endswith(AsciiParser.FILE_EXT):
                 file += AsciiParser.FILE_EXT
 
-            self._fl_map_editor.save(file)
+            self._fl_map_editor.save(file, False)
             QMessageBox.information(self, "Export successful", "Fuel map successfully exported")
 
     def __import_dem(self):

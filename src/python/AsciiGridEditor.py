@@ -72,9 +72,10 @@ class AsciiGridEditor(Ui_AsciiGridEditor):
 
         return fuel_map_grid
 
-    def save(self, save_fname):
+    def save(self, save_fname, update=True):
+        if update:
+            self._ascii_parser.data_table = self.button_values_grid()
 
-        self._ascii_parser.data_table = self.button_values_grid()
         self._ascii_parser.save(save_fname)
 
     def grid_x_max(self):

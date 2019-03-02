@@ -1,5 +1,3 @@
-import os.path as osp
-
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QDialog
 
@@ -17,7 +15,7 @@ class UserSettingsForm(QDialog, Ui_UserSettingsForm):
 
         self.user_settings = UserSettings()
 
-        # Initalize fields with user settings values
+        # Initialize fields with user settings values
         self._output_dir_line_edit.setText(osp.abspath(str(self.user_settings.output_dir)))
         self._working_dir_line_edit.setText(osp.abspath(str(self.user_settings.working_dir)))
         self._sim_duration_line_edit.setText(str(self.user_settings.sim_duration))
@@ -34,9 +32,6 @@ class UserSettingsForm(QDialog, Ui_UserSettingsForm):
         self.button_box.accepted.connect(self.save_user_settings)
 
         self._output_dir_line_edit.returnPressed.connect(self.ret_pressed)
-
-    def ret_pressed(self):
-        print('Return')
 
     @QtCore.pyqtSlot(name='save_user_settings')
     def save_user_settings(self):
