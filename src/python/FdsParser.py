@@ -67,7 +67,13 @@ class FdsParser:
                     self._head = line
 
                 if line.startswith('&TIME'):
-                    self._time = line.split('=')[1].replace('/', '').strip(' ')
+
+                    time_str = line.split('=')[1].replace('/', '').strip(' ')
+
+                    if not util.is_number(time_str):
+                        time_str = time_str.split(',')[0]
+
+                    self._time = time_str
 
             if not self._title:
                 self._title = util.get_filename(fds_file)
@@ -186,6 +192,10 @@ class FdsParser:
     @property
     def time(self):
         return self._time
+
+    @time.setter
+    def time(self, new_time):
+        self._time = new_time
 
     @property
     def title(self):

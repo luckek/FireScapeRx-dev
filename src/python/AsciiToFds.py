@@ -77,6 +77,8 @@ class AsciiToFds:
 
         # Give FDS file information it needs to
         # properly create FDS file
+        new_fds_file.time = self._sim_settings.sim_duration
+
         new_fds_file.cell_size = fuel_map.cell_size
 
         new_fds_file.x_start = fuel_map.x_min_val()
