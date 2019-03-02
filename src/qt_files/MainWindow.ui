@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>965</width>
+    <width>969</width>
     <height>605</height>
    </rect>
   </property>
@@ -75,8 +75,8 @@
          <rect>
           <x>30</x>
           <y>0</y>
-          <width>311</width>
-          <height>348</height>
+          <width>323</width>
+          <height>283</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="vertical_layout">
@@ -105,15 +105,12 @@
           </widget>
          </item>
          <item>
-          <layout class="QFormLayout" name="sim_settings_form_layout">
+          <layout class="QFormLayout" name="formLayout">
            <property name="sizeConstraint">
             <enum>QLayout::SetMaximumSize</enum>
            </property>
-           <property name="fieldGrowthPolicy">
-            <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-           </property>
-           <property name="verticalSpacing">
-            <number>10</number>
+           <property name="horizontalSpacing">
+            <number>40</number>
            </property>
            <property name="leftMargin">
             <number>10</number>
@@ -128,9 +125,9 @@
             <number>5</number>
            </property>
            <item row="0" column="0">
-            <widget class="QLabel" name="num_sim_label">
+            <widget class="QLabel" name="sim_duration_label">
              <property name="text">
-              <string>Number of Simulations</string>
+              <string>Simulation Duration(s)</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -138,19 +135,6 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QLineEdit" name="_num_sim_line_edit"/>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="sim_duration_label">
-             <property name="text">
-              <string>Simulation Duration</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
             <widget class="QLineEdit" name="_sim_duration_line_edit"/>
            </item>
           </layout>
@@ -185,7 +169,7 @@
             <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
            </property>
            <property name="horizontalSpacing">
-            <number>60</number>
+            <number>50</number>
            </property>
            <property name="verticalSpacing">
             <number>10</number>
@@ -205,7 +189,7 @@
            <item row="0" column="0">
             <widget class="QLabel" name="wind_speed_label">
              <property name="text">
-              <string>Wind Speed</string>
+              <string>Wind Speed(m/s)</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -218,7 +202,7 @@
            <item row="1" column="0">
             <widget class="QLabel" name="wind_direction_label">
              <property name="text">
-              <string>Wind Direction</string>
+              <string>Wind Direction(deg)</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -231,23 +215,6 @@
           </layout>
          </item>
          <item>
-          <widget class="Line" name="line">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="init_conditions_label">
-           <property name="text">
-            <string>Initial conditions</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item>
           <widget class="Line" name="line_5">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -255,15 +222,30 @@
           </widget>
          </item>
          <item>
-          <layout class="QFormLayout" name="form_layout_3">
-           <property name="formAlignment">
-            <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
+          <layout class="QHBoxLayout" name="horizontalLayout_7">
+           <item>
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>Environmental Conditions</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="Line" name="line_14">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
            </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QFormLayout" name="formLayout_2">
            <property name="horizontalSpacing">
-            <number>60</number>
-           </property>
-           <property name="verticalSpacing">
-            <number>10</number>
+            <number>15</number>
            </property>
            <property name="leftMargin">
             <number>10</number>
@@ -277,36 +259,20 @@
            <property name="bottomMargin">
             <number>5</number>
            </property>
-           <item row="1" column="0">
-            <widget class="QLabel" name="initialFireIntensity_label">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_7">
              <property name="text">
-              <string>Initial Fire Intensity</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
+              <string>Ambient Temperature(F) </string>
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="initialFireIntensityLineEdit"/>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="ingnitionStartTime_label">
-             <property name="text">
-              <string>Ignition Start Time</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QLineEdit" name="ignitionStartTime_line_edit"/>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="lineEdit"/>
            </item>
           </layout>
          </item>
          <item>
-          <widget class="Line" name="line_8">
+          <widget class="Line" name="line">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -387,42 +353,14 @@
               <x>0</x>
               <y>0</y>
               <width>317</width>
-              <height>78</height>
+              <height>101</height>
              </rect>
             </property>
            </widget>
           </widget>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout">
-           <item>
-            <widget class="QPushButton" name="add_type_button">
-             <property name="text">
-              <string>Add Type</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="horizontalSpacer">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QPushButton" name="remove_type_button">
-             <property name="text">
-              <string>Remove Type</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
+          <layout class="QHBoxLayout" name="horizontalLayout"/>
          </item>
          <item>
           <widget class="Line" name="line_9">
@@ -668,7 +606,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>360</width>
+        <width>361</width>
         <height>530</height>
        </rect>
       </property>
@@ -680,7 +618,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>358</width>
+         <width>359</width>
          <height>528</height>
         </rect>
        </property>
@@ -690,7 +628,7 @@
           <x>20</x>
           <y>0</y>
           <width>321</width>
-          <height>331</height>
+          <height>381</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -729,7 +667,7 @@
               <x>0</x>
               <y>0</y>
               <width>317</width>
-              <height>109</height>
+              <height>99</height>
              </rect>
             </property>
            </widget>
@@ -760,12 +698,42 @@
           </widget>
          </item>
          <item>
-          <layout class="QGridLayout" name="gridLayout_3">
-           <property name="horizontalSpacing">
-            <number>15</number>
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <property name="spacing">
+            <number>0</number>
            </property>
-           <item row="0" column="1">
-            <spacer name="horizontalSpacer_16">
+           <item>
+            <widget class="QLabel" name="label_17">
+             <property name="text">
+              <string>Axis:</string>
+             </property>
+             <property name="margin">
+              <number>2</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="_ign_pt_axis_combo_box">
+             <property name="currentText">
+              <string>Horizontal</string>
+             </property>
+             <property name="currentIndex">
+              <number>0</number>
+             </property>
+             <item>
+              <property name="text">
+               <string>Horizontal</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Vertical</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_22">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -774,73 +742,7 @@
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>20</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="0" column="2">
-            <widget class="QLineEdit" name="_x_rng_ign_pt_min_line_edit"/>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_11">
-             <property name="text">
-              <string>Y range:</string>
-             </property>
-             <property name="margin">
-              <number>2</number>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="4">
-            <widget class="QLineEdit" name="_y_rng_ign_pt_max_line_edit">
-             <property name="placeholderText">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="4">
-            <widget class="QLineEdit" name="_x_rng_ign_pt_max_line_edit"/>
-           </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_12">
-             <property name="text">
-              <string>X range:</string>
-             </property>
-             <property name="margin">
-              <number>2</number>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="3">
-            <widget class="QLabel" name="label_13">
-             <property name="text">
-              <string>-</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="2">
-            <widget class="QLineEdit" name="_y_rng_ign_pt_min_line_edit"/>
-           </item>
-           <item row="0" column="3">
-            <widget class="QLabel" name="label_14">
-             <property name="text">
-              <string>-</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="5">
-            <spacer name="horizontalSpacer_17">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Fixed</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>60</width>
+               <width>125</width>
                <height>20</height>
               </size>
              </property>
@@ -849,11 +751,78 @@
           </layout>
          </item>
          <item>
+          <layout class="QGridLayout" name="gridLayout_3">
+           <property name="horizontalSpacing">
+            <number>15</number>
+           </property>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="_ign_pt_row_col_line_edit"/>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_11">
+             <property name="text">
+              <string>Range:</string>
+             </property>
+             <property name="margin">
+              <number>2</number>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="3">
+            <widget class="QLineEdit" name="_ign_pt_rng_max_line_edit">
+             <property name="placeholderText">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="_ign_pt_rng_min_line_edit">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLineEdit" name="_ign_pt_t_start_line_edit"/>
+           </item>
+           <item row="0" column="2">
+            <widget class="QLabel" name="label_13">
+             <property name="text">
+              <string>-</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_14">
+             <property name="text">
+              <string>Row/Column:</string>
+             </property>
+             <property name="margin">
+              <number>2</number>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="3">
+            <widget class="QLineEdit" name="_ign_pt_t_end_line_edit"/>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_16">
+             <property name="text">
+              <string>Time Range:</string>
+             </property>
+             <property name="margin">
+              <number>2</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
           <layout class="QHBoxLayout" name="horizontalLayout_9">
            <item>
             <widget class="QLabel" name="label_15">
              <property name="text">
-              <string>Fuel Type:</string>
+              <string>Ignition:</string>
              </property>
              <property name="margin">
               <number>1</number>
@@ -861,37 +830,21 @@
             </widget>
            </item>
            <item>
-            <spacer name="horizontalSpacer_18">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Fixed</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QComboBox" name="_ign_pt_combo_box">
+            <widget class="QComboBox" name="_ign_pt_add_rm_combo_box">
              <property name="currentText">
-              <string>No-Ignition</string>
+              <string>Add</string>
              </property>
              <property name="currentIndex">
               <number>0</number>
              </property>
              <item>
               <property name="text">
-               <string>No-Ignition</string>
+               <string>Add</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>Ignition</string>
+               <string>Remove</string>
               </property>
              </item>
             </widget>
@@ -901,9 +854,12 @@
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>40</width>
+               <width>130</width>
                <height>20</height>
               </size>
              </property>
@@ -937,7 +893,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QPushButton" name="modify_ign_points_button">
+            <widget class="QPushButton" name="modify_ign_pts_button">
              <property name="text">
               <string>Modify</string>
              </property>
@@ -999,7 +955,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>965</width>
+     <width>969</width>
      <height>20</height>
     </rect>
    </property>

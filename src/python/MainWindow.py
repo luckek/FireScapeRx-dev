@@ -40,7 +40,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Center main application window
         util.center_window(self)
 
-        # TODO: init editor with no file here
+        # TODO: init editor with no file here?
         # Create the fuel map editor variable
         self._fl_map_editor = None
         self._ign_pt_editor = None
@@ -60,22 +60,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # FIXME: re-enable when this gets implemented:
         self.action_import_summary_file.setEnabled(False)
-        self.add_type_button.setEnabled(False)
-        self.remove_type_button.setEnabled(False)
         self.action_create_environment.setEnabled(False)
 
         # Hide and reset progress bar
         self.__hide_and_reset_progress()
 
+        # TODO: we might not need this since we check on button press
         # Setup validation for fuel map editor inputs
-        self._x_rng_ign_pt_max_line_edit.returnPressed.connect(self.__x_rng_ret_pressed)
-        self._x_rng_ign_pt_min_line_edit.returnPressed.connect(self.__x_rng_ret_pressed)
+        # self._x_rng_min_fl_line_edit.returnPressed.connect(self.__x_rng_ret_pressed())
+        # self._x_rng_max_fl_line_edit.returnPressed.connect(self.__x_rng_ret_pressed())
 
-        self._y_rng_ign_pt_max_line_edit.returnPressed.connect(self.__y_rng_ret_pressed)
-        self._y_rng_ign_pt_min_line_edit.returnPressed.connect(self.__y_rng_ret_pressed)
+        # self._y_rng_min_fl_line_edit.returnPressed.connect(self.__y_rng_ret_pressed())
+        # self._y_rng_max_fl_line_edit.returnPressed.connect(self.__y_rng_ret_pressed())
 
         self.modify_fuel_map_button.clicked.connect(self.__modify_fuel_map)
-        self.modify_ign_points_button.clicked.connect(self.__modify_ignition_map)
+        self.modify_ign_pts_button.clicked.connect(self.__modify_ignition_map)
 
         # Initialize fds object
         self._fds = Fds()
@@ -100,14 +99,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Initialize fds_file to be None
         self._smv_file = None
 
-        sim_settings = SimulationSettings('default.sim_settings')
-
-        # Initialize fields with simulation settings values
-        self._num_sim_line_edit.setText(str(sim_settings.num_sims))
-        self._sim_duration_line_edit.setText(str(sim_settings.sim_duration))
-        self._wind_speed_line_edit.setText(str(sim_settings.wind_speed))
-        self._wind_direction_line_edit.setText(str(sim_settings.wind_direction))
-
         for child in self._menu_bar.children():
             if type(child) is QtWidgets.QMenu:
                 for action in child.actions():
@@ -115,7 +106,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     identifier = action.objectName()
                     action.triggered.connect(lambda state, x=identifier: self.__handle_button(x))
 
-    # FIXME: make static or remove from class altogether if we do not need to access anything in main window
     @QtCore.pyqtSlot(str)
     def __handle_button(self, identifier):
 
@@ -171,7 +161,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
 
         elif identifier == 'action_run_sim':
-            # TODO: run simulation num_sims number of times
             self.__run_simulation()
 
         elif identifier == 'action_view_sim':
@@ -206,12 +195,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             dialog = AboutDialog()
 
         else:
-            # TODO: Log unrecognized identifiers?
             print('UNRECOGNIZED IDENTIFIER:', identifier)
             return
 
         if dialog is not None:
-            # TODO: Log null dialog?
             dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)  # Ensure resources are freed when dlg closes
             dialog.exec_()  # Executes dialog
 
@@ -241,27 +228,65 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def __modify_ignition_map(self):
 
-        x_min_str = self._x_rng_ign_pt_min_line_edit.text()
-        x_max_str = self._x_rng_ign_pt_max_line_edit.text()
+        axis = self._ign_pt_axis_combo_box.currentText()
 
-        y_min_str = self._y_rng_ign_pt_min_line_edit.text()
-        y_max_str = self._y_rng_ign_pt_max_line_edit.text()
+        usr_min_str = self._ign_pt_rng_min_line_edit.text()
+        usr_max_str = self._ign_pt_rng_max_line_edit.text()
 
-        # Ensure x and y range are valid
-        if self.__check_ign_pt_x_rng(x_min_str, x_max_str):
-            if self.__check_ign_pt_y_rng(y_min_str, y_max_str):
-                print('valid coordinate range')
+        row_col_str = self._ign_pt_row_col_line_edit.text()
 
-                x_min = int(x_min_str)
-                x_max = int(x_max_str)
+        t_start_str = self._ign_pt_t_start_line_edit.text()
+        t_end_str = self._ign_pt_t_end_line_edit.text()
 
-                y_min = int(y_min_str)
-                y_max = int(y_max_str)
+        # check time here b/c it is common to both cases
+        if self.__validate_ign_pt_t_range(t_start_str, t_end_str):
 
-                ignition_type = self._ign_pt_combo_box.currentIndex()
+            t_start = float(t_start_str)
+            t_end = float(t_end_str)
 
-                # Modify the fuel map
-                self._ign_pt_editor.modify_range(x_min, x_max, y_min, y_max, ignition_type)
+            if axis == 'Horizontal':
+
+                if self.__check_ign_pt_x_rng(usr_min_str, usr_max_str):
+
+                    # TODO: make a check row / check col function to speed this up a bit
+                    # And give more informative user feedback
+                    if self.__check_ign_pt_y_rng(row_col_str, row_col_str):
+
+                        x_min = int(usr_min_str)
+                        x_max = int(usr_max_str)
+
+                        y_min = int(row_col_str)
+                        y_max = int(row_col_str)
+
+                        ignition_type = self._ign_pt_add_rm_combo_box.currentIndex()
+
+                        # Modify the ignition points
+                        if self._ign_pt_editor.modify_range(x_min, x_max, y_min, y_max, t_start, t_end, ignition_type) is 'OVERLAP':
+                            QMessageBox.information(self, "Overlapping Fire Lines", "Fire Lines may not overlap. If you "
+                                                                                    "prefer this line, please delete the "
+                                                                                    "old one")
+
+            elif axis == 'Vertical':
+
+                if self.__check_ign_pt_y_rng(usr_min_str, usr_max_str):
+
+                    # TODO: could probably make a check row / check col function to speed this up a bit
+                    if self.__check_ign_pt_x_rng(row_col_str, row_col_str):
+
+                        x_min = int(row_col_str)
+                        x_max = int(row_col_str)
+
+                        y_min = int(usr_min_str)
+                        y_max = int(usr_max_str)
+
+                        ignition_type = self._ign_pt_add_rm_combo_box.currentIndex()
+
+                        # Modify the ignition points
+                        if self._ign_pt_editor.modify_range(x_min, x_max, y_min, y_max, t_start, t_end, ignition_type) is 'OVERLAP':
+                            QMessageBox.information(self, "Overlapping Fire Lines",
+                                                    "Fire Lines may not overlap. If you "
+                                                    "prefer this line, please delete the "
+                                                    "old one")
 
     def __import_fuel_map(self):
 
@@ -288,7 +313,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # This means that a DEM has already been loaded,
             # so the user can now convert to FDS file
             if self._ign_pt_editor:
-                self._sim_settings_tab.setEnabled(True)
+                self.__init_sim_settings()
                 self.action_ascii_to_fds.setEnabled(True)
 
             # Set current tab to fuel type legend
@@ -305,7 +330,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         if file:
 
-            if not file.endswith('.asc'):
+            if not file.endswith(AsciiParser.FILE_EXT):
                 file += AsciiParser.FILE_EXT
 
             self._fl_map_editor.save(file)
@@ -333,7 +358,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # This means that a fuel map has already been loaded,
             # so the user can now convert to FDS file
             if self._fl_map_editor:
-                self._sim_settings_tab.setEnabled(True)
+                self.__init_sim_settings()
                 self.action_ascii_to_fds.setEnabled(True)
 
             # Set current tab to fuel type legend
@@ -348,11 +373,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         if file:
 
-            if not file.endswith('.asc'):
+            if not file.endswith(AsciiParser.FILE_EXT):
                 file += AsciiParser.FILE_EXT
 
             self._ign_pt_editor.save(file)
             QMessageBox.information(self, "Export successful", "Digital elevation model successfully exported")
+
+    def __init_sim_settings(self):
+
+        if not self._sim_settings_tab.isEnabled():
+
+            self._sim_settings_tab.setEnabled(True)
+
+            sim_settings = SimulationSettings('default.sim_settings')
+
+            # Initialize fields with simulation settings values
+            self._sim_duration_line_edit.setText(str(sim_settings.sim_duration))
+            self._wind_speed_line_edit.setText(str(sim_settings.wind_speed))
+            self._wind_direction_line_edit.setText(str(sim_settings.wind_direction))
 
     @QtCore.pyqtSlot(int, name='__tab_changed')
     def __tab_changed(self, new_tab_index):
@@ -400,7 +438,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 return
 
             self._sim_title_label.setText('Simulation Title: ' + self._fds.job_name())
-            self._sim_settings_tab.setEnabled(True)
+
+            self.__init_sim_settings()
+
             QMessageBox.information(self, 'Import successful', 'Environment imported successfully.')
 
     def __run_simulation(self):
@@ -441,9 +481,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         os.mkdir(out_dir)
 
+        #TODO: Determine alternate save method or remove export fds file
         # Save the input file that was used to run the simulation
-        save_fname = osp.join(out_dir, fds_fname + Fds.file_ext())
-        self._fds.save(save_fname)
+        #save_fname = osp.join(out_dir, fds_fname + Fds.file_ext())
+        #self._fds.save(save_fname)
 
         logger.log(logger.INFO, 'Running simulation')
 
@@ -547,10 +588,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         assert len(colors) == len(fuel_types), "Length of colors != length of fuel_types"
 
         # Create the fuel map legend
+        res_label = QLabel()
+        res_label.setText('Resolution')
+        res_label.setFixedSize(65, 20)
+
+        self._fl_type_grid_layout.addWidget(res_label, 0, 0)
+
+        res = QLabel()
+        res.setText(str(self._fl_map_editor.resolution()) + 'm')
+        res.setMaximumSize(35, 10)
+
+        self._fl_type_grid_layout.addWidget(res, 0, 1)
+
         for i in range(len(colors)):
             legend_label = QLabel()
             legend_label.setText(fuel_types[i])
-            self._fl_type_grid_layout.addWidget(legend_label, i, 0)
+            self._fl_type_grid_layout.addWidget(legend_label, i + 1, 0)
 
             legend_label.setFixedSize(65, 20)
 
@@ -561,7 +614,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             g_view.setPalette(pallete)
             g_view.setMaximumSize(25, 10)
 
-            self._fl_type_grid_layout.addWidget(g_view, i, 1)
+            self._fl_type_grid_layout.addWidget(g_view, i + 1, 1)
 
         self._fl_type_lgnd_scroll_area.setWidget(self._fl_type_grid_layout_widget)
         self._fl_type_lgnd_tab.setEnabled(True)
@@ -573,11 +626,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         assert len(colors) == len(fuel_types), "Length of colors != length of fuel_types"
 
-        # Create the fuel map legend
+        # Create the ignition point legend
+        res_label = QLabel()
+        res_label.setText('Resolution')
+        res_label.setFixedSize(65, 20)
+
+        self._ign_pt_type_grid_layout.addWidget(res_label, 0, 0)
+
+        res = QLabel()
+        res.setText(str(self._ign_pt_editor.resolution()) + 'm')
+        res.setMaximumSize(35, 10)
+
+        self._ign_pt_type_grid_layout.addWidget(res, 0, 1)
+
         for i in range(len(colors)):
             legend_label = QLabel()
             legend_label.setText(fuel_types[i])
-            self._ign_pt_type_grid_layout.addWidget(legend_label, i, 0)
+            self._ign_pt_type_grid_layout.addWidget(legend_label, i + 1, 0)
 
             legend_label.setFixedSize(65, 20)
 
@@ -588,16 +653,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             g_view.setPalette(pallete)
             g_view.setMaximumSize(25, 10)
 
-            self._ign_pt_type_grid_layout.addWidget(g_view, i, 1)
+            self._ign_pt_type_grid_layout.addWidget(g_view, i + 1, 1)
 
         self.ignition_point_map_legend_scroll_area.setWidget(self._ign_pt_type_grid_layout_widget)
         self.ignition_point_legend_tab.setEnabled(True)
 
     def __x_rng_ret_pressed(self):
-        self.__check_fl_map_x_rng()
+
+        usr_x_min = self._x_rng_min_fl_line_edit.text()
+        usr_x_max = self._x_rng_max_fl_line_edit.text()
+
+        self.__check_fl_map_x_rng(usr_x_min, usr_x_max)
 
     def __y_rng_ret_pressed(self):
-        self.__check_fl_map_y_rng()
+
+        usr_y_min = self._y_rng_min_fl_line_edit.text()
+        usr_y_max = self._y_rng_max_fl_line_edit.text()
+
+        self.__check_fl_map_y_rng(usr_y_min, usr_y_max)
 
     def __check_fl_map_x_rng(self, usr_x_min, usr_x_max):
 
@@ -699,6 +772,33 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         return False
 
+    def __validate_ign_pt_t_range(self, t_start, t_end):
+
+        # Check if one of the inputs is empty
+        if len(t_start) == 0 or len(t_end) == 0:
+            return False
+
+        # Ensure both of the inputs are valid numbers
+        if not util.is_number(t_start) or not util.is_number(t_end):
+            QMessageBox.information(self, 'Non numeric range', 'At least one of the time range inputs is non-numeric'
+                                                               '<br>Please input a numerical range.')
+            return False
+
+        usr_min = float(t_start)
+        usr_max = float(t_end)
+
+        # Ensure the start of the range is not larger than the end
+        if usr_min > usr_max:
+            QMessageBox.information(self, 'Invalid range', 'The first time range input cannot be larger than the second.'
+                                                           '<br>Please input a valid time range.')
+            return False
+
+        if usr_min < 0:
+            QMessageBox.information(self, 'Negative Time Value',
+                                    'Time Start is negative. Please enter a valid start time')
+
+        return True
+
     def __check_rng_input(self, usr_min, usr_max, f_map_min, f_map_max):
 
         # Check if one of the inputs is empty
@@ -744,13 +844,39 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # TODO: ensure that DEM and fuel map are both same size
         # idea: user cannot load fuel map that is not same size as DEM and vice versa
-        fl_map_parser = self._fl_map_editor.parser()
-        dem_parser = self._ign_pt_editor.parser()
 
-        sim_settings = SimulationSettings('default.sim_settings')
+        # Get user's working directory
+        user_settings = UserSettings()
+        file, filt = QFileDialog.getSaveFileName(self, 'Save File', user_settings.working_dir, "fds (*.fds)")
 
-        ascii_fds_converter = AsciiToFds(fl_map_parser, dem_parser, sim_settings)
-        ascii_fds_converter.save(self._fl_map_editor.button_values_grid())
+        if file:
+
+            if not file.endswith(Fds.file_ext()):
+                file += Fds.file_ext()
+
+            # Note: Logically, this is where we would ensure that all of the fire line times
+            # are less than the simulation duration, however WFDS does not care weather or not such
+            # ignition points are present, hence we do not entirely care either.
+            fl_map_parser = self._fl_map_editor.parser()
+            dem_parser = self._ign_pt_editor.parser()
+
+            sim_settings = SimulationSettings('default.sim_settings')
+
+            ascii_fds_converter = AsciiToFds(fl_map_parser, dem_parser, sim_settings)
+            save_success = ascii_fds_converter.save(self._fl_map_editor.button_values_grid(), self._ign_pt_editor.fire_lines(), file)
+
+            if save_success:
+
+                usr_reply = QMessageBox.question(self, "Export successful", "Environment exported successfully. "
+                                                 "Would you like to set it as the current environment?",
+                                                 QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+
+                if usr_reply == QMessageBox.Yes:
+
+                    self._fds.fds_file = file
+                    self._fds.read()
+
+                    self._sim_title_label.setText('Simulation Title: ' + self._fds.job_name())
 
 
 def follow(thefile):

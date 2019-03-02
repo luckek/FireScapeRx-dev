@@ -41,7 +41,6 @@ class FdsParser:
 
         self._time = ''
 
-    # TODO: add ability to carry comments through
     def parse(self, fds_file):
         """Function to parse contents of an fds file, most things are parsed at a fairly high level.
         Returns true if parsing is successful"""
@@ -53,6 +52,13 @@ class FdsParser:
 
                 self._lines.append(line)
 
+                title_idx = line.find('TITLE')
+
+                if title_idx != -1:
+                    sub_str = line[title_idx:].replace('/', '').replace("'", '').strip()
+
+                    self._title = sub_str.split("=")[1]
+
                 if len(line) == 0 or line[0] == '-' or line[0] == 'c' or line[0] == ' ':
                     continue
 
@@ -60,11 +66,11 @@ class FdsParser:
 
                     self._head = line
 
-                if line.startswith('TITLE'):
-                    self._title = line
-
                 if line.startswith('&TIME'):
-                    self._time = line
+                    self._time = line.split('=')[1].replace('/', '').strip(' ')
+
+            if not self._title:
+                self._title = util.get_filename(fds_file)
 
     def save_file(self, fds_file):
         """Function to save contents of an fds file"""
@@ -93,22 +99,21 @@ class FdsParser:
                   "VEG_LSET_CANOPY_FMC=1\nVEG_LSET_WAF_SHELTERED = 0.18\nVEG_LSET_CANOPY_BULK_DENSITY= 0.037\n" \
                   "VEG_LSET_CANOPY_HEIGHT= 23\nVEG_LSET_CANOPY_BASE_HEIGHT = 11\n" \
                   "VEG_LSET_ROTHFM10_ZEROWINDSLOPE_ROS = 0.007118\nPART_ID='TE'\nNPPC = 1\nVEL = -0.01" \
-                  "\nRGB=122,117,48 /\n\n"
+                  "\nRGB=0,0,0 /\n\n"
 
         # FIXME: This could be made more general... currently hard coded from JFSP run 1
         part_id_str = "-- Thermal Elements\n&PART ID='TE',\nAGE=9999,\nTE_BURNTIME=2.5,\nMASSLESS=.TRUE.," \
                       "\nSAMPLING_FACTOR=30,\nCOLOR='BLACK' /\n\n"
 
         fds_fname = util.get_filename(fds_file)
-        if self._head == '':
-            self._head = fds_fname
 
-        if self._title == '':
-            self._title = fds_fname
+        # FIXME: this could be a little different / more general?
+        self._head = fds_fname
+        self._title = fds_fname
 
         with open(fds_file, 'w') as f:
 
-            f.write("&HEAD CHID='" + self._head + "',TITLE='" + self._title + ' /\n\n')
+            f.write("&HEAD CHID='" + self._head + "',TITLE='" + self._title + "' /\n\n")
 
             # Calculate mesh size
             mesh_i = self._x_end // self._cell_size
@@ -132,9 +137,25 @@ class FdsParser:
             f.write(part_id_str)
 
             f.write("-- Ignitor fire\n")
-            # FIXME: Write ignitor fires out here
+            for i, ign_cell in enumerate(self._vent):
 
-            f.write("-- Vegetation\n")
+                p1, p2, ign_time = ign_cell
+
+                x1 = p1.x
+                y1 = p1.y
+                z1 = p1.z
+
+                x2 = p2.x
+                y2 = p2.y
+                z2 = p2.z
+
+                ign_id = 'P' + str(i)
+                xb_str = ','.join([str(int(x1)), str(int(x2)), str(int(y1)), str(int(y2)), str(int(z1)), str(z2)])
+
+                f.write("&SURF ID='" + ign_id + "',VEG_LSET_IGNITE_TIME=" + str(ign_time) + ",RGB=255,0,0 /\n")
+                f.write("&VENT XB=" + xb_str + ",SURF_ID='" + ign_id + "' /\n")
+
+            f.write("\n-- Vegetation\n")
             for surf_id in self._obst_dict:
                 for veg in self._obst_dict[surf_id]:
 
@@ -142,14 +163,15 @@ class FdsParser:
 
                     x1 = p1.x
                     y1 = p1.y
-                    z1 = p1.z  # FIXME: pull from DEM(could probably incorporate into point class)
+                    z1 = p1.z
 
                     x2 = p2.x
                     y2 = p2.y
-                    z2 = p2.z  # FIXME: pull from DEM(could probably incorporate into point class)
+                    z2 = p2.z
 
                     xb_str = ','.join([str(int(x1)), str(int(x2)), str(int(y1)), str(int(y2)), str(int(z1)), str(z2)])
                     f.write("&OBST XB=" + xb_str + ", SURF_ID='" + surf_id + "' /\n")
+
             f.write('\n')
 
             f.write("-- Outputs\n")
@@ -158,24 +180,24 @@ class FdsParser:
             f.write("-- END of Input file\n")
             f.write("&TAIL /")
 
+        return True
+
     # TODO: create setters for these values
     @property
     def time(self):
-        t_end_str = self._time.split('=')[1].replace('/', '').strip(' ')
-        return t_end_str
+        return self._time
 
     @property
     def title(self):
-        title_str = self._title.split('=')[1].replace('/', '').replace("'", '').strip(' ')
-        return title_str
+        return self._title
 
     @property
     def head(self):
         head_str = self._head.split('=')[1].replace('/', '').replace("'", '').strip(' ')
         return head_str
 
-    def add_vent(self, p1, p2, surf_id):
-        self._vent.append((p1, p2, surf_id))
+    def add_ign_cell(self, p1, p2, time):
+        self._vent.append((p1, p2, time))
 
     def _add_obst(self, p1, p2, surf_id):
 

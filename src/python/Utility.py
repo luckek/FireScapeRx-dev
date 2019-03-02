@@ -68,14 +68,16 @@ def linspace(start, end, number_points, increment=-1):
 
     if increment == -1:
         length = end - start
-        increment = length / number_points - 1  # There are 19 points to calculate
+        increment = length / (number_points - 1)  # There are 19 points to calculate
 
     # Create list of points
     current = start
     out = [0] * number_points
-    for i in range(number_points):
+    for i in range(number_points - 1):
         out[i] = current
         current += increment
+
+    out[-1] = end
 
     return out
 
