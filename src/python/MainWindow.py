@@ -9,8 +9,9 @@ import os.path as osp
 import sys
 import time
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtWidgets, Qt
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox, qApp, QLabel, QGraphicsView, QWidget, QGridLayout
+from PyQt5.QtCore import Qt
 
 import Utility as util
 from AboutDialog import AboutDialog
@@ -293,17 +294,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # FIXME: make two fixed size widgets or something for fuel map and ignition point editor, they now have own scroll area
             # FIXME: increase SIZE when there are lots of cells in fuel map and ignition
 
+            qApp.setOverrideCursor(Qt.WaitCursor)
+
             try:
                 new_editor = FuelMapEditor(self, file)
 
             except IndexError:
+
+                qApp.restoreOverrideCursor()
                 QMessageBox.information(self, "Invalid file", "A problem occurred while loading the fuel map. Please "
                                                               "verify that the fuel map does not contain non-integer "
                                                               "numbers")
-
                 return
 
-            # FIXME: if error thrown, fuel map disappears...
             if self._fl_map_editor:
                 self._fl_map_editor.deleteLater()
 
@@ -327,6 +330,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             # Tab index might not change, so __tab_changed will never get called
             self._fl_map_editor.show()
+            qApp.restoreOverrideCursor()
+
+            QMessageBox.information(self, "Import successful", "Fuel Map successfully imported.")
 
     def __export_fuel_map(self):
 
@@ -336,10 +342,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         if file:
 
+            qApp.setOverrideCursor(Qt.WaitCursor)
+
             if not file.endswith(AsciiParser.FILE_EXT):
                 file += AsciiParser.FILE_EXT
 
             self._fl_map_editor.save(file, False)
+            qApp.restoreOverrideCursor()
+
             QMessageBox.information(self, "Export successful", "Fuel map successfully exported")
 
     def __import_dem(self):
@@ -349,6 +359,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         file, filt = QFileDialog.getOpenFileName(self, 'Open File', user_settings.working_dir, file_filter)
 
         if file:
+
+            qApp.setOverrideCursor(Qt.WaitCursor)
 
             if self._ign_pt_editor:
                 self._ign_pt_editor.deleteLater()
@@ -369,7 +381,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             # Set current tab to fuel type legend
             self._tab_widget.setCurrentIndex(2)
+
             self._ign_pt_editor.show()
+            qApp.restoreOverrideCursor()
+
+            QMessageBox.information(self, "Import successful", "Digital Elevation Model successfully imported.")
 
     def __export_dem(self):
 
@@ -379,10 +395,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         if file:
 
+            qApp.setOverrideCursor(Qt.WaitCursor)
+
             if not file.endswith(AsciiParser.FILE_EXT):
                 file += AsciiParser.FILE_EXT
 
             self._ign_pt_editor.save(file)
+            qApp.restoreOverrideCursor()
             QMessageBox.information(self, "Export successful", "Digital elevation model successfully exported")
 
     def __init_sim_settings(self):
@@ -467,6 +486,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __run_wfds(self):
         """This function runs wfds with the currently loaded environment"""
 
+        qApp.setOverrideCursor(Qt.WaitCursor)
+
         # Get user's output directory
         user_settings = UserSettings()
         out_dir = osp.abspath(user_settings.output_dir)
@@ -496,6 +517,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         except Exception as e:
             logger.log(logger.ERROR, str(e))
             logger.log(logger.INFO, 'Cleaning up...')
+
+            qApp.restoreOverrideCursor()
 
             QMessageBox.warning(self, 'A problem occurred',
                                 'There was a problem while running the simulation(s), please try again')
@@ -571,7 +594,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         logger.log(logger.INFO, "Simulation complete")
 
         self._progress_bar.setValue(100)
-        QMessageBox.information(self, 'Simulation Complete', 'Simulation(s) completed.')
+
+        qApp.restoreOverrideCursor()
+        QMessageBox.information(self, 'Simulation Complete', 'Simulation completed.')
+
         self.__hide_and_reset_progress()
 
     def __hide_and_reset_progress(self):
