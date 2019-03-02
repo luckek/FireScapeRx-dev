@@ -424,9 +424,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         file, file_filter = QFileDialog.getOpenFileName(self, 'Import Environment', user_settings.working_dir,
                                                         filter="fds (*.fds)")
 
-        # TODO: actually import FDS file
-        # TODO: if FDS file import is successful, modify current_env_label
-
         if file:
             self._fds.fds_file = file
 
@@ -443,9 +440,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 return
 
             self._sim_title_label.setText('Simulation Title: ' + self._fds.job_name())
-
-            self.__init_sim_settings()
-
             QMessageBox.information(self, 'Import successful', 'Environment imported successfully.')
 
     def __run_simulation(self):
