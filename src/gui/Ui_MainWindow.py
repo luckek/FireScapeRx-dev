@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'qt_files/MainWindow.ui'
+# Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created by: PyQt5 UI code generator 5.6
+# Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -32,7 +32,7 @@ class Ui_MainWindow(object):
         self._sim_settings_widget.setGeometry(QtCore.QRect(0, 0, 358, 528))
         self._sim_settings_widget.setObjectName("_sim_settings_widget")
         self.verticalLayoutWidget = QtWidgets.QWidget(self._sim_settings_widget)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(30, 0, 323, 283))
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(30, 0, 323, 288))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
         self.vertical_layout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.vertical_layout.setContentsMargins(0, 0, 0, 0)
@@ -144,7 +144,7 @@ class Ui_MainWindow(object):
         self.fuel_type_scroll_area_widget_contents.setGeometry(QtCore.QRect(0, 0, 358, 528))
         self.fuel_type_scroll_area_widget_contents.setObjectName("fuel_type_scroll_area_widget_contents")
         self.verticalLayoutWidget_2 = QtWidgets.QWidget(self.fuel_type_scroll_area_widget_contents)
-        self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(20, 0, 321, 331))
+        self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(20, 0, 335, 331))
         self.verticalLayoutWidget_2.setObjectName("verticalLayoutWidget_2")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_2)
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -167,7 +167,7 @@ class Ui_MainWindow(object):
         self._fl_type_lgnd_scroll_area.setWidgetResizable(True)
         self._fl_type_lgnd_scroll_area.setObjectName("_fl_type_lgnd_scroll_area")
         self.scrollAreaWidgetContents_3 = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(0, 0, 317, 101))
+        self.scrollAreaWidgetContents_3.setGeometry(QtCore.QRect(0, 0, 98, 28))
         self.scrollAreaWidgetContents_3.setObjectName("scrollAreaWidgetContents_3")
         self._fl_type_lgnd_scroll_area.setWidget(self.scrollAreaWidgetContents_3)
         self.verticalLayout_2.addWidget(self._fl_type_lgnd_scroll_area)
@@ -291,7 +291,7 @@ class Ui_MainWindow(object):
         self.ignition_point_map_legend_scroll_area.setWidgetResizable(True)
         self.ignition_point_map_legend_scroll_area.setObjectName("ignition_point_map_legend_scroll_area")
         self.ingition_point_map_legend_scroll_area_widget_contents = QtWidgets.QWidget()
-        self.ingition_point_map_legend_scroll_area_widget_contents.setGeometry(QtCore.QRect(0, 0, 317, 99))
+        self.ingition_point_map_legend_scroll_area_widget_contents.setGeometry(QtCore.QRect(0, 0, 98, 28))
         self.ingition_point_map_legend_scroll_area_widget_contents.setObjectName("ingition_point_map_legend_scroll_area_widget_contents")
         self.ignition_point_map_legend_scroll_area.setWidget(self.ingition_point_map_legend_scroll_area_widget_contents)
         self.verticalLayout_4.addWidget(self.ignition_point_map_legend_scroll_area)
@@ -402,7 +402,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addWidget(self._sim_title_label)
         MainWindow.setCentralWidget(self.central_widget)
         self._menu_bar = QtWidgets.QMenuBar(MainWindow)
-        self._menu_bar.setGeometry(QtCore.QRect(0, 0, 969, 20))
+        self._menu_bar.setGeometry(QtCore.QRect(0, 0, 969, 22))
         self._menu_bar.setDefaultUp(False)
         self._menu_bar.setNativeMenuBar(False)
         self._menu_bar.setObjectName("_menu_bar")
@@ -455,17 +455,13 @@ class Ui_MainWindow(object):
         self.action_ascii_to_fds.setObjectName("action_ascii_to_fds")
         self.menu_file.addAction(self.action_create_environment)
         self.menu_file.addAction(self.action_ascii_to_fds)
-        self.menu_export.addAction(self.action_export_environment)
-        self.menu_export.addAction(self.action_export_summary_file)
         self.menu_export.addAction(self.action_export_fuel_map)
         self.menu_export.addAction(self.action_export_dem)
         self.menu_settings.addAction(self.action_user_settings)
-        self.menu_settings.addAction(self.action_select_output_files)
         self.menu_help.addAction(self.action_about)
         self.menu_simulation.addAction(self.action_run_sim)
         self.menu_simulation.addAction(self.action_view_sim)
         self.menu_import.addAction(self.action_import_environment)
-        self.menu_import.addAction(self.action_import_summary_file)
         self.menu_import.addAction(self.action_import_fuel_map)
         self.menu_import.addAction(self.action_import_dem)
         self._menu_bar.addAction(self.menu_file.menuAction())

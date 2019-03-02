@@ -76,7 +76,7 @@
           <x>30</x>
           <y>0</y>
           <width>323</width>
-          <height>283</height>
+          <height>288</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="vertical_layout">
@@ -313,7 +313,7 @@
          <rect>
           <x>20</x>
           <y>0</y>
-          <width>321</width>
+          <width>335</width>
           <height>331</height>
          </rect>
         </property>
@@ -352,8 +352,8 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>317</width>
-              <height>101</height>
+              <width>98</width>
+              <height>28</height>
              </rect>
             </property>
            </widget>
@@ -666,8 +666,8 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>317</width>
-              <height>99</height>
+              <width>98</width>
+              <height>28</height>
              </rect>
             </property>
            </widget>
@@ -956,7 +956,7 @@
      <x>0</x>
      <y>0</y>
      <width>969</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
    <property name="defaultUp">
@@ -976,8 +976,6 @@
     <property name="title">
      <string>Export</string>
     </property>
-    <addaction name="action_export_environment"/>
-    <addaction name="action_export_summary_file"/>
     <addaction name="action_export_fuel_map"/>
     <addaction name="action_export_dem"/>
    </widget>
@@ -986,7 +984,6 @@
      <string>Settings</string>
     </property>
     <addaction name="action_user_settings"/>
-    <addaction name="action_select_output_files"/>
    </widget>
    <widget class="QMenu" name="menu_help">
     <property name="title">
@@ -1006,7 +1003,6 @@
      <string>Import</string>
     </property>
     <addaction name="action_import_environment"/>
-    <addaction name="action_import_summary_file"/>
     <addaction name="action_import_fuel_map"/>
     <addaction name="action_import_dem"/>
    </widget>
