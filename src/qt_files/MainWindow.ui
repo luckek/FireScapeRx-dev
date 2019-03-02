@@ -75,8 +75,8 @@
          <rect>
           <x>30</x>
           <y>0</y>
-          <width>296</width>
-          <height>194</height>
+          <width>323</width>
+          <height>283</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="vertical_layout">
@@ -105,9 +105,12 @@
           </widget>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <layout class="QFormLayout" name="formLayout">
            <property name="sizeConstraint">
             <enum>QLayout::SetMaximumSize</enum>
+           </property>
+           <property name="horizontalSpacing">
+            <number>40</number>
            </property>
            <property name="leftMargin">
             <number>10</number>
@@ -121,30 +124,17 @@
            <property name="bottomMargin">
             <number>5</number>
            </property>
-           <item>
+           <item row="0" column="0">
             <widget class="QLabel" name="sim_duration_label">
              <property name="text">
-              <string>Simulation Duration</string>
+              <string>Simulation Duration(s)</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
              </property>
             </widget>
            </item>
-           <item>
-            <spacer name="horizontalSpacer">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
+           <item row="0" column="1">
             <widget class="QLineEdit" name="_sim_duration_line_edit"/>
            </item>
           </layout>
@@ -179,7 +169,7 @@
             <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
            </property>
            <property name="horizontalSpacing">
-            <number>60</number>
+            <number>50</number>
            </property>
            <property name="verticalSpacing">
             <number>10</number>
@@ -199,7 +189,7 @@
            <item row="0" column="0">
             <widget class="QLabel" name="wind_speed_label">
              <property name="text">
-              <string>Wind Speed</string>
+              <string>Wind Speed(m/s)</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -212,7 +202,7 @@
            <item row="1" column="0">
             <widget class="QLabel" name="wind_direction_label">
              <property name="text">
-              <string>Wind Direction</string>
+              <string>Wind Direction(deg)</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -221,6 +211,63 @@
            </item>
            <item row="1" column="1">
             <widget class="QLineEdit" name="_wind_direction_line_edit"/>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="Line" name="line_5">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_7">
+           <item>
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>Environmental Conditions</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="Line" name="line_14">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QFormLayout" name="formLayout_2">
+           <property name="horizontalSpacing">
+            <number>15</number>
+           </property>
+           <property name="leftMargin">
+            <number>10</number>
+           </property>
+           <property name="topMargin">
+            <number>5</number>
+           </property>
+           <property name="rightMargin">
+            <number>10</number>
+           </property>
+           <property name="bottomMargin">
+            <number>5</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>Ambient Temperature(F) </string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="lineEdit"/>
            </item>
           </layout>
          </item>
