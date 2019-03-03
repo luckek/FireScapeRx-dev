@@ -32,6 +32,7 @@ class UserSettingsForm(QDialog, Ui_Dialog):
         # Which is why the dummy variable checked is there.
         self.output_dir_button.clicked.connect(lambda checked, x=True, state=self: button_clicked((x, state)))
         self.working_dir_button.clicked.connect(lambda checked, x=False, state=self: button_clicked((x, state)))
+        self.default_environment_button.clicked.connect(lambda checked, x=False, state=self: environment_button_clicked((x, state)))
 
         self._output_dir_line_edit.returnPressed.connect(self.ret_pressed)
 
@@ -80,8 +81,6 @@ class UserSettingsForm(QDialog, Ui_Dialog):
             super(UserSettingsForm, self).accept()
 
 
-
-
 @QtCore.pyqtSlot(tuple, name='button_clicked')
 def button_clicked(args):
 
@@ -99,3 +98,14 @@ def button_clicked(args):
 
         else:
             state.working_dir_line_edit().setText(new_directory)
+
+def environment_button_clicked(args):
+    default_environment_pressed, state = args
+
+    #user_settings = UserSettings()
+
+    # Open FileDialog in user's current working directory, with fds file filter
+    #file = QFileDialog.getOpenFileName(self=args, 'Open File', user_settings.working_dir, filter="fds (*.fds)")
+
+
+    #state.default_environment_line_edit().setText(file)
