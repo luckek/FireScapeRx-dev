@@ -15,7 +15,7 @@ class UserSettingsForm(QDialog, Ui_Dialog):
         self.setupUi(self)
 
         self.user_settings = UserSettings()
-        self._close_window = False
+        self._close_window = True
 
         # Initalize fields with user settings values
         self._output_dir_line_edit.setText(osp.abspath(str(self.user_settings.output_dir)))
@@ -33,8 +33,6 @@ class UserSettingsForm(QDialog, Ui_Dialog):
         self.output_dir_button.clicked.connect(lambda checked, x=True, state=self: button_clicked((x, state)))
         self.working_dir_button.clicked.connect(lambda checked, x=False, state=self: button_clicked((x, state)))
 
-        self.button_box.accepted.connect(self.save_user_settings)
-
         self._output_dir_line_edit.returnPressed.connect(self.ret_pressed)
 
     def ret_pressed(self):
@@ -51,15 +49,16 @@ class UserSettingsForm(QDialog, Ui_Dialog):
         # Check that the value is numeric
         if not(self._sim_duration_line_edit.text().replace('.', '', 1).isdigit()):
             QMessageBox.information(self, "Invalid Input!", "Simulation duration must be numeric.")
+            self._close_window = False
         else:
             # Check that the value is in range
             if(float(self._sim_duration_line_edit.text()) <= 0 or float(self._sim_duration_line_edit.text()) > SimulationSettings.MAX_DURATION):
                 QMessageBox.information(self, "Invalid Input!", "Simulation duration must be greater than 0 and less than ." + str(SimulationSettings.MAX_DURATION))
+                self._close_window = False
             else:
                 self.user_settings.sim_duration = self._sim_duration_line_edit.text()
-
-        # If everything is valid, set close_window to true
-        self._close_window = True
+                # If everything is valid, set close_window to true
+                self._close_window = True
 
         self.user_settings.save_user_settings()
 
@@ -71,6 +70,16 @@ class UserSettingsForm(QDialog, Ui_Dialog):
 
     def default_environment_line_edit(self):
         return self._default_environment_line_edit
+
+    # Redefine accept event so values can be checked before closing
+    def accept(self):
+        # save settings first
+        self.save_user_settings()
+        # close if new settings are valid
+        if self._close_window:
+            super(UserSettingsForm, self).accept()
+
+
 
 
 @QtCore.pyqtSlot(tuple, name='button_clicked')
@@ -90,10 +99,3 @@ def button_clicked(args):
 
         else:
             state.working_dir_line_edit().setText(new_directory)
-
-# Prevent the window from closing if close_window is set as false
-def closeEvent(self, event):
-    if self._close_window:
-        super(UserSettingsForm, self).closeEvent(event)
-    else:
-        event.ignore()
