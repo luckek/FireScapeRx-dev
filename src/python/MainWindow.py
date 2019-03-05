@@ -398,6 +398,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self._sim_duration_line_edit.setText(str(sim_settings.sim_duration))
             self._wind_speed_line_edit.setText(str(sim_settings.wind_speed))
             self._wind_direction_line_edit.setText(str(sim_settings.wind_direction))
+            self._ambient_temp_line_edit.setText(str(sim_settings.ambient_temp))
 
     @QtCore.pyqtSlot(int, name='__tab_changed')
     def __tab_changed(self, new_tab_index):
