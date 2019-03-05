@@ -267,7 +267,7 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QLineEdit" name="lineEdit"/>
+            <widget class="QLineEdit" name="_ambient_temp_line_edit"/>
            </item>
           </layout>
          </item>
@@ -956,7 +956,7 @@
      <x>0</x>
      <y>0</y>
      <width>969</width>
-     <height>22</height>
+     <height>20</height>
     </rect>
    </property>
    <property name="defaultUp">

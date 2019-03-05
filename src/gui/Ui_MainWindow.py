@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'MainWindow.ui'
+# Form implementation generated from reading ui file 'qt_files/MainWindow.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.6
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -123,9 +123,9 @@ class Ui_MainWindow(object):
         self.label_7 = QtWidgets.QLabel(self.verticalLayoutWidget)
         self.label_7.setObjectName("label_7")
         self.formLayout_2.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label_7)
-        self.lineEdit = QtWidgets.QLineEdit(self.verticalLayoutWidget)
-        self.lineEdit.setObjectName("lineEdit")
-        self.formLayout_2.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.lineEdit)
+        self._ambient_temp_line_edit = QtWidgets.QLineEdit(self.verticalLayoutWidget)
+        self._ambient_temp_line_edit.setObjectName("_ambient_temp_line_edit")
+        self.formLayout_2.setWidget(0, QtWidgets.QFormLayout.FieldRole, self._ambient_temp_line_edit)
         self.vertical_layout.addLayout(self.formLayout_2)
         self.line = QtWidgets.QFrame(self.verticalLayoutWidget)
         self.line.setFrameShape(QtWidgets.QFrame.HLine)
@@ -402,7 +402,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addWidget(self._sim_title_label)
         MainWindow.setCentralWidget(self.central_widget)
         self._menu_bar = QtWidgets.QMenuBar(MainWindow)
-        self._menu_bar.setGeometry(QtCore.QRect(0, 0, 969, 22))
+        self._menu_bar.setGeometry(QtCore.QRect(0, 0, 969, 20))
         self._menu_bar.setDefaultUp(False)
         self._menu_bar.setNativeMenuBar(False)
         self._menu_bar.setObjectName("_menu_bar")
