@@ -54,7 +54,7 @@ class UserSettingsForm(QDialog, Ui_Dialog):
         else:
             # Check that the value is in range
             if(float(self._sim_duration_line_edit.text()) <= 0 or float(self._sim_duration_line_edit.text()) > SimulationSettings.MAX_DURATION):
-                QMessageBox.information(self, "Invalid Input!", "Simulation duration must be greater than 0 and less than ." + str(SimulationSettings.MAX_DURATION))
+                QMessageBox.information(self, "Invalid Input!", "Simulation duration must be greater than 0 and less than " + str(SimulationSettings.MAX_DURATION))
                 self._close_window = False
             else:
                 self.user_settings.sim_duration = self._sim_duration_line_edit.text()

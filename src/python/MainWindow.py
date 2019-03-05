@@ -397,6 +397,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @QtCore.pyqtSlot(int, name='__tab_changed')
     def __tab_changed(self, new_tab_index):
 
+        if not str(new_tab_index).isdigit():
+            raise TypeError
+
+        if new_tab_index != 1 and new_tab_index != 2:
+            raise IndexError
+
         if new_tab_index == 1 and self._tab_widget.widget(new_tab_index).isEnabled():
 
             if self._ign_pt_editor is not None:
