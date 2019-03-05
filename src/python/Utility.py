@@ -112,3 +112,7 @@ def center_window(window):
     center_point = QDesktopWidget().availableGeometry().center()
     qt_rectangle.moveCenter(center_point)
     window.move(qt_rectangle.topLeft())
+
+
+def fahrenheit_to_celsius(deg_f):
+    return (deg_f - 32) * (5/9)
