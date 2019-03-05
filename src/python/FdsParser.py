@@ -85,7 +85,8 @@ class FdsParser:
 
         # FIXME: This could be made more general... currently hard coded from JFSP run 1
         misc_str = "&MISC   TERRAIN_CASE=.TRUE.,\n        VEG_LEVEL_SET_UNCOUPLED=.TRUE.," \
-                   "\n        VEG_LEVEL_SET_COUPLED=.FALSE./\n\n"
+                   "\n        VEG_LEVEL_SET_COUPLED=.FALSE.,\n        TMPA=" + \
+                   str(round(self._ambient_temp, 2)) + ' /\n\n'
 
         # FIXME: This could be made more general... currently hard coded from JFSP run 1
         untrt_str = "&SURF ID ='untrt'\nFREE_SLIP=.TRUE.\nVEG_LEVEL_SET_SPREAD =.TRUE.\nVEG_LSET_ELLIPSE=.TRUE.\n" \
@@ -137,8 +138,6 @@ class FdsParser:
             f.write("&TIME T_END=" + str(self.time) + ',LOCK_TIME_STEP=.TRUE./\n\n')
             f.write(misc_str)
             f.write("&RADI RADIATION=." + str(self._radi_radiation).upper() + '. /\n\n')
-
-            f.write("& INIT XB=" + xb_str + " TEMPERATURE=" + str(round(self._ambient_temp, 2)) + ' /\n\n')
 
             # NOTE: untrt rgb = trt rgb?
             f.write('-- Unique FVS stands\n')
