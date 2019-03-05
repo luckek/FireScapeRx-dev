@@ -857,6 +857,28 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         return True
 
+    def __check_ambient_temp(self):
+
+        ambient_temp = self._ambient_temp_line_edit.text()
+
+        if not util.is_number(ambient_temp):
+            QMessageBox.information(self, "Invalid number",
+                                    "Ambient temperature is not a number. Please enter a valid temperature")
+
+            return False
+
+        ambient_temp = float(ambient_temp)
+
+        if ambient_temp <= -459.67:
+
+            QMessageBox.information(self, "Invalid number",
+                                    "Ambient temperature must be above absolute zero. "
+                                    "Please enter a temperature above -457.67F")
+
+            return False
+
+        return True
+
     def __ascii_to_fds(self):
 
         # Note: normally, this would be dangerous as
