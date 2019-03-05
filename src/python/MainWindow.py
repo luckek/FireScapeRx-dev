@@ -887,44 +887,48 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # TODO: ensure that DEM and fuel map are both same size
         # idea: user cannot load fuel map that is not same size as DEM and vice versa
+        if self.__check_ambient_temp():
 
-        if self.__check_sim_time():
+            if self.__check_sim_time():
 
-            # Get user's working directory
-            user_settings = UserSettings()
-            file, filt = QFileDialog.getSaveFileName(self, 'Save File', user_settings.working_dir, "fds (*.fds)")
+                # Get user's working directory
+                user_settings = UserSettings()
+                file, filt = QFileDialog.getSaveFileName(self, 'Save File', user_settings.working_dir, "fds (*.fds)")
 
-            if file:
+                if file:
 
-                if not file.endswith(Fds.file_ext()):
-                    file += Fds.file_ext()
+                    if not file.endswith(Fds.file_ext()):
+                        file += Fds.file_ext()
 
-                # Note: Logically, this is where we would ensure that all of the fire line times
-                # are less than the simulation duration, however WFDS does not care weather or not such
-                # ignition points are present, hence we do not entirely care either.
-                fl_map_parser = self._fl_map_editor.parser()
-                dem_parser = self._ign_pt_editor.parser()
-                sim_time = float(self._sim_duration_line_edit.text())
+                    # Note: Logically, this is where we would ensure that all of the fire line times
+                    # are less than the simulation duration, however WFDS does not care weather or not such
+                    # ignition points are present, hence we do not entirely care either.
+                    fl_map_parser = self._fl_map_editor.parser()
+                    dem_parser = self._ign_pt_editor.parser()
 
-                sim_settings = SimulationSettings('default.sim_settings')
+                    sim_time = float(self._sim_duration_line_edit.text())
+                    ambient_temp = util.fahrenheit_to_celsius(float(self._ambient_temp_line_edit.text()))
 
-                sim_settings.sim_duration = sim_time
+                    sim_settings = SimulationSettings('default.sim_settings')
 
-                ascii_fds_converter = AsciiToFds(fl_map_parser, dem_parser, sim_settings)
-                save_success = ascii_fds_converter.save(self._fl_map_editor.button_values_grid(), self._ign_pt_editor.fire_lines(), file)
+                    sim_settings.sim_duration = sim_time
+                    sim_settings.ambient_temp = ambient_temp
 
-                if save_success:
+                    ascii_fds_converter = AsciiToFds(fl_map_parser, dem_parser, sim_settings)
+                    save_success = ascii_fds_converter.save(self._fl_map_editor.button_values_grid(), self._ign_pt_editor.fire_lines(), file)
 
-                    usr_reply = QMessageBox.question(self, "Export successful", "Environment exported successfully. "
-                                                     "Would you like to set it as the current environment?",
-                                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+                    if save_success:
 
-                    if usr_reply == QMessageBox.Yes:
+                        usr_reply = QMessageBox.question(self, "Export successful", "Environment exported successfully. "
+                                                         "Would you like to set it as the current environment?",
+                                                         QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
 
-                        self._fds.fds_file = file
-                        self._fds.read()
+                        if usr_reply == QMessageBox.Yes:
 
-                        self._sim_title_label.setText('Simulation Title: ' + self._fds.job_name())
+                            self._fds.fds_file = file
+                            self._fds.read()
+
+                            self._sim_title_label.setText('Simulation Title: ' + self._fds.job_name())
 
 
 def follow(thefile):
