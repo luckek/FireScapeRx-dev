@@ -29,6 +29,8 @@ class FdsParser:
         self._z_start = 0
         self._z_end = 0
 
+        self._ambient_temp = 20.0  # Default to ~ 68 degrees Fahrenheit
+
         self._mult = ''
         self._mesh = ''
         self._surf = []
@@ -136,6 +138,8 @@ class FdsParser:
             f.write(misc_str)
             f.write("&RADI RADIATION=." + str(self._radi_radiation).upper() + '. /\n\n')
 
+            f.write("& INIT XB=" + xb_str + " TEMPERATURE=" + str(round(self._ambient_temp, 2)) + ' /\n\n')
+
             # NOTE: untrt rgb = trt rgb?
             f.write('-- Unique FVS stands\n')
             f.write(untrt_str)
@@ -158,7 +162,7 @@ class FdsParser:
                 ign_id = 'P' + str(i)
                 xb_str = ','.join([str(int(x1)), str(int(x2)), str(int(y1)), str(int(y2)), str(int(z1)), str(z2)])
 
-                f.write("&SURF ID='" + ign_id + "',VEG_LSET_IGNITE_TIME=" + str(ign_time) + ",RGB=255,0,0 /\n")
+                f.write("&SURF ID='" + ign_id + "',VEG_LSET_IGNITE_TIME=" + str(round(ign_time, 2)) + ",RGB=255,0,0 /\n")
                 f.write("&VENT XB=" + xb_str + ",SURF_ID='" + ign_id + "' /\n")
 
             f.write("\n-- Vegetation\n")
@@ -205,6 +209,14 @@ class FdsParser:
     def head(self):
         head_str = self._head.split('=')[1].replace('/', '').replace("'", '').strip(' ')
         return head_str
+
+    @property
+    def ambient_temp(self):
+        return self._ambient_temp
+
+    @ambient_temp.setter
+    def ambient_temp(self, new_temp):
+        self._ambient_temp = new_temp
 
     def add_ign_cell(self, p1, p2, time):
         self._vent.append((p1, p2, time))
