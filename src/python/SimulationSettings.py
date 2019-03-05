@@ -16,6 +16,7 @@ class SimulationSettings:
     DEF_SIM_DURATION = 100.0  # FIXME: figure out reasonable default
     DEF_WIND_SPEED = 0.0  # FIXME: figure out reasonable default
     DEF_WIND_DIR = 45.0  # FIXME: figure out reasonable default
+    DEF_AMBIENT_TEMP = 68.0  # This is the default for WFDS
 
     MAX_DURATION = 1000  # FIXME: figure out reasonable maximum
 
@@ -26,6 +27,7 @@ class SimulationSettings:
         self._sim_duration = self.DEF_SIM_DURATION  # t_end
         self._wind_speed = self.DEF_WIND_SPEED
         self._wind_dir = self.DEF_WIND_DIR
+        self._ambient_temp = self.DEF_AMBIENT_TEMP
 
         user_settings = UserSettings()
         self._user_settings = user_settings
@@ -94,6 +96,18 @@ class SimulationSettings:
 
                         self._wind_dir = float_value
 
+                    elif key == 'AMBIENT_TEMP':
+
+                        float_value = float(value)
+
+                        # FIXME: shouldn't need to check for negative, but if do should be seperate check
+                        # if float_value > self.MAX_WIND_DIR:
+                        #     self._wind_dir = self.MAX_WIND_DIR
+                        #     raise ValueError('ValueError: ' + key + ' should be between less than ' + str(
+                        #         self.MAX_WIND_DIR) + ' degrees. Reverting to maximum value')
+
+                        self._ambient_temp = float(value)
+
                     else:
                         raise KeyError('KeyError: ' + key + '. Key will be ignored.')
 
@@ -115,10 +129,12 @@ class SimulationSettings:
                 f.write(key + self.KV_SEP + str(value) + '\n')
 
     def get_settings_dict(self):
-        return {'SIM_DURATION': self._sim_duration, 'WIND_SPEED': self._wind_speed, 'WIND_DIR': self._wind_dir}
+        return {'SIM_DURATION': self._sim_duration, 'WIND_SPEED': self._wind_speed, 'WIND_DIR': self._wind_dir,
+                'AMBIENT_TEMP': self._ambient_temp}
 
     def get_default_settings_dict(self):
-        return {'SIM_DURATION': self.DEF_SIM_DURATION, 'WIND_SPEED': self.DEF_WIND_SPEED, 'WIND_DIR': self.DEF_WIND_DIR}
+        return {'SIM_DURATION': self.DEF_SIM_DURATION, 'WIND_SPEED': self.DEF_WIND_SPEED, 'WIND_DIR': self.DEF_WIND_DIR,
+                'AMBIENT_TEMP': self.DEF_AMBIENT_TEMP}
 
     def update_settings(self, settings_dict):
 
@@ -138,6 +154,9 @@ class SimulationSettings:
 
             elif key == 'WIND_DIR':
                 self._wind_dir = float(value)
+
+            elif key == 'AMBIENT_TEMP':
+                self._ambient_temp = float(value)
 
     def wind_vector(self):
         # x=U0, y=V0
@@ -166,3 +185,11 @@ class SimulationSettings:
     @wind_direction.setter
     def wind_direction(self, wind_dir):
         self._wind_dir = wind_dir
+
+    @property
+    def ambient_temp(self):
+        return self._ambient_temp
+
+    @ambient_temp.setter
+    def ambient_temp(self, new_temp):
+        self._ambient_temp = new_temp
