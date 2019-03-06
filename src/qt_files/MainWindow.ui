@@ -76,7 +76,7 @@
           <x>30</x>
           <y>0</y>
           <width>323</width>
-          <height>283</height>
+          <height>288</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="vertical_layout">
@@ -110,7 +110,7 @@
             <enum>QLayout::SetMaximumSize</enum>
            </property>
            <property name="horizontalSpacing">
-            <number>40</number>
+            <number>32</number>
            </property>
            <property name="leftMargin">
             <number>10</number>
@@ -127,7 +127,7 @@
            <item row="0" column="0">
             <widget class="QLabel" name="sim_duration_label">
              <property name="text">
-              <string>Simulation Duration(s)</string>
+              <string>Simulation Duration (s)</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -169,7 +169,7 @@
             <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
            </property>
            <property name="horizontalSpacing">
-            <number>50</number>
+            <number>47</number>
            </property>
            <property name="verticalSpacing">
             <number>10</number>
@@ -189,7 +189,7 @@
            <item row="0" column="0">
             <widget class="QLabel" name="wind_speed_label">
              <property name="text">
-              <string>Wind Speed(m/s)</string>
+              <string>Wind Speed (m/s)</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -202,7 +202,7 @@
            <item row="1" column="0">
             <widget class="QLabel" name="wind_direction_label">
              <property name="text">
-              <string>Wind Direction(deg)</string>
+              <string>Wind Direction (deg)</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -262,12 +262,12 @@
            <item row="0" column="0">
             <widget class="QLabel" name="label_7">
              <property name="text">
-              <string>Ambient Temperature(F) </string>
+              <string>Ambient Temperature (F) </string>
              </property>
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QLineEdit" name="lineEdit"/>
+            <widget class="QLineEdit" name="_ambient_temp_line_edit"/>
            </item>
           </layout>
          </item>
@@ -313,7 +313,7 @@
          <rect>
           <x>20</x>
           <y>0</y>
-          <width>321</width>
+          <width>335</width>
           <height>331</height>
          </rect>
         </property>
@@ -352,8 +352,8 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>98</width>
-              <height>28</height>
+              <width>331</width>
+              <height>101</height>
              </rect>
             </property>
            </widget>
@@ -975,8 +975,6 @@
     <property name="title">
      <string>Export</string>
     </property>
-    <addaction name="action_export_environment"/>
-    <addaction name="action_export_summary_file"/>
     <addaction name="action_export_fuel_map"/>
     <addaction name="action_export_dem"/>
    </widget>
@@ -985,7 +983,6 @@
      <string>Settings</string>
     </property>
     <addaction name="action_user_settings"/>
-    <addaction name="action_select_output_files"/>
    </widget>
    <widget class="QMenu" name="menu_help">
     <property name="title">
@@ -1005,7 +1002,6 @@
      <string>Import</string>
     </property>
     <addaction name="action_import_environment"/>
-    <addaction name="action_import_summary_file"/>
     <addaction name="action_import_fuel_map"/>
     <addaction name="action_import_dem"/>
    </widget>

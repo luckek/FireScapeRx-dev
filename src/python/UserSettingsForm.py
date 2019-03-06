@@ -31,8 +31,6 @@ class UserSettingsForm(QDialog, Ui_UserSettingsForm):
 
         self.button_box.accepted.connect(self.save_user_settings)
 
-        self._output_dir_line_edit.returnPressed.connect(self.ret_pressed)
-
     @QtCore.pyqtSlot(name='save_user_settings')
     def save_user_settings(self):
 
