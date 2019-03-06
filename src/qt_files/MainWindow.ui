@@ -126,6 +126,9 @@
            </property>
            <item row="0" column="0">
             <widget class="QLabel" name="sim_duration_label">
+             <property name="toolTip">
+              <string>Duration of the simulation in seconds</string>
+             </property>
              <property name="text">
               <string>Simulation Duration (s)</string>
              </property>
@@ -188,6 +191,9 @@
            </property>
            <item row="0" column="0">
             <widget class="QLabel" name="wind_speed_label">
+             <property name="toolTip">
+              <string>Wind speed in meters per second</string>
+             </property>
              <property name="text">
               <string>Wind Speed (m/s)</string>
              </property>
@@ -201,6 +207,9 @@
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="wind_direction_label">
+             <property name="toolTip">
+              <string>Meterological wind direction in degrees</string>
+             </property>
              <property name="text">
               <string>Wind Direction (deg)</string>
              </property>
@@ -210,7 +219,11 @@
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QLineEdit" name="_wind_direction_line_edit"/>
+            <widget class="QLineEdit" name="_wind_direction_line_edit">
+             <property name="toolTip">
+              <string>Meterological wind direction in degrees</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
@@ -279,6 +292,19 @@
           </widget>
          </item>
         </layout>
+       </widget>
+       <widget class="QLabel" name="_compass_label">
+        <property name="geometry">
+         <rect>
+          <x>160</x>
+          <y>350</y>
+          <width>59</width>
+          <height>15</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
        </widget>
       </widget>
      </widget>
@@ -666,8 +692,8 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>98</width>
-              <height>28</height>
+              <width>317</width>
+              <height>99</height>
              </rect>
             </property>
            </widget>
