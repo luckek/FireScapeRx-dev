@@ -29,6 +29,9 @@ class FdsParser:
         self._z_start = 0
         self._z_end = 0
 
+        self._u0 = 0.0
+        self._v0 = 0.0
+
         self._ambient_temp = 20.0  # Default to ~ 68 degrees Fahrenheit
 
         self._mult = ''
@@ -86,7 +89,8 @@ class FdsParser:
         # FIXME: This could be made more general... currently hard coded from JFSP run 1
         misc_str = "&MISC   TERRAIN_CASE=.TRUE.,\n        VEG_LEVEL_SET_UNCOUPLED=.TRUE.," \
                    "\n        VEG_LEVEL_SET_COUPLED=.FALSE.,\n        TMPA=" + \
-                   str(round(self._ambient_temp, 2)) + ' /\n\n'
+                   str(round(self._ambient_temp, 2)) + ",\n        U0=" + str(round(self._u0, 4)) + ",\n        V0=" + \
+                   str(round(self._v0, 4)) + ' /\n\n'
 
         # FIXME: This could be made more general... currently hard coded from JFSP run 1
         untrt_str = "&SURF ID ='untrt'\nFREE_SLIP=.TRUE.\nVEG_LEVEL_SET_SPREAD =.TRUE.\nVEG_LSET_ELLIPSE=.TRUE.\n" \
@@ -302,3 +306,19 @@ class FdsParser:
     @z_end.setter
     def z_end(self, new_z):
         self._z_end = new_z
+
+    @property
+    def u0(self):
+        return self._u0
+
+    @u0.setter
+    def u0(self, u0):
+        self._u0 = u0
+
+    @property
+    def v0(self):
+        return self._v0
+
+    @v0.setter
+    def v0(self, v0):
+        self._v0 = v0
