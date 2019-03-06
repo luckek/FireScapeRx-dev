@@ -2,7 +2,7 @@
 # Unfortunately, this cannot be strictly enforced in python
 
 import os.path as osp
-from math import cos, sin
+from numpy import cos, sin, deg2rad
 
 from UserSettings import UserSettings
 from Utility import is_number
@@ -160,7 +160,7 @@ class SimulationSettings:
 
     def wind_vector(self):
         # x=U0, y=V0
-        return [self._wind_speed * cos(self._wind_dir), self._wind_speed * sin(self._wind_dir)]
+        return [self._wind_speed * cos(deg2rad(self._wind_dir)), self._wind_speed * sin(deg2rad(self._wind_dir))]
 
     @property
     def sim_duration(self):
