@@ -18,21 +18,27 @@ class AsciiToFds:
 
         dat_table = self._dem.data_table
 
-        # TODO: handle 'no data' values
+        # TODO: ###handle 'no data' values###
 
         # TODO: find better way to do this
         # NOTE: we replace NO_DATA values with inf here so that we may properly calculate the table minimum
-        dat_table_mod = []
+        no_data_present = False
         for row in dat_table:
             for i, value in enumerate(row):
 
                 if value == self._dem.no_data_val:
+                    no_data_present = True
                     row[i] = inf
 
-            dat_table_mod.append(row)
-
         # One liner to get max and min of data table
-        tbl_min = min([min(x) for x in dat_table_mod])
+        tbl_min = min([min(x) for x in dat_table])
+
+        if no_data_present:
+            for row in dat_table:
+                for i, value in enumerate(row):
+
+                    if value == inf:
+                        row[i] = self._dem.no_data_val
 
         # This 'zeroes out' elevation so the lowest elevation is 0 m.
         # NOTE: We do this even when tbl_min = 0.0 so that the elevation values are rounded
