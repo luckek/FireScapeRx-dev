@@ -25,6 +25,9 @@ from SimulationSettings import SimulationSettings
 from UserSettingsForm import UserSettingsForm, UserSettings
 from gui.Ui_MainWindow import Ui_MainWindow
 
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel
+from PyQt5.QtGui import QIcon, QPixmap
+
 
 class MainWindow(QMainWindow, Ui_MainWindow):
 
@@ -906,56 +909,92 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         return True
 
+    def __check_wind(self):
+
+        wind_speed = self._wind_speed_line_edit.text()
+        wind_dir = self._wind_direction_line_edit.text()
+
+        if not util.is_number(wind_speed) or not util.is_number(wind_dir):
+            QMessageBox.information(self, "Invalid number",
+                                    "At least one of wind speed or wind direction is not a valid number. "
+                                    "Please enter a valid number")
+
+            return False
+
+        wind_speed = float(wind_speed)
+        wind_dir = float(wind_dir)
+
+        if wind_dir < 0.0 or wind_dir > 360.0:
+            QMessageBox.information(self, "Invalid wind direction",
+                                    "Wind direction must be between 0 and 360. "
+                                    "Please enter a valid wind direction")
+
+            return False
+
+        if wind_speed < 0.0:
+            QMessageBox.information(self, "Invalid wind speed",
+                                    "Wind speed must be positive. "
+                                    "Please enter a valid wind speed")
+
+            return False
+
+        return True
+
     def __ascii_to_fds(self):
 
-        # Note: normally, this would be dangerous as
-        # either of these could be None, but since the user
-        # cannot access this function until both are loaded
+        if self.__check_wind():
+            # Note: normally, this would be dangerous as
+            # either of these could be None, but since the user
+            # cannot access this function until both are loaded
 
-        # TODO: ensure that DEM and fuel map are both same size
-        # idea: user cannot load fuel map that is not same size as DEM and vice versa
-        if self.__check_ambient_temp():
+            # TODO: ensure that DEM and fuel map are both same size
+            # idea: user cannot load fuel map that is not same size as DEM and vice versa
+            if self.__check_ambient_temp():
+                if self.__check_sim_time():
 
-            if self.__check_sim_time():
+                    # Get user's working directory
+                    user_settings = UserSettings()
+                    file, filt = QFileDialog.getSaveFileName(self, 'Save File', user_settings.working_dir, "fds (*.fds)")
 
-                # Get user's working directory
-                user_settings = UserSettings()
-                file, filt = QFileDialog.getSaveFileName(self, 'Save File', user_settings.working_dir, "fds (*.fds)")
+                    if file:
 
-                if file:
+                        if not file.endswith(Fds.file_ext()):
+                            file += Fds.file_ext()
 
-                    if not file.endswith(Fds.file_ext()):
-                        file += Fds.file_ext()
+                        # Note: Logically, this is where we would ensure that all of the fire line times
+                        # are less than the simulation duration, however WFDS does not care weather or not such
+                        # ignition points are present, hence we do not entirely care either.
+                        fl_map_parser = self._fl_map_editor.parser()
+                        dem_parser = self._ign_pt_editor.parser()
 
-                    # Note: Logically, this is where we would ensure that all of the fire line times
-                    # are less than the simulation duration, however WFDS does not care weather or not such
-                    # ignition points are present, hence we do not entirely care either.
-                    fl_map_parser = self._fl_map_editor.parser()
-                    dem_parser = self._ign_pt_editor.parser()
+                        sim_time = float(self._sim_duration_line_edit.text())
+                        ambient_temp = util.fahrenheit_to_celsius(float(self._ambient_temp_line_edit.text()))
 
-                    sim_time = float(self._sim_duration_line_edit.text())
-                    ambient_temp = util.fahrenheit_to_celsius(float(self._ambient_temp_line_edit.text()))
+                        wind_speed = float(self._wind_speed_line_edit.text())
+                        wind_direction = util.met_to_vect(float(self._wind_direction_line_edit.text()))
 
-                    sim_settings = SimulationSettings('default.sim_settings')
+                        sim_settings = SimulationSettings('default.sim_settings')
 
-                    sim_settings.sim_duration = sim_time
-                    sim_settings.ambient_temp = ambient_temp
+                        sim_settings.sim_duration = sim_time
+                        sim_settings.ambient_temp = ambient_temp
+                        sim_settings.wind_speed = wind_speed
+                        sim_settings.wind_direction = wind_direction
 
-                    ascii_fds_converter = AsciiToFds(fl_map_parser, dem_parser, sim_settings)
-                    save_success = ascii_fds_converter.save(self._fl_map_editor.button_values_grid(), self._ign_pt_editor.fire_lines(), file)
+                        ascii_fds_converter = AsciiToFds(fl_map_parser, dem_parser, sim_settings)
+                        save_success = ascii_fds_converter.save(self._fl_map_editor.button_values_grid(), self._ign_pt_editor.fire_lines(), file)
 
-                    if save_success:
+                        if save_success:
 
-                        usr_reply = QMessageBox.question(self, "Export successful", "Environment successfully created. "
-                                                         "Would you like to set it as the current environment?",
-                                                         QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+                            usr_reply = QMessageBox.question(self, "Export successful", "Environment successfully created. "
+                                                             "Would you like to set it as the current environment?",
+                                                             QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
 
-                        if usr_reply == QMessageBox.Yes:
+                            if usr_reply == QMessageBox.Yes:
 
-                            self._fds.fds_file = file
-                            self._fds.read()
+                                self._fds.fds_file = file
+                                self._fds.read()
 
-                            self._sim_title_label.setText('Simulation Title: ' + self._fds.job_name())
+                                self._sim_title_label.setText('Simulation Title: ' + self._fds.job_name())
 
 
 def follow(thefile):
