@@ -9,3 +9,4 @@ class AboutDialog(QDialog, Ui_About):
         super(AboutDialog, self).__init__()
 
         self.setupUi(self)
+        self.textEdit.setReadOnly(True)
