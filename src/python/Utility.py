@@ -117,3 +117,13 @@ def center_window(window):
 
 def fahrenheit_to_celsius(deg_f):
     return (deg_f - 32) * (5/9)
+
+
+def met_to_vect(deg_met):
+
+    deg_vect = 270 - deg_met
+
+    if deg_vect < 0:
+        deg_vect += 360
+
+    return deg_vect
