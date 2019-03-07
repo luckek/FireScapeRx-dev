@@ -120,10 +120,15 @@ def fahrenheit_to_celsius(deg_f):
 
 
 def met_to_vect(deg_met):
-
+    # Formula obtained from http://colaweb.gmu.edu/dev/clim301/lectures/wind/wind-uv
     deg_vect = 270 - deg_met
 
     if deg_vect < 0:
         deg_vect += 360
 
     return deg_vect
+
+
+def mph_to_ms(mph):
+    # Formula obtained from https://www.weather.gov/media/epz/wxcalc/windConversion.pdf
+    return 0.44704 * mph
