@@ -403,7 +403,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if not file.endswith(AsciiParser.FILE_EXT):
                 file += AsciiParser.FILE_EXT
 
-            self._ign_pt_editor.save(file)
+            self._ign_pt_editor.save(file, False)
             qApp.restoreOverrideCursor()
             QMessageBox.information(self, "Export successful", "Digital elevation model successfully exported")
 
@@ -914,6 +914,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         wind_speed = self._wind_speed_line_edit.text()
         wind_dir = self._wind_direction_line_edit.text()
 
+        if not wind_speed or not wind_dir:
+            QMessageBox.information(self, "Blank Field",
+                                    "At least one of wind speed or wind direction is empty. "
+                                    "Please provide a valid value")
+
         if not util.is_number(wind_speed) or not util.is_number(wind_dir):
             QMessageBox.information(self, "Invalid number",
                                     "At least one of wind speed or wind direction is not a valid number. "
@@ -970,7 +975,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         sim_time = float(self._sim_duration_line_edit.text())
                         ambient_temp = util.fahrenheit_to_celsius(float(self._ambient_temp_line_edit.text()))
 
-                        wind_speed = float(self._wind_speed_line_edit.text())
+                        wind_speed = util.mph_to_ms(float(self._wind_speed_line_edit.text()))
                         wind_direction = util.met_to_vect(float(self._wind_direction_line_edit.text()))
 
                         sim_settings = SimulationSettings('default.sim_settings')
