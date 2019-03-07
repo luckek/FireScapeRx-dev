@@ -7,7 +7,7 @@ TITLE='Level set simulation of AU experiment C064' /
       VEG_LEVEL_SET_THERMAL_ELEMENTS=.FALSE.
       U0=5 /
 
-&TIME T_END=2 /
+&TIME T_END=2.0 /
 
 - 150 m by 150 m; dx=dy=1m
 &MESH IJK=150,150,20, XB=-25,125,-75,75,0,20 /

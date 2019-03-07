@@ -192,10 +192,10 @@
            <item row="0" column="0">
             <widget class="QLabel" name="wind_speed_label">
              <property name="toolTip">
-              <string>Wind speed in meters per second</string>
+              <string>Wind speed in miles per hour</string>
              </property>
              <property name="text">
-              <string>Wind Speed (m/s)</string>
+              <string>Wind Speed (mph)</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -203,7 +203,11 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QLineEdit" name="_wind_speed_line_edit"/>
+            <widget class="QLineEdit" name="_wind_speed_line_edit">
+             <property name="toolTip">
+              <string>Wind speed in miles per hour</string>
+             </property>
+            </widget>
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="wind_direction_label">
@@ -292,19 +296,6 @@
           </widget>
          </item>
         </layout>
-       </widget>
-       <widget class="QLabel" name="_compass_label">
-        <property name="geometry">
-         <rect>
-          <x>160</x>
-          <y>350</y>
-          <width>59</width>
-          <height>15</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
        </widget>
       </widget>
      </widget>
@@ -1160,6 +1151,32 @@
    </property>
   </action>
  </widget>
+ <tabstops>
+  <tabstop>_tab_widget</tabstop>
+  <tabstop>_sim_settings_scroll_area</tabstop>
+  <tabstop>_sim_duration_line_edit</tabstop>
+  <tabstop>_wind_speed_line_edit</tabstop>
+  <tabstop>_wind_direction_line_edit</tabstop>
+  <tabstop>_ambient_temp_line_edit</tabstop>
+  <tabstop>fuel_type_scroll_area</tabstop>
+  <tabstop>_fl_type_lgnd_scroll_area</tabstop>
+  <tabstop>_x_rng_min_fl_line_edit</tabstop>
+  <tabstop>_x_rng_max_fl_line_edit</tabstop>
+  <tabstop>_y_rng_min_fl_line_edit</tabstop>
+  <tabstop>_y_rng_max_fl_line_edit</tabstop>
+  <tabstop>_fl_type_combo_box</tabstop>
+  <tabstop>modify_fuel_map_button</tabstop>
+  <tabstop>ignition_point_map_legend_scroll_area</tabstop>
+  <tabstop>_ign_pt_axis_combo_box</tabstop>
+  <tabstop>_ign_pt_rng_min_line_edit</tabstop>
+  <tabstop>_ign_pt_rng_max_line_edit</tabstop>
+  <tabstop>_ign_pt_row_col_line_edit</tabstop>
+  <tabstop>_ign_pt_t_start_line_edit</tabstop>
+  <tabstop>_ign_pt_t_end_line_edit</tabstop>
+  <tabstop>_ign_pt_add_rm_combo_box</tabstop>
+  <tabstop>modify_ign_pts_button</tabstop>
+  <tabstop>ignition_point_scroll_area</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
