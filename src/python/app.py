@@ -14,7 +14,7 @@ def main(argv):
     # CRITICAL, FATAL, ERROR
     logger.basicConfig(level=logger.INFO)
 
-    # Setup application and run
+    # Setup and run application
     app = QApplication(argv)
     w = MainWindow()
     w.show()
