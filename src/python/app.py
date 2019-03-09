@@ -1,5 +1,6 @@
 import logging as logger
 import datetime
+import os
 import sys
 
 from PyQt5.QtWidgets import QApplication
@@ -9,6 +10,11 @@ from MainWindow import MainWindow
 
 def main(argv):
 
+    # Create logger directory
+    logDir = os.path.abspath('../temp')
+    if not os.path.exists(logDir):
+        os.mkdir(logDir)
+
     # Setup logger, configure verbosity.
     # Possible values are:
     # INFO, DEBUG, WARN, WARNING,
@@ -16,7 +22,7 @@ def main(argv):
     logger.basicConfig(level=logger.DEBUG,
                         format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                         datefmt='%m-%d %H:%M',
-                        filename='../temp/'+datetime.datetime.now().strftime("%m%d%Y-%H%M")+'.log',
+                        filename='../temp/'+datetime.datetime.now().strftime("%m%d%Y-%H%M%S")+'.log',
                         filemode='w')
     # define a Handler which writes INFO messages or higher to the sys.stderr
     console = logger.StreamHandler()
