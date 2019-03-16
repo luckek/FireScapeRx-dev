@@ -149,7 +149,7 @@ class FdsParser:
 
         with open(fds_file, 'w') as f:
 
-            f.write("&HEAD CHID='" + self._head + "',TITLE='" + self._title + "' /\n\n")
+            f.write("&HEAD CHID='" + self._head + "' /\nTITLE='" + self._title + "' /\n\n")
 
             # Calculate mesh size
             mesh_i = self._x_end // self._cell_size
