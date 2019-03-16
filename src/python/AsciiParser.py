@@ -1,3 +1,5 @@
+import numpy as np
+
 class AsciiParser:
 
     FILE_EXT = '.asc'
@@ -16,9 +18,11 @@ class AsciiParser:
 
     def read(self):
         with open(self._fname) as f:
+            self._data_table = []
+
             for line in f:
 
-                line = line.replace('\n', '')
+                line = line.replace('\n', '').strip()
 
                 if len(line) == 0:
                     continue
@@ -44,6 +48,8 @@ class AsciiParser:
 
                 else:
                     self._data_table.append([float(x)for x in line.split(' ')])
+
+        self._data_table = np.asarray(self._data_table)
 
     def save(self, new_fname=None):
 

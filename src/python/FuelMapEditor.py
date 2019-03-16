@@ -11,9 +11,8 @@ class FuelMapEditor(AsciiGridEditor):
 
         super().__init__(parent, ascii_fname)
 
+        self._ascii_parser.data_table = self._ascii_parser.data_table.astype(int)
         dat_table = self._ascii_parser.data_table
-        for i in range(len(dat_table)):
-            dat_table[i] = [int(x) for x in dat_table[i]]
 
         # Create grid of buttons
         for i in range(1, self._nrows + 1):

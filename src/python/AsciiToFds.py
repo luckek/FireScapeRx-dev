@@ -1,6 +1,6 @@
 from Fds import *
 from Point import Point
-from math import inf
+import numpy as np
 
 
 class AsciiToFds:
@@ -16,38 +16,29 @@ class AsciiToFds:
         self._nrows = fuel_map.nrows
         self._ncols = fuel_map.ncols
 
+        no_data = self._dem.no_data_val
+
         dat_table = self._dem.data_table
 
         # TODO: ###handle 'no data' values###
 
-        # TODO: find better way to do this
         # NOTE: we replace NO_DATA values with inf here so that we may properly calculate the table minimum
-        no_data_present = False
-        for row in dat_table:
-            for i, value in enumerate(row):
-
-                if value == self._dem.no_data_val:
-                    no_data_present = True
-                    row[i] = inf
+        dat_table[dat_table == no_data] = np.inf
 
         # One liner to get max and min of data table
-        tbl_min = min([min(x) for x in dat_table])
+        tbl_min = dat_table.min()
 
-        if no_data_present:
-            for row in dat_table:
-                for i, value in enumerate(row):
-
-                    if value == inf:
-                        row[i] = self._dem.no_data_val
+        # Re assign no data values
+        dat_table[dat_table == np.inf] = no_data
 
         # This 'zeroes out' elevation so the lowest elevation is 0 m.
         # NOTE: We do this even when tbl_min = 0.0 so that the elevation values are rounded
         # TODO: can't round inf...
-        for i in range(len(dat_table)):
-            dat_table[i] = [round(x - tbl_min) for x in dat_table[i]]
+        dat_table -= tbl_min
+        np.round(dat_table)
 
         # Round to nearest tens
-        self._tbl_max = round(max([max(x) for x in dat_table]), -1)
+        self._tbl_max = round(dat_table.max(), -1)
 
         # FIXME:
         #self._spatial_translator = SpatialTranslator(fuel_map)
