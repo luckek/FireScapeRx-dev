@@ -455,7 +455,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # but just in case
             try:
 
-                self._fds.read()
+                read_success = self._fds.read()
 
             except FileNotFoundError as fnfe:
                 self._fds.fds_file = None
@@ -463,8 +463,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 QMessageBox.information(self, "Import Not Successful", "Fds file {0} could not be found".format(file))
                 return
 
-            self._sim_title_label.setText('Simulation Title: ' + self._fds.job_name())
-            QMessageBox.information(self, 'Import successful', 'Environment imported successfully.')
+            if read_success:
+
+                self._sim_title_label.setText('Simulation Title: ' + self._fds.job_name())
+                QMessageBox.information(self, 'Import successful', 'Environment imported successfully.')
+
+            else:
+                QMessageBox.information(self, 'Import not successful', 'FDS file is improperly formatted and could not be imported.')
+                self._fds.fds_file = None
 
     def __run_simulation(self):
 

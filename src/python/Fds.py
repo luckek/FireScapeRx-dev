@@ -24,7 +24,7 @@ class Fds:
         self._fds_file = fds_file
 
     def read(self):
-        self._parser.parse(self.fds_file)
+        return self._parser.parse(self.fds_file)
 
     def save(self, new_fds_file=None):
 

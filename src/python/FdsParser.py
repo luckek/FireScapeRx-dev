@@ -50,6 +50,11 @@ class FdsParser:
         """Function to parse contents of an fds file, most things are parsed at a fairly high level.
         Returns true if parsing is successful"""
 
+        head_pres = False
+        time_pres = False
+        tail_pres = False
+        mesh_pres = False
+
         with open(fds_file) as f:
             for line in f.readlines():
 
@@ -70,6 +75,7 @@ class FdsParser:
                 if line.startswith('&HEAD'):
 
                     self._head = line
+                    head_pres = True
 
                 if line.startswith('&TIME'):
 
@@ -79,9 +85,22 @@ class FdsParser:
                         time_str = time_str.split(',')[0]
 
                     self._time = time_str
+                    time_pres = True
+
+                if line.startswith('&TAIL'):
+                    tail_pres = True
+
+                if line.startswith('&MESH'):
+                    mesh_pres = True
 
             if not self._title:
                 self._title = util.get_filename(fds_file)
+
+            all_pres = False
+            if head_pres and time_pres and tail_pres and mesh_pres:
+                all_pres = True
+
+            return all_pres
 
     def save_file(self, fds_file):
         """Function to save contents of an fds file"""
@@ -130,7 +149,7 @@ class FdsParser:
 
         with open(fds_file, 'w') as f:
 
-            f.write("&HEAD CHID='" + self._head + "',TITLE='" + self._title + "' /\n\n")
+            f.write("&HEAD CHID='" + self._head + "' /\nTITLE='" + self._title + "' /\n\n")
 
             # Calculate mesh size
             mesh_i = self._x_end // self._cell_size
