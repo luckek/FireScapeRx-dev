@@ -29,6 +29,9 @@ from PyQt5.QtWidgets import QApplication, QWidget, QLabel
 from PyQt5.QtGui import QIcon, QPixmap
 
 
+from Visualization import *
+
+
 class MainWindow(QMainWindow, Ui_MainWindow):
 
     # Path to pre-packaged smv executable
@@ -48,6 +51,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Create the fuel map editor variable
         self._fl_map_editor = None
         self._ign_pt_editor = None
+        self._visualization = None
 
         # Disable export of files until one is loaded
         self.action_export_fuel_map.setEnabled(False)
@@ -294,7 +298,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         file, filt = QFileDialog.getOpenFileName(self, 'Open File', user_settings.working_dir, file_filter)
 
         if file:
-            # FIXME: make two fixed size widgets or something for fuel map and ignition point editor, they now have own scroll area
             # FIXME: increase SIZE when there are lots of cells in fuel map and ignition
 
             qApp.setOverrideCursor(Qt.WaitCursor)
@@ -328,6 +331,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.__init_sim_settings()
                 self.action_create_environment.setEnabled(True)
 
+                if self._visualization:
+                    self._visualization.deleteLater()
+
+                self._visualization = Visualization(self._fl_map_editor.parser(), self._ign_pt_editor.parser(), self)
+                self._visualization.setEnabled(True)
+                self._visualization.hide()
+
             # Set current tab to fuel type legend
             self._tab_widget.setCurrentIndex(1)
 
@@ -350,7 +360,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if not file.endswith(AsciiParser.FILE_EXT):
                 file += AsciiParser.FILE_EXT
 
-            self._fl_map_editor.save(file, False)
+            self._fl_map_editor.save(file)
             qApp.restoreOverrideCursor()
 
             QMessageBox.information(self, "Export successful", "Fuel map successfully exported")
@@ -381,6 +391,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if self._fl_map_editor:
                 self.__init_sim_settings()
                 self.action_create_environment.setEnabled(True)
+
+                if self._visualization:
+                    self._visualization.deleteLater()
+
+                self._visualization = Visualization(self._fl_map_editor.parser(), self._ign_pt_editor.parser(), self)
+                self._visualization.setEnabled(True)
+                self._visualization.hide()
 
             # Set current tab to fuel type legend
             self._tab_widget.setCurrentIndex(2)
@@ -424,7 +441,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @QtCore.pyqtSlot(int, name='__tab_changed')
     def __tab_changed(self, new_tab_index):
 
-        if new_tab_index == 1 and self._tab_widget.widget(new_tab_index).isEnabled():
+        if new_tab_index == 0 and self._tab_widget.widget(new_tab_index).isEnabled():
+
+            if self._visualization is not None:
+                self._visualization.show()
+
+            if self._ign_pt_editor is not None:
+                self._ign_pt_editor.hide()
+
+            if self._fl_map_editor is not None:
+                self._fl_map_editor.hide()
+
+        elif new_tab_index == 1 and self._tab_widget.widget(new_tab_index).isEnabled():
+
+            if self._visualization is not None:
+                self._visualization.hide()
 
             if self._ign_pt_editor is not None:
                 self._ign_pt_editor.hide()
@@ -433,6 +464,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self._fl_map_editor.show()
 
         elif new_tab_index == 2 and self._tab_widget.widget(new_tab_index).isEnabled():
+
+            if self._visualization is not None:
+                self._visualization.hide()
 
             if self._ign_pt_editor is not None:
                 self._ign_pt_editor.show()
