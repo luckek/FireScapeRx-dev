@@ -132,3 +132,28 @@ def met_to_vect(deg_met):
 def mph_to_ms(mph):
     # Formula obtained from https://www.weather.gov/media/epz/wxcalc/windConversion.pdf
     return 0.44704 * mph
+
+
+def format_e(n):
+    return "{:.2E}".format(n)
+
+
+def center_num(n):
+
+    if n < 10:
+        fmt_str = '{: ^12n}'.format(n)
+
+    elif n < 100:
+        fmt_str = '{: ^10n}'.format(n)
+
+    elif n < 1000:
+
+        fmt_str = '{: ^9n}'.format(n)
+
+    elif n < 10000:
+        fmt_str = '{: ^5n}'.format(n)
+
+    else:
+        fmt_str = "{: ^5.2E}".format(n)
+
+    return fmt_str
