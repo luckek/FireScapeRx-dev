@@ -9,27 +9,21 @@ import os.path as osp
 import sys
 import time
 
-from PyQt5 import QtCore, QtWidgets, Qt
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox, qApp, QLabel, QGraphicsView, QWidget, QGridLayout
-from PyQt5.QtCore import Qt
+from PyQt5 import Qt
+from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox, qApp, QGraphicsView, QGridLayout
 
 import Utility as util
 from AboutDialog import AboutDialog
-from AsciiParser import AsciiParser
 from AsciiToFds import AsciiToFds
 from Fds import Fds
-from FuelMapEditor import FuelMapEditor
-from IgnitionPointEditor import IgnitionPointEditor
+from FuelMapViewer import *
+from IgnitionPointViewer import *
 from SelectOutputFileTypesForm import SelectOutputFileTypesForm
 from SimulationSettings import SimulationSettings
 from UserSettingsForm import UserSettingsForm, UserSettings
-from gui.Ui_MainWindow import Ui_MainWindow
-
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel
-from PyQt5.QtGui import QIcon, QPixmap
-
-
 from Visualization import *
+from gui.Ui_MainWindow import Ui_MainWindow
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -303,7 +297,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             qApp.setOverrideCursor(Qt.WaitCursor)
 
             try:
-                new_editor = FuelMapEditor(self, file)
+                new_editor = FuelMapViewer(self, file)
 
             except IndexError:
 
@@ -378,7 +372,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if self._ign_pt_editor:
                 self._ign_pt_editor.deleteLater()
 
-            self._ign_pt_editor = IgnitionPointEditor(self, file)
+            self._ign_pt_editor = IgnitionPointViewer(self, file)
             self._ign_pt_editor.setEnabled(True)
 
             self._setup_ign_pt_map_lgnd()
