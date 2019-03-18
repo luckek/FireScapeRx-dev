@@ -1,5 +1,5 @@
 from AsciiViewer import AsciiViewer
-from FuelMapEditorGraphics import FuelMapEditorGraphics
+from FuelMapEditor import FuelMapEditorGraphics
 from gui.FuelMapRect import *
 
 

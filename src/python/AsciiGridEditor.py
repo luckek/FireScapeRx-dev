@@ -1,27 +1,66 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QGraphicsTextItem
+from numpy import asarray
 
 from AsciiParser import AsciiParser
-from Utility import linspace
-from gui.Ui_AsciIGridEditor import Ui_AsciiGridEditor
+from Utility import center_num
+from gui.CustomRectangle import *
 
 
-class AsciiGridEditor(Ui_AsciiGridEditor):
+class AsciiGridEditorGraphics(QtWidgets.QGraphicsScene):
 
     def __init__(self, parent, ascii_fname):
 
-        Ui_AsciiGridEditor.__init__(self, parent)
+        super().__init__(parent)
+
+        self.lines = []
+        self.rects = []
 
         self._ascii_parser = AsciiParser(ascii_fname)
-        self._ascii_parser.read()
 
         self._nrows = self._ascii_parser.nrows
         self._ncols = self._ascii_parser.ncols
 
-        cell_size = self._ascii_parser.cell_size
-
         # Record set of column coordinates
         self._row_set = set()
+
+        self.draw_grid()
+
+    def draw_grid(self):
+
+
+        WIDTH = 51
+        HEIGHT = 51
+
+        size = 50
+
+        width = (self._nrows + 1) * WIDTH
+        height = (self._ncols + 1) * HEIGHT
+
+        self.setSceneRect(0, 0, width, height)
+        self.setItemIndexMethod(QtWidgets.QGraphicsScene.NoIndex)
+
+        # FIXME:
+        cell_size = self._ascii_parser.cell_size
+        # cell_size = self._ascii_parser.cell_size + 500
+
+        # Rows start at min coordinate value
+        init_x_val = int(self._ascii_parser.xllcorner) + cell_size // 2
+
+        # FIXME:
+        current_x_val = init_x_val
+        # current_x_val = init_x_val + 1000
+
+        # Setup row labels for editor
+        for i in range(2, self._ncols + 2):
+
+            current_x_str = center_num(current_x_val)
+
+            label = QGraphicsTextItem(current_x_str)
+            label.setPos((i * size), 0)
+
+            self.addItem(label)
+
+            current_x_val += cell_size
 
         # Columns start at max coordinate value
         init_y_val = int(self._ascii_parser.yllcorner) + cell_size * self._nrows - cell_size // 2
@@ -30,51 +69,28 @@ class AsciiGridEditor(Ui_AsciiGridEditor):
         # Setup row labels for editor
         for i in range(1, self._nrows + 1):
 
-            self._row_set.add(current_y_val)
+            current_y_str = center_num(current_y_val)
 
-            label = QLabel(parent=self._grid_layout_widget, text=str(current_y_val))
-            label.setFixedSize(self.BUTTON_SIZE, self.BUTTON_SIZE)
-            label.setAlignment(Qt.AlignCenter)
-            self._grid_layout.addWidget(label, i, 0)
+            label = QGraphicsTextItem(current_y_str)
+            label.setPos(0, i * size)
+            self.addItem(label)
 
             current_y_val -= cell_size
 
-        # Record set of column coordinates
-        self._col_set = set()
-
-        # Rows start at min coordinate value
-        init_x_val = int(self._ascii_parser.xllcorner) + cell_size // 2
-        current_x_val = init_x_val
-
-        # Setup column labels for editor
-        for i in range(1, self._ncols + 1):
-
-            self._col_set.add(current_x_val)
-
-            label = QLabel(parent=self._grid_layout_widget, text=str(current_x_val))
-            label.setFixedSize(self.BUTTON_SIZE, self.BUTTON_SIZE)
-            label.setAlignment(Qt.AlignCenter)
-            self._grid_layout.addWidget(label, 0, i)
-
-            current_x_val += cell_size
-
-        self._ascii_button_grid = []
-        self.setWidget(self._grid_layout_widget)
-
-    def button_values_grid(self):
+    def values_grid(self):
 
         fuel_map_grid = []
-        for button_row in self._ascii_button_grid:
+        for row in self.rects:
             fuel_map_row = []
-            for button in button_row:
-                fuel_map_row.append(button.color)
+            for rect in row:
+                fuel_map_row.append(rect.color_idx)
             fuel_map_grid.append(fuel_map_row)
 
-        return fuel_map_grid
+        return asarray(fuel_map_grid, dtype=int)
 
     def save(self, save_fname, update=True):
         if update:
-            self._ascii_parser.data_table = self.button_values_grid()
+            self._ascii_parser.data_table = self.values_grid()
 
         self._ascii_parser.save(save_fname)
 

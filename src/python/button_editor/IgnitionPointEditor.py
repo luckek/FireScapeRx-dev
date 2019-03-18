@@ -1,24 +1,37 @@
-from AsciiViewer import AsciiViewer
-from IgnitionPointEditor import IgnitionPointEditorGraphics
-from gui.IgnitionPointRect import *
+from AsciiGridEditor import AsciiGridEditor
+from IgnitionPointEditorButton import IgnitionPointEditorButton
 from Utility import linspace
 from FireLine import FireLine
 
 
-class IgnitionPointViewer(AsciiViewer):
+class IgnitionPointEditor(AsciiGridEditor):
 
-    def __init__(self, parent, fname):
+    def __init__(self, parent, ascii_fname):
 
-        super().__init__(parent=parent)
-        ipeg = IgnitionPointEditorGraphics(self, fname)
-        self._ascii_parser = ipeg._ascii_parser
-        self.setScene(ipeg)
+        super().__init__(parent, ascii_fname)
 
         self._fire_lines = []
 
+        # Create grid of buttons
+        for i in range(1, self._nrows + 1):
+            button_row = []
+            for j in range(1, self._ncols + 1):
+                button = IgnitionPointEditorButton(self._grid_layout_widget, self.BUTTON_SIZE, init_color=1)
+
+                self._grid_layout.addWidget(button, i, j)
+                button_row.append(button)
+
+            self._ascii_button_grid.append(button_row)
+
+        for i in range(self._nrows):
+            for j in range(self._ncols):
+
+                if self._ascii_parser.data_table[i][j] == self._ascii_parser.no_data_val:
+                    self._ascii_button_grid[i][j].color = -1
+
     @staticmethod
     def colors():
-        return IgnitionPointRect.colors + list(IgnitionPointRect.no_data_color)
+        return IgnitionPointEditorButton.colors + list(IgnitionPointEditorButton.no_data_color)
 
     @staticmethod
     def fuel_types():
