@@ -16,8 +16,16 @@ class AsciiParser:
         self._NODATA_value = 0
         self._data_table = []
 
-    def read(self):
-        with open(self._fname) as f:
+        self.read()
+
+    def read(self, fname=None):
+
+        read_fname = self._fname
+
+        if fname:
+            read_fname = fname
+
+        with open(read_fname) as f:
             self._data_table = []
 
             for line in f:
@@ -54,7 +62,8 @@ class AsciiParser:
     def save(self, new_fname=None):
 
         save_fname = self._fname
-        if new_fname is not None:
+
+        if new_fname:
             save_fname = new_fname
 
         with open(save_fname, 'w') as f:
@@ -152,7 +161,7 @@ class AsciiParser:
 
         header += '\n'
         for row in self._data_table:
-            row_str = str(row)
+            row_str = str(row.tolist())
             row_str = row_str.replace('[', '').replace(']', '').replace(',', '')
             header += row_str + '\n'
 
