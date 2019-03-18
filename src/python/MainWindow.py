@@ -541,6 +541,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         os.mkdir(out_dir)
 
+        fds_exec = user_settings.wfds_exec
+
+        if not fds_exec:
+            QMessageBox.information(self, "No executable found", "No WFDS executable found! please specify one in "
+                                                                 "the User Settings menu")
+            return
         #TODO: Determine alternate save method or remove export fds file
         # Save the input file that was used to run the simulation
         #save_fname = osp.join(out_dir, fds_fname + Fds.file_ext())
@@ -551,7 +557,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Clean up the output directory that was made if exception occurs
         try:
 
-            self.__execute_and_update(cmd=[self._fds_exec, fds_filepath], out_dir=out_dir)
+            self.__execute_and_update(cmd=[fds_exec, fds_filepath], out_dir=out_dir)
 
         except Exception as e:
             logger.log(logger.ERROR, str(e))
@@ -574,8 +580,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __run_smv(self):
         """This function runs smv with the currently loaded environment"""
 
+        user_settings = UserSettings()
+        smv_exec = user_settings.smv_exec
+
+        if not smv_exec:
+            QMessageBox.information(self, "No executable found", "No Smokeview executable found! please specify one in "
+                                                                 "the User Settings menu")
+            return
+
         logger.log(logger.INFO, 'Viewing simulation')
-        util.execute(cmd=[self.smv_exec, self._smv_file], cwd=None, out_file=None)
+        util.execute(cmd=[smv_exec, self._smv_file], cwd=None, out_file=None)
 
     # out_file not currently used, but may be later. So it is left in signature
     def __execute_and_update(self, cmd, out_dir=None, out_file=sys.stdout):
