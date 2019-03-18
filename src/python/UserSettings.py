@@ -1,5 +1,5 @@
 import os.path as osp
-
+import os
 
 class UserSettings:
 
@@ -12,11 +12,17 @@ class UserSettings:
     DEF_WORKING_DIR = ''
     DEF_SIM_DURATION = 100.0
 
+    # DEF_WFDS_EXEC = os.path.join(os.path.abspath(os.pardir), 'fds_gnu_linux_64')
+    # DEF_SMV_EXEC = osp.join(osp.abspath(os.pardir), 'smokeview_linux_64')
+
     def __init__(self):
 
         self._output_dir = self.DEF_OUTPUT_DIR
         self._working_dir = self.DEF_WORKING_DIR
         self._sim_duration = self.DEF_SIM_DURATION
+        self._wfds_exec = ''
+        self._smv_exec = ''
+
         self._file_exists = False
 
         # Check if user settings file already exists
@@ -52,6 +58,12 @@ class UserSettings:
                 elif key.startswith('SIM_DURATION'):
                     self._sim_duration = value
 
+                elif key.startswith('WFDS_EXEC'):
+                    self._wfds_exec = value
+
+                elif key.startswith('SMV_EXEC'):
+                    self._smv_exec = value
+
     def create_user_settings(self):
 
         print('creating user settings')
@@ -60,6 +72,8 @@ class UserSettings:
             f.write('OUTPUT_DIRECTORY' + self.KV_SEP + self._output_dir + '\n')
             f.write('WORKING_DIRECTORY' + self.KV_SEP + self._working_dir + '\n')
             f.write('SIM_DURATION' + self.KV_SEP + str(self._sim_duration) + '\n')
+            f.write('WFDS_EXEC' + self.KV_SEP + str(self._wfds_exec) + '\n')
+            f.write('SMV_EXEC' + self.KV_SEP + str(self._smv_exec) + '\n')
 
     # TODO: Can make saving user settings more fancy
     # Keep comments etc
@@ -91,6 +105,22 @@ class UserSettings:
     @sim_duration.setter
     def sim_duration(self, sim_duration):
         self._sim_duration = sim_duration
+
+    @property
+    def wfds_exec(self):
+        return self._wfds_exec
+
+    @wfds_exec.setter
+    def wfds_exec(self, wfds_exec):
+        self._wfds_exec = wfds_exec
+
+    @property
+    def smv_exec(self):
+        return self._smv_exec
+
+    @smv_exec.setter
+    def smv_exec(self, smv_exec):
+        self._smv_exec = smv_exec
 
     @property
     def file_exists(self):
