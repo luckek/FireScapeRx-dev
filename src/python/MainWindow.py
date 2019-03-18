@@ -25,8 +25,7 @@ from SimulationSettings import SimulationSettings
 from UserSettingsForm import UserSettingsForm, UserSettings
 from gui.Ui_MainWindow import Ui_MainWindow
 
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel
-from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtWidgets import QWidget, QLabel
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -978,6 +977,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         fl_map_parser = self._fl_map_editor.parser()
                         dem_parser = self._ign_pt_editor.parser()
 
+                        orig_xll = fl_map_parser.xllcorner
+                        orig_yll = fl_map_parser.yllcorner
+
+                        # TODO: fix this
+                        # Hack to ensure WFDS domain starts at zero
+                        fl_map_parser.xllcorner = 0
+                        fl_map_parser.yllcorner = 0
+
                         sim_time = float(self._sim_duration_line_edit.text())
                         ambient_temp = util.fahrenheit_to_celsius(float(self._ambient_temp_line_edit.text()))
 
@@ -993,6 +1000,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
                         ascii_fds_converter = AsciiToFds(fl_map_parser, dem_parser, sim_settings)
                         save_success = ascii_fds_converter.save(self._fl_map_editor.button_values_grid(), self._ign_pt_editor.fire_lines(), file)
+
+                        # Hack to ensure WFDS domain starts at zero
+                        fl_map_parser.xllcorner = orig_xll
+                        fl_map_parser.yllcorner = orig_yll
 
                         if save_success:
 
