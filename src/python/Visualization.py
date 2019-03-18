@@ -9,7 +9,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 import matplotlib.pyplot as plt
 
-from gui.FuelMapRect import *
+from FuelMapViewer import FuelMapViewer
 
 class Visualization(QScrollArea):
 
@@ -58,7 +58,7 @@ class Visualization(QScrollArea):
         ax = self.figure.gca(projection='3d')
 
         # plot data
-        ax.plot_surface(X, Y, Z, facecolors=colors, edgecolors='k', lw=0)
+        ax.plot_surface(X, Y, Z, facecolors=colors, edgecolors='k', lw=0, alpha=1.0)
         ax.view_init(elev=48, azim=-91)
 
         # ax.
@@ -86,12 +86,29 @@ class Visualization(QScrollArea):
 
         # Create an empty array of strings with the same shape as the meshgrid, and
         # populate it with two colors in a checkerboard pattern.
-        colortuple = ('w', 'b', 'g', 'k')
+        colortuple = ('grey', 'green', 'black')
+
+        # TODO:
+        # fuel_colors = FuelMapViewer.colors()
+
+        # fuel_colors = [x.getRgb()[:3] for x in fuel_colors]
+
+        # for name in fuel_colors:
+        #     if name is 'grey':
+        #         colortuple.append('g')
+        #
+
         colors = np.empty(X.shape, dtype=str)
-        dat_table = self._
         for y in range(ylen):
             for x in range(xlen):
-                color = colortuple[int(self._fm.data_table[y, x])]
+
+                curr_value = int(self._fm.data_table[y, x])
+
+                if curr_value == -1:
+                    color = colortuple[curr_value]
+
+                else:
+                    color = colortuple[curr_value - 1]
 
                 colors[y, x] = color
 
