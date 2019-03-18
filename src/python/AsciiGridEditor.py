@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QLabel
 from AsciiParser import AsciiParser
 from Utility import linspace
 from gui.Ui_AsciIGridEditor import Ui_AsciiGridEditor
+from numpy import asarray
 
 
 class AsciiGridEditor(Ui_AsciiGridEditor):
@@ -70,7 +71,7 @@ class AsciiGridEditor(Ui_AsciiGridEditor):
                 fuel_map_row.append(button.color)
             fuel_map_grid.append(fuel_map_row)
 
-        return fuel_map_grid
+        return asarray(fuel_map_grid, dtype=int)
 
     def save(self, save_fname, update=True):
         if update:
