@@ -31,3 +31,7 @@ class FuelMapEditorGraphics(AsciiGridEditorGraphics):
         rect = FuelMapRect(row, col, 50, init_color)
         self.addItem(rect)
         return rect
+
+    def parser(self):
+        self.update_vals()
+        return self._ascii_parser

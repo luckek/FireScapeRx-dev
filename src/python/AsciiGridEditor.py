@@ -94,6 +94,9 @@ class AsciiGridEditorGraphics(QtWidgets.QGraphicsScene):
 
         self._ascii_parser.save(save_fname)
 
+    def update_vals(self):
+        self._ascii_parser.data_table = self.values_grid()
+
     def grid_x_max(self):
         return self._ascii_parser.x_max()
 

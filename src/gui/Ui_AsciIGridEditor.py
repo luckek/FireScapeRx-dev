@@ -15,4 +15,4 @@ class Ui_AsciiGridEditor(QScrollArea):
         self._grid_layout = QGridLayout(self._grid_layout_widget)
         self._grid_layout.setContentsMargins(0, 0, 0, 0)
         self._grid_layout.setSpacing(0)
-        self.setGeometry(QtCore.QRect(10, 70, 580, 510))
+        self.setGeometry(QtCore.QRect(10, 60, 800, 822))

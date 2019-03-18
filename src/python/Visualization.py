@@ -9,6 +9,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 import matplotlib.pyplot as plt
 
+from gui.FuelMapRect import *
 
 class Visualization(QScrollArea):
 
@@ -41,7 +42,7 @@ class Visualization(QScrollArea):
         layout.addWidget(self.canvas)
         self.setLayout(layout)
 
-        self.setGeometry(QtCore.QRect(10, 70, 600, 510))
+        self.setGeometry(QtCore.QRect(10, 60, 822, 800))
 
     def plot(self):
 
@@ -87,6 +88,7 @@ class Visualization(QScrollArea):
         # populate it with two colors in a checkerboard pattern.
         colortuple = ('w', 'b', 'g', 'k')
         colors = np.empty(X.shape, dtype=str)
+        dat_table = self._
         for y in range(ylen):
             for x in range(xlen):
                 color = colortuple[int(self._fm.data_table[y, x])]

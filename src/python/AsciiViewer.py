@@ -8,7 +8,7 @@ class AsciiViewer(QGraphicsView):
 
         super().__init__(parent=parent)
         self._ascii_parser = None
-        self.setGeometry(QRect(10, 70, 580, 510))
+        self.setGeometry(QRect(10, 60, 822, 800))
 
     def grid_x_max(self):
         return self._ascii_parser.x_max()

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>969</width>
-    <height>605</height>
+    <width>1200</width>
+    <height>920</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,9 +17,9 @@
    <widget class="QProgressBar" name="_progress_bar">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>560</y>
-      <width>951</width>
+      <x>0</x>
+      <y>870</y>
+      <width>1195</width>
       <height>21</height>
      </rect>
     </property>
@@ -30,10 +30,10 @@
    <widget class="QTabWidget" name="_tab_widget">
     <property name="geometry">
      <rect>
-      <x>600</x>
+      <x>840</x>
       <y>0</y>
       <width>360</width>
-      <height>560</height>
+      <height>861</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -55,7 +55,7 @@
         <x>0</x>
         <y>0</y>
         <width>360</width>
-        <height>530</height>
+        <height>831</height>
        </rect>
       </property>
       <property name="widgetResizable">
@@ -67,13 +67,13 @@
          <x>0</x>
          <y>0</y>
          <width>358</width>
-         <height>528</height>
+         <height>829</height>
         </rect>
        </property>
        <widget class="QWidget" name="verticalLayoutWidget">
         <property name="geometry">
          <rect>
-          <x>30</x>
+          <x>20</x>
           <y>0</y>
           <width>323</width>
           <height>288</height>
@@ -310,7 +310,7 @@
         <x>0</x>
         <y>0</y>
         <width>360</width>
-        <height>530</height>
+        <height>831</height>
        </rect>
       </property>
       <property name="widgetResizable">
@@ -322,13 +322,13 @@
          <x>0</x>
          <y>0</y>
          <width>358</width>
-         <height>528</height>
+         <height>829</height>
         </rect>
        </property>
        <widget class="QWidget" name="verticalLayoutWidget_2">
         <property name="geometry">
          <rect>
-          <x>20</x>
+          <x>10</x>
           <y>0</y>
           <width>335</width>
           <height>331</height>
@@ -624,7 +624,7 @@
         <x>0</x>
         <y>0</y>
         <width>361</width>
-        <height>530</height>
+        <height>831</height>
        </rect>
       </property>
       <property name="widgetResizable">
@@ -636,7 +636,7 @@
          <x>0</x>
          <y>0</y>
          <width>359</width>
-         <height>528</height>
+         <height>829</height>
         </rect>
        </property>
        <widget class="QWidget" name="verticalLayoutWidget_4">
@@ -949,7 +949,7 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>581</width>
+      <width>821</width>
       <height>41</height>
      </rect>
     </property>
@@ -972,7 +972,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>969</width>
+     <width>1200</width>
      <height>20</height>
     </rect>
    </property>
