@@ -7,7 +7,7 @@ from PyQt5.QtGui import QColor
 class CustomRectangle(QtWidgets.QGraphicsRectItem):
 
     colors = []
-    no_data_color = [Qt.black]
+    no_data_color = [QColor('black')]
 
     def __init__(self, row, col, size, color_idx):
 
