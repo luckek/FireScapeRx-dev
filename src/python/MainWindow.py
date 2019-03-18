@@ -11,10 +11,11 @@ import time
 
 from PyQt5 import Qt
 from PyQt5.QtWidgets import QLabel
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox, qApp, QGraphicsView, QGridLayout
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox, qApp, QGraphicsView, QGridLayout, QWidget
 
 import Utility as util
 from AboutDialog import AboutDialog
+from AsciiParser import *
 from AsciiToFds import AsciiToFds
 from Fds import Fds
 from FuelMapViewer import *
