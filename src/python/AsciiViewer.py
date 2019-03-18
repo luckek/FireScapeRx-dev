@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QGraphicsView
 from PyQt5.QtCore import QRect
-
+import numpy as np
 
 class AsciiViewer(QGraphicsView):
 
@@ -26,10 +26,18 @@ class AsciiViewer(QGraphicsView):
         return self._ascii_parser.cell_size
 
     def row_numbers(self):
-        return self._row_set
+
+        y_start = self.grid_y_min()
+        y_end = self.grid_y_max() - self.resolution() // 2
+
+        return set(np.linspace(y_start, y_end, self._ascii_parser.nrows).astype(int).tolist())
 
     def column_numbers(self):
-        return self._col_set
+
+        x_start = self.grid_x_min()
+        x_end = self.grid_x_max() - self.resolution() // 2
+
+        return set(np.linspace(x_start, x_end, self._ascii_parser.ncols).astype(int).tolist())
 
     def index_to_point_map(self):
 

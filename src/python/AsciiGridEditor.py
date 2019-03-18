@@ -6,7 +6,7 @@ from Utility import center_num
 from gui.CustomRectangle import *
 
 
-class AsciiGridEditorGraphics(QtWidgets.QGraphicsScene):
+class AsciiGridEditor(QtWidgets.QGraphicsScene):
 
     def __init__(self, parent, ascii_fname):
 
@@ -28,8 +28,8 @@ class AsciiGridEditorGraphics(QtWidgets.QGraphicsScene):
     def draw_grid(self):
 
 
-        WIDTH = 51
-        HEIGHT = 51
+        WIDTH = 100
+        HEIGHT = 60
 
         size = 50
 
