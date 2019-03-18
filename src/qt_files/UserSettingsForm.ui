@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>422</width>
-    <height>170</height>
+    <height>243</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>60</x>
-     <y>130</y>
+     <y>200</y>
      <width>341</width>
      <height>32</height>
     </rect>
@@ -35,7 +35,7 @@
      <x>40</x>
      <y>10</y>
      <width>361</width>
-     <height>101</height>
+     <height>171</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="grid_layout">
@@ -81,6 +81,46 @@
     </item>
     <item row="1" column="3">
      <widget class="QPushButton" name="output_dir_button">
+      <property name="toolTip">
+       <string>Select a new Output Directory</string>
+      </property>
+      <property name="text">
+       <string>Browse...</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="2">
+     <widget class="QLineEdit" name="_wfds_exec_line_edit"/>
+    </item>
+    <item row="4" column="1">
+     <widget class="QLabel" name="output_dir_label_2">
+      <property name="text">
+       <string>WFDS executable</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="3">
+     <widget class="QPushButton" name="wfds_exec_bttn">
+      <property name="toolTip">
+       <string>Select a new Output Directory</string>
+      </property>
+      <property name="text">
+       <string>Browse...</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QLabel" name="output_dir_label_3">
+      <property name="text">
+       <string>SMV executable</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="2">
+     <widget class="QLineEdit" name="_smv_exec_line_edit"/>
+    </item>
+    <item row="5" column="3">
+     <widget class="QPushButton" name="smv_exec_bttn">
       <property name="toolTip">
        <string>Select a new Output Directory</string>
       </property>
