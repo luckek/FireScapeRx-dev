@@ -1,15 +1,10 @@
-from AsciiParser import *
+import matplotlib.pyplot as plt
 import numpy as np
-from mpl_toolkits.mplot3d import Axes3D
-
-from PyQt5.QtWidgets import QWidget, QPushButton, QVBoxLayout, QScrollArea
 from PyQt5 import QtCore
-
+from PyQt5.QtWidgets import QPushButton, QVBoxLayout, QScrollArea
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-import matplotlib.pyplot as plt
 
-from FuelMapViewer import FuelMapViewer
 
 class Visualization(QScrollArea):
 
@@ -111,7 +106,5 @@ class Visualization(QScrollArea):
                     color = colortuple[curr_value - 1]
 
                 colors[y, x] = color
-
-        print(X.shape, Y.shape, Z.shape, colors)
 
         return X, Y, Z, colors
