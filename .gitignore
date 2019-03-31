@@ -12,5 +12,8 @@
 *.end
 *.smv
 *.sim_settings
+*.log
+*.bak
+*.o
 fds_gnu_*
 smokeview_*
