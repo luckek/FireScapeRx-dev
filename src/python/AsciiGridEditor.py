@@ -1,9 +1,8 @@
 from PyQt5.QtWidgets import QGraphicsTextItem
-from numpy import asarray
-
 from AsciiParser import AsciiParser
 from Utility import center_num
 from gui.CustomRectangle import *
+from numpy import asarray
 
 
 class AsciiGridEditor(QtWidgets.QGraphicsScene):
