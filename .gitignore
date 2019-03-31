@@ -2,6 +2,15 @@
 *.txt
 *.pyc
 *.ini
+*.iso
+*.sf
+*.bf
+*.csv
+*.out
+*.sinfo
+*.binfo
+*.end
+*.smv
 *.sim_settings
 fds_gnu_*
 smokeview_*
