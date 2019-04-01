@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1200</width>
-    <height>920</height>
+    <width>1250</width>
+    <height>960</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,9 +17,9 @@
    <widget class="QProgressBar" name="_progress_bar">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>870</y>
-      <width>1195</width>
+      <x>10</x>
+      <y>910</y>
+      <width>1231</width>
       <height>21</height>
      </rect>
     </property>
@@ -32,8 +32,8 @@
      <rect>
       <x>840</x>
       <y>0</y>
-      <width>360</width>
-      <height>861</height>
+      <width>401</width>
+      <height>901</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -54,8 +54,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>360</width>
-        <height>831</height>
+        <width>401</width>
+        <height>871</height>
        </rect>
       </property>
       <property name="widgetResizable">
@@ -66,14 +66,14 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>358</width>
-         <height>829</height>
+         <width>399</width>
+         <height>869</height>
         </rect>
        </property>
        <widget class="QWidget" name="verticalLayoutWidget">
         <property name="geometry">
          <rect>
-          <x>20</x>
+          <x>50</x>
           <y>0</y>
           <width>323</width>
           <height>288</height>
@@ -309,8 +309,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>360</width>
-        <height>831</height>
+        <width>401</width>
+        <height>871</height>
        </rect>
       </property>
       <property name="widgetResizable">
@@ -321,17 +321,17 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>358</width>
-         <height>829</height>
+         <width>399</width>
+         <height>869</height>
         </rect>
        </property>
        <widget class="QWidget" name="verticalLayoutWidget_2">
         <property name="geometry">
          <rect>
-          <x>10</x>
+          <x>40</x>
           <y>0</y>
           <width>335</width>
-          <height>331</height>
+          <height>451</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -370,7 +370,7 @@
               <x>0</x>
               <y>0</y>
               <width>331</width>
-              <height>101</height>
+              <height>221</height>
              </rect>
             </property>
            </widget>
@@ -574,7 +574,7 @@
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>90</width>
+               <width>92</width>
                <height>20</height>
               </size>
              </property>
@@ -616,15 +616,15 @@
     </widget>
     <widget class="QWidget" name="ignition_point_legend_tab">
      <attribute name="title">
-      <string>Ignition Points</string>
+      <string>Digital Elevation Model</string>
      </attribute>
      <widget class="QScrollArea" name="ignition_point_scroll_area">
       <property name="geometry">
        <rect>
-        <x>0</x>
+        <x>-10</x>
         <y>0</y>
-        <width>361</width>
-        <height>831</height>
+        <width>411</width>
+        <height>881</height>
        </rect>
       </property>
       <property name="widgetResizable">
@@ -635,17 +635,17 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>359</width>
-         <height>829</height>
+         <width>409</width>
+         <height>879</height>
         </rect>
        </property>
        <widget class="QWidget" name="verticalLayoutWidget_4">
         <property name="geometry">
          <rect>
-          <x>20</x>
+          <x>50</x>
           <y>0</y>
           <width>321</width>
-          <height>381</height>
+          <height>501</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -659,7 +659,7 @@
          <item>
           <widget class="QLabel" name="ign_pointlegend_label">
            <property name="text">
-            <string>Ignition Point Map Legend:</string>
+            <string>DEM map legend</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -684,7 +684,7 @@
               <x>0</x>
               <y>0</y>
               <width>317</width>
-              <height>99</height>
+              <height>219</height>
              </rect>
             </property>
            </widget>
@@ -944,23 +944,56 @@
      </widget>
     </widget>
    </widget>
-   <widget class="QWidget" name="horizontalLayoutWidget">
+   <widget class="QWidget" name="verticalLayoutWidget_3">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>821</width>
-      <height>41</height>
+      <x>0</x>
+      <y>0</y>
+      <width>841</width>
+      <height>96</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="Line" name="line_15">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
      <item>
       <widget class="QLabel" name="_sim_title_label">
        <property name="text">
-        <string>Simulation Title:</string>
+        <string>Environment Title:</string>
        </property>
        <property name="margin">
-        <number>5</number>
+        <number>10</number>
+       </property>
+       <property name="indent">
+        <number>12</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line_8">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="_map_title_label">
+       <property name="text">
+        <string>Fuel Map Title:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+       <property name="margin">
+        <number>10</number>
+       </property>
+       <property name="indent">
+        <number>12</number>
        </property>
       </widget>
      </item>
@@ -972,7 +1005,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1200</width>
+     <width>1250</width>
      <height>20</height>
     </rect>
    </property>
@@ -987,6 +1020,7 @@
      <string>File</string>
     </property>
     <addaction name="action_create_environment"/>
+    <addaction name="action_user_Settings"/>
    </widget>
    <widget class="QMenu" name="menu_export">
     <property name="title">
@@ -994,12 +1028,6 @@
     </property>
     <addaction name="action_export_fuel_map"/>
     <addaction name="action_export_dem"/>
-   </widget>
-   <widget class="QMenu" name="menu_settings">
-    <property name="title">
-     <string>Settings</string>
-    </property>
-    <addaction name="action_user_settings"/>
    </widget>
    <widget class="QMenu" name="menu_help">
     <property name="title">
@@ -1026,7 +1054,6 @@
    <addaction name="menu_import"/>
    <addaction name="menu_export"/>
    <addaction name="menu_simulation"/>
-   <addaction name="menu_settings"/>
    <addaction name="menu_help"/>
   </widget>
   <action name="action_create_environment">
@@ -1148,6 +1175,11 @@
   <action name="action_ascii_to_fds">
    <property name="text">
     <string>Ascii to FDS</string>
+   </property>
+  </action>
+  <action name="action_user_Settings">
+   <property name="text">
+    <string>User Settings</string>
    </property>
   </action>
  </widget>
