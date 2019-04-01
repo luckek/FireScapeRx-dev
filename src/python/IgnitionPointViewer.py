@@ -29,4 +29,7 @@ class IgnitionPointViewer(AsciiViewer):
         return self.editor.modify_range(x_min, x_max, y_min, y_max, t_start, t_end, value)
 
     def fire_lines(self):
-        return self._fire_lines
+        return self.editor.fire_lines()
+
+    def save(self, save_fname):
+        self.editor.save(save_fname)

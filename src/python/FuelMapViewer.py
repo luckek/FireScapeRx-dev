@@ -23,3 +23,7 @@ class FuelMapViewer(AsciiViewer):
 
     def modify_range(self, x_min, x_max, y_min, y_max, value):
         self.editor.modify_range(x_min, x_max, y_min, y_max, value)
+
+    def save(self, save_fname):
+
+        self.editor.save(save_fname)
