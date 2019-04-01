@@ -2,13 +2,14 @@ from PyQt5.QtWidgets import QGraphicsView
 from PyQt5.QtCore import QRect
 import numpy as np
 
+
 class AsciiViewer(QGraphicsView):
 
     def __init__(self, parent):
 
         super().__init__(parent=parent)
         self._ascii_parser = None
-        self.setGeometry(QRect(10, 60, 822, 800))
+        self.setGeometry(QRect(10, 120, 820, 800))
 
     def grid_x_max(self):
         return self._ascii_parser.x_max()
@@ -65,3 +66,6 @@ class AsciiViewer(QGraphicsView):
 
     def parser(self):
         return self._ascii_parser
+
+    def rects(self):
+        return self.rects
