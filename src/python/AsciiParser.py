@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class AsciiParser:
 
     FILE_EXT = '.asc'
@@ -15,6 +16,9 @@ class AsciiParser:
         self._cell_size = 0
         self._NODATA_value = 0
         self._data_table = []
+
+        self._orig_xllcorner = 0
+        self._orig_yllcorner = 0
 
         self.read()
 
@@ -59,12 +63,21 @@ class AsciiParser:
 
         self._data_table = np.asarray(self._data_table)
 
+        self._orig_xllcorner = self.xllcorner
+        self._orig_yllcorner = self.yllcorner
+
+        self._xllcorner = 0
+        self._yllcorner = 0
+
     def save(self, new_fname=None):
 
         save_fname = self._fname
 
         if new_fname:
             save_fname = new_fname
+
+        self._xllcorner = self._orig_xllcorner
+        self._yllcorner = self._orig_yllcorner
 
         with open(save_fname, 'w') as f:
             f.write(self.__str__())
