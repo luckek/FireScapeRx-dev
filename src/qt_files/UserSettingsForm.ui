@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>422</width>
+    <width>540</width>
     <height>243</height>
    </rect>
   </property>
@@ -16,7 +16,7 @@
   <widget class="QDialogButtonBox" name="button_box">
    <property name="geometry">
     <rect>
-     <x>60</x>
+     <x>190</x>
      <y>200</y>
      <width>341</width>
      <height>32</height>
@@ -32,9 +32,9 @@
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>40</x>
+     <x>10</x>
      <y>10</y>
-     <width>361</width>
+     <width>521</width>
      <height>171</height>
     </rect>
    </property>
@@ -46,6 +46,9 @@
      <widget class="QLabel" name="output_dir_label">
       <property name="text">
        <string>Output Directory</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </item>
@@ -67,17 +70,16 @@
       <property name="text">
        <string>Working Directory</string>
       </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
      </widget>
     </item>
     <item row="3" column="2">
      <widget class="QLineEdit" name="_sim_duration_line_edit"/>
     </item>
-    <item row="3" column="1">
-     <widget class="QLabel" name="sim_duration_label">
-      <property name="text">
-       <string>Simulation Duration</string>
-      </property>
-     </widget>
+    <item row="4" column="2">
+     <widget class="QLineEdit" name="_wfds_exec_line_edit"/>
     </item>
     <item row="1" column="3">
      <widget class="QPushButton" name="output_dir_button">
@@ -89,17 +91,10 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="2">
-     <widget class="QLineEdit" name="_wfds_exec_line_edit"/>
+    <item row="5" column="2">
+     <widget class="QLineEdit" name="_smv_exec_line_edit"/>
     </item>
-    <item row="4" column="1">
-     <widget class="QLabel" name="output_dir_label_2">
-      <property name="text">
-       <string>WFDS executable</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="3">
+    <item row="3" column="3">
      <widget class="QPushButton" name="wfds_exec_bttn">
       <property name="toolTip">
        <string>Select a new Output Directory</string>
@@ -109,17 +104,7 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="1">
-     <widget class="QLabel" name="output_dir_label_3">
-      <property name="text">
-       <string>SMV executable</string>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="2">
-     <widget class="QLineEdit" name="_smv_exec_line_edit"/>
-    </item>
-    <item row="5" column="3">
+    <item row="4" column="3">
      <widget class="QPushButton" name="smv_exec_bttn">
       <property name="toolTip">
        <string>Select a new Output Directory</string>
@@ -129,9 +114,50 @@
       </property>
      </widget>
     </item>
+    <item row="5" column="1">
+     <widget class="QLabel" name="sim_duration_label">
+      <property name="text">
+       <string>Simulation Duration</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLabel" name="output_dir_label_2">
+      <property name="text">
+       <string>WFDS executable</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QLabel" name="output_dir_label_3">
+      <property name="text">
+       <string>SMV executable</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>output_dir_button</tabstop>
+  <tabstop>working_dir_button</tabstop>
+  <tabstop>wfds_exec_bttn</tabstop>
+  <tabstop>smv_exec_bttn</tabstop>
+  <tabstop>_output_dir_line_edit</tabstop>
+  <tabstop>_working_dir_line_edit</tabstop>
+  <tabstop>_sim_duration_line_edit</tabstop>
+  <tabstop>_wfds_exec_line_edit</tabstop>
+  <tabstop>_smv_exec_line_edit</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
