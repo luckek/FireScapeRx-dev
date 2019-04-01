@@ -30,9 +30,6 @@ from PyQt5.QtWidgets import QWidget, QLabel
 
 class MainWindow(QMainWindow, Ui_MainWindow):
 
-    # Path to pre-packaged smv executable
-    smv_exec = osp.join(osp.abspath(os.pardir), 'smokeview_linux_64')
-
     def __init__(self):
 
         super(MainWindow, self).__init__()
@@ -165,6 +162,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         elif identifier == 'action_view_sim':
 
             user_settings = UserSettings()
+            smv_exec = user_settings.wfds_exec
+
+            if not smv_exec:
+                QMessageBox.information(self, "No executable found", "No Smokeview executable found! please specify one in "
+                                                                     "the User Settings menu")
+                return
 
             # Open FileDialog in user's current working directory, with smv file filter
             file, file_filter = QFileDialog.getOpenFileName(self, 'View Simulation', user_settings.working_dir,
@@ -583,11 +586,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         user_settings = UserSettings()
         smv_exec = user_settings.smv_exec
-
-        if not smv_exec:
-            QMessageBox.information(self, "No executable found", "No Smokeview executable found! please specify one in "
-                                                                 "the User Settings menu")
-            return
 
         logger.log(logger.INFO, 'Viewing simulation')
         util.execute(cmd=[smv_exec, self._smv_file], cwd=None, out_file=None)
