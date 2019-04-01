@@ -66,3 +66,7 @@ class FuelMapEditor(AsciiGridEditor):
     def parser(self):
         self.update_vals()
         return self._ascii_parser
+
+    def get_rects(self):
+        self.update_vals()
+        return self._ascii_parser

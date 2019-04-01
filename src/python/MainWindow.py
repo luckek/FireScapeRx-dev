@@ -180,7 +180,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # We do not care about return value of QMessageBox
             return
 
-        elif identifier == 'action_user_settings':
+        elif identifier == 'action_user_setting':
             dialog = UserSettingsForm()
 
         elif identifier == 'action_select_output_files':

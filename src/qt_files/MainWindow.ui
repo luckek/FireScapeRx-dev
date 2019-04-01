@@ -37,7 +37,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <property name="iconSize">
      <size>
@@ -1020,7 +1020,6 @@
      <string>File</string>
     </property>
     <addaction name="action_create_environment"/>
-    <addaction name="action_user_Settings"/>
    </widget>
    <widget class="QMenu" name="menu_export">
     <property name="title">
@@ -1050,10 +1049,17 @@
     <addaction name="action_import_fuel_map"/>
     <addaction name="action_import_dem"/>
    </widget>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>Settings</string>
+    </property>
+    <addaction name="action_user_setting"/>
+   </widget>
    <addaction name="menu_file"/>
    <addaction name="menu_import"/>
    <addaction name="menu_export"/>
    <addaction name="menu_simulation"/>
+   <addaction name="menuSettings"/>
    <addaction name="menu_help"/>
   </widget>
   <action name="action_create_environment">
@@ -1178,6 +1184,11 @@
    </property>
   </action>
   <action name="action_user_Settings">
+   <property name="text">
+    <string>User Settings</string>
+   </property>
+  </action>
+  <action name="action_user_setting">
    <property name="text">
     <string>User Settings</string>
    </property>
