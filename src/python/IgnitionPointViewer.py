@@ -31,5 +31,5 @@ class IgnitionPointViewer(AsciiViewer):
     def fire_lines(self):
         return self.editor.fire_lines()
 
-    def save(self, save_fname):
-        self.editor.save(save_fname)
+    def save(self, save_fname, update=False):
+        self.editor.save(save_fname, update)

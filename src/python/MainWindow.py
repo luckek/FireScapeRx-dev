@@ -381,7 +381,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if not file.endswith(AsciiParser.FILE_EXT):
                 file += AsciiParser.FILE_EXT
 
-            self._ign_pt_editor.save(file, False)
+            self._ign_pt_editor.save(file)
             qApp.restoreOverrideCursor()
             QMessageBox.information(self, "Export successful", "Digital elevation model successfully exported")
 
