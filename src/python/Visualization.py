@@ -22,6 +22,7 @@ class Visualization(QScrollArea):
         # this is the Canvas Widget that displays the `figure`
         # it takes the `figure` instance as a parameter to __init__
         self.canvas = FigureCanvas(self.figure)
+        self.plot()
 
         # this is the Navigation widget
         # it takes the Canvas widget and a parent

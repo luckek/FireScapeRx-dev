@@ -27,3 +27,9 @@ class FuelMapViewer(AsciiViewer):
     def save(self, save_fname):
 
         self.editor.save(save_fname)
+
+    def parser(self):
+        return self.editor.parser()
+
+    def values_grid(self):
+        return self.editor.parser().data_table

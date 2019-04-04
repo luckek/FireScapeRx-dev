@@ -302,9 +302,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if self._visualization:
                     self._visualization.deleteLater()
 
-                # self._visualization = Visualization(self._fl_map_editor.parser(), self._ign_pt_editor.parser(), self)
-                # self._visualization.setEnabled(True)
-                # self._visualization.hide()
+                self._visualization = Visualization(self._fl_map_editor.parser(), self._ign_pt_editor.parser(), self)
+                self._visualization.setEnabled(True)
+                self._visualization.hide()
 
             # Set current tab to fuel type legend
             self._tab_widget.setCurrentIndex(1)
@@ -363,9 +363,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if self._visualization:
                     self._visualization.deleteLater()
 
-                # self._visualization = Visualization(self._fl_map_editor.parser(), self._ign_pt_editor.parser(), self)
-                # self._visualization.setEnabled(True)
-                # self._visualization.hide()
+                self._visualization = Visualization(self._fl_map_editor.parser(), self._ign_pt_editor.parser(), self)
+                self._visualization.setEnabled(True)
+                self._visualization.hide()
 
             # Set current tab to fuel type legend
             self._tab_widget.setCurrentIndex(2)
