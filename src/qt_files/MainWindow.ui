@@ -964,7 +964,7 @@
      <item>
       <widget class="QLabel" name="_sim_title_label">
        <property name="text">
-        <string>Environment Title:</string>
+        <string>Environment Title: N/A</string>
        </property>
        <property name="margin">
         <number>10</number>
@@ -986,7 +986,7 @@
        <item>
         <widget class="QLabel" name="_fm_title_label">
          <property name="text">
-          <string/>
+          <string>Fuel Map Title: N/A</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -1002,7 +1002,7 @@
        <item>
         <widget class="QLabel" name="_dem_title_label">
          <property name="text">
-          <string/>
+          <string>DEM Title: N/A</string>
          </property>
          <property name="indent">
           <number>12</number>
