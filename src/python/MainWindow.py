@@ -54,16 +54,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.action_export_dem.setEnabled(False)
         self.action_export_summary_file.setEnabled(False)
         self.action_export_environment.setEnabled(False)
+        self.action_create_environment.setEnabled(False)
 
+        self._sim_settings_tab.setEnabled(False)
         self._fl_type_lgnd_tab.setEnabled(False)
         self.ignition_point_legend_tab.setEnabled(False)
-        self._sim_settings_tab.setEnabled(False)
 
         self._tab_widget.currentChanged.connect(self.__tab_changed)
-
-        # FIXME: re-enable when this gets implemented:
-        self.action_import_summary_file.setEnabled(False)
-        self.action_create_environment.setEnabled(False)
 
         # Hide and reset progress bar
         self.__hide_and_reset_progress()
@@ -84,7 +81,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # Initialize fds object
         self._fds = Fds()
-        self._fds_exec = self._fds.fds_exec
 
         # Setup and hide the fuel type legend grid
         self._fl_type_grid_layout_widget = QWidget(self)
@@ -102,7 +98,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Initialize selected output file types
         self._output_file_types = []
 
-        # Initialize fds_file to be None
+        # Initialize smv_file to be None
         self._smv_file = None
 
         for child in self._menu_bar.children():
@@ -149,7 +145,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             # We do not care about return value of QMessageBox
             self.__view_simulation()
-
             return
 
         elif identifier == 'action_user_setting':
@@ -158,9 +153,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         elif identifier == 'action_select_output_files':
             dialog = SelectOutputFileTypesForm()
             self._output_file_types = dialog.get_file_types()
-
-            # Dialog will run itself, so we can return.
-            return
+            return  # Dialog will run itself, so we can return.
 
         elif identifier == 'action_about':
             dialog = AboutDialog()
