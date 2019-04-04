@@ -34,7 +34,7 @@ class Visualization(QScrollArea):
         layout.addWidget(self.canvas)
         self.setLayout(layout)
 
-        self.setGeometry(QtCore.QRect(10, 100, 820, 800))
+        self.setGeometry(QtCore.QRect(10, 120, 820, 800))
 
     def plot(self):
 
