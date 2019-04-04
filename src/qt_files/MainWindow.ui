@@ -37,7 +37,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <property name="iconSize">
      <size>
@@ -950,7 +950,7 @@
       <x>0</x>
       <y>0</y>
       <width>841</width>
-      <height>96</height>
+      <height>98</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -982,20 +982,34 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="_map_title_label">
-       <property name="text">
-        <string>Fuel Map Title:</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-       </property>
-       <property name="margin">
-        <number>10</number>
-       </property>
-       <property name="indent">
-        <number>12</number>
-       </property>
-      </widget>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="_fm_title_label">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+         <property name="margin">
+          <number>10</number>
+         </property>
+         <property name="indent">
+          <number>12</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="_dem_title_label">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="indent">
+          <number>12</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </widget>
