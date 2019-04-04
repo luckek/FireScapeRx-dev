@@ -16,7 +16,7 @@ class FdsParser:
 
         # FIXME: could let user pick these
         self._dump_dt = 180
-        self._3d_smoke = False
+        self._3d_smoke = True
 
         self._radi_radiation = False
 
@@ -111,6 +111,15 @@ class FdsParser:
                    str(round(self._ambient_temp, 2)) + ",\n        U0=" + str(round(self._u0, 4)) + ",\n        V0=" + \
                    str(round(self._v0, 4)) + ' /\n\n'
 
+        # misc_str = "&MISC   TERRAIN_CASE=.TRUE.,\n        " \
+        #            "VEG_LEVEL_SET_UNCOUPLED=.FALSE.,\n        " \
+        #            "VEG_LEVEL_SET_COUPLED=.TRUE.,\n        " \
+        #            "VEG_LEVEL_SET_SURFACE_HEATFLUX=.TRUE.,\n        " +\
+        #            "VEG_LEVEL_SET_THERMAL_ELEMENTS=.FALSE.,\n        " + \
+        #            "TMPA=" + \
+        #            str(round(self._ambient_temp, 2)) + ",\n        U0=" + str(round(self._u0, 4)) + ",\n        V0=" + \
+        #            str(round(self._v0, 4)) + ' /\n\n'
+
         # FIXME: This could be made more general... currently hard coded from JFSP run 1
         untrt_str = "&SURF ID ='untrt'\nFREE_SLIP=.TRUE.\nVEG_LEVEL_SET_SPREAD =.TRUE.\nVEG_LSET_ELLIPSE=.TRUE.\n" \
                     "VEG_LSET_SURFACE_FIRE_HEAD_ROS_MODEL='ROTHERMEL'\nVEG_LSET_CROWN_FIRE_HEAD_ROS_MODEL= 'SR'\n" \
@@ -120,7 +129,7 @@ class FdsParser:
                     "VEG_LSET_CANOPY_FMC=1\nVEG_LSET_WAF_SHELTERED = 0.09\nVEG_LSET_CANOPY_BULK_DENSITY= 0.089\n" \
                     "VEG_LSET_CANOPY_HEIGHT= 23\nVEG_LSET_CANOPY_BASE_HEIGHT = 0\n" \
                     "VEG_LSET_ROTHFM10_ZEROWINDSLOPE_ROS = 0.007118\nPART_ID='TE'\nNPPC = 1\nVEL = -0.01" \
-                    "\nRGB=122,117,48 /\n\n"
+                    "\nRGB=0,255,0 /\n\n"
 
         # FIXME: This could be made more general... currently hard coded from JFSP run 1
         trt_str = "&SURF ID ='trt'\nFREE_SLIP=.TRUE.\nVEG_LEVEL_SET_SPREAD =.TRUE.\nVEG_LSET_ELLIPSE=.TRUE.\n" \
@@ -131,7 +140,7 @@ class FdsParser:
                   "VEG_LSET_CANOPY_FMC=1\nVEG_LSET_WAF_SHELTERED = 0.18\nVEG_LSET_CANOPY_BULK_DENSITY= 0.037\n" \
                   "VEG_LSET_CANOPY_HEIGHT= 23\nVEG_LSET_CANOPY_BASE_HEIGHT = 11\n" \
                   "VEG_LSET_ROTHFM10_ZEROWINDSLOPE_ROS = 0.007118\nPART_ID='TE'\nNPPC = 1\nVEL = -0.01" \
-                  "\nRGB=0,0,0 /\n\n"
+                  "\nRGB=122,117,48 /\n\n"
 
         no_data_str = "&SURF ID = 'no_data'\nVEG_LEVEL_SET_SPREAD = .TRUE.\nVEG_LSET_ROS_HEAD = 0.0\n" \
                       "VEG_LSET_ROS_FLANK = 0.0\nVEG_LSET_ROS_BACK = 0.0\nVEG_LSET_WIND_EXP = 0.0\n" \
@@ -145,8 +154,6 @@ class FdsParser:
 
         # FIXME: this could be a little different / more general?
         self._head = fds_fname
-        self._title = fds_fname
-
         with open(fds_file, 'w') as f:
 
             f.write("&HEAD CHID='" + self._head + "' /\nTITLE='" + self._title + "' /\n\n")
@@ -212,10 +219,14 @@ class FdsParser:
             f.write('\n')
 
             f.write("-- Outputs\n")
-            f.write("&DUMP DT_OUTPUT_LS=180,SMOKE3D=." + str(self._3d_smoke).upper() + ". /\n\n")
+            f.write("&DUMP DT_SLCF = 0.1, DT_BNDF = 0.1, DT_PART = 0.1, DT_ISOF = 0.1, DT_PL3D = 200 /\n")
+            f.write("&DUMP DT_OUTPUT_LS=180,SMOKE3D=." + str(self._3d_smoke).upper() + ". /\n")
+            f.write("&ISOF QUANTITY = 'TEMPERATURE', VALUE = 150. /\n")
+            f.write("&BNDF QUANTITY = 'CONVECTIVE HEAT FLUX' /\n\n")
 
             f.write("-- END of Input file\n")
             f.write("&TAIL /")
+        self._title = fds_fname
 
         return True
 

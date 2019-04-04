@@ -40,6 +40,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Center main application window
         util.center_window(self)
 
+        # Disable resizing
+        self.setFixedSize(self.size())
+
         # TODO: init editor with no file here?
         # Create the fuel map editor variable
         self._fl_map_editor = None
@@ -75,6 +78,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.modify_fuel_map_button.clicked.connect(self.__modify_fuel_map)
         self.modify_ign_pts_button.clicked.connect(self.__modify_ignition_map)
+
+        # Set tab widget to sim settings tab
+        self._tab_widget.setCurrentIndex(0)
 
         # Initialize fds object
         self._fds = Fds()
@@ -121,32 +127,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.__import_environment()
             return
 
-        elif identifier == 'action_import_simulation':
-            print(identifier, 'not implemented')
-            return
-
         elif identifier == 'action_import_fuel_map':
             self.__import_fuel_map()
             return
 
         elif identifier == 'action_import_dem':
             self.__import_dem()
-            return
-
-        elif identifier == 'action_export_summary':
-            print(identifier, 'not implemented')
-            return
-
-        elif identifier == 'action_export_environment':
-            print(identifier, 'not implemented')
-            return
-
-        elif identifier == 'action_export_simulation':
-            print(identifier, 'not implemented')
-            return
-
-        elif identifier == 'action_export_summary':
-            print(identifier, 'not implemented')
             return
 
         elif identifier == 'action_export_fuel_map':
@@ -161,26 +147,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         elif identifier == 'action_view_sim':
 
-            user_settings = UserSettings()
-            smv_exec = user_settings.wfds_exec
-
-            if not smv_exec:
-                QMessageBox.information(self, "No executable found", "No Smokeview executable found! please specify one in "
-                                                                     "the User Settings menu")
-                return
-
-            # Open FileDialog in user's current working directory, with smv file filter
-            file, file_filter = QFileDialog.getOpenFileName(self, 'View Simulation', user_settings.working_dir,
-                                                            filter="smv (*.smv)")
-
-            if file:
-                self._smv_file = file
-
-            if self._smv_file is not None:
-                logger.log(logger.INFO, 'Launching smokeview')
-                self.__run_smv()
-
             # We do not care about return value of QMessageBox
+            self.__view_simulation()
+
             return
 
         elif identifier == 'action_user_setting':
@@ -333,9 +302,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if self._visualization:
                     self._visualization.deleteLater()
 
-                self._visualization = Visualization(self._fl_map_editor.parser(), self._ign_pt_editor.parser(), self)
-                self._visualization.setEnabled(True)
-                self._visualization.hide()
+                # self._visualization = Visualization(self._fl_map_editor.parser(), self._ign_pt_editor.parser(), self)
+                # self._visualization.setEnabled(True)
+                # self._visualization.hide()
 
             # Set current tab to fuel type legend
             self._tab_widget.setCurrentIndex(1)
@@ -394,9 +363,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 if self._visualization:
                     self._visualization.deleteLater()
 
-                self._visualization = Visualization(self._fl_map_editor.parser(), self._ign_pt_editor.parser(), self)
-                self._visualization.setEnabled(True)
-                self._visualization.hide()
+                # self._visualization = Visualization(self._fl_map_editor.parser(), self._ign_pt_editor.parser(), self)
+                # self._visualization.setEnabled(True)
+                # self._visualization.hide()
 
             # Set current tab to fuel type legend
             self._tab_widget.setCurrentIndex(2)
@@ -520,8 +489,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             QMessageBox.information(self, 'No Environment Present',
                                     '<html>No Environment Present!<br>Please create or import an environment.</html>')
 
-            # We do not care about return value of QMessageBox
+    def __view_simulation(self):
+
+        user_settings = UserSettings()
+        smv_exec = user_settings.wfds_exec
+
+        if not smv_exec:
+            QMessageBox.information(self, "No executable found", "No Smokeview executable found! please specify one in "
+                                                                 "the User Settings menu")
             return
+
+        # Open FileDialog in user's current working directory, with smv file filter
+        file, file_filter = QFileDialog.getOpenFileName(self, 'View Simulation', user_settings.working_dir,
+                                                        filter="smv (*.smv)")
+
+        if file:
+            self._smv_file = file
+
+            if self._smv_file is not None:
+                logger.log(logger.INFO, 'Launching smokeview')
+                self.__run_smv()
 
     def __environment_present(self):
         return self._fds.file_present()
@@ -637,7 +624,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 logger.log(logger.INFO, 'Sleep')
                 qApp.processEvents()  # Helps keep gui responsive
                 time.sleep(0.1)
-
 
         # TODO: could get pid from popen and check it or something here.
         # May also be useful to get pid for things such as killing if FireScape Rx is
