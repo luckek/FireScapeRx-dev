@@ -308,8 +308,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self._fl_map_editor.show()
             qApp.restoreOverrideCursor()
 
-            QMessageBox.information(self, "Import successful", "Fuel Map successfully imported.")
-
     def __export_fuel_map(self):
 
         user_settings = UserSettings()
@@ -369,8 +367,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             self._ign_pt_editor.show()
             qApp.restoreOverrideCursor()
-
-            QMessageBox.information(self, "Import successful", "Digital Elevation Model successfully imported.")
 
     def __export_dem(self):
 
