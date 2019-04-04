@@ -60,8 +60,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._fl_type_lgnd_tab.setEnabled(False)
         self.ignition_point_legend_tab.setEnabled(False)
 
-        self._tab_widget.currentChanged.connect(self.__tab_changed)
-
         # Hide and reset progress bar
         self.__hide_and_reset_progress()
 
@@ -73,14 +71,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # self._y_rng_min_fl_line_edit.returnPressed.connect(self.__y_rng_ret_pressed())
         # self._y_rng_max_fl_line_edit.returnPressed.connect(self.__y_rng_ret_pressed())
 
-        self.modify_fuel_map_button.clicked.connect(self.__modify_fuel_map)
-        self.modify_ign_pts_button.clicked.connect(self.__modify_ignition_map)
-
-        # Set tab widget to sim settings tab
-        self._tab_widget.setCurrentIndex(0)
-
         # Initialize fds object
         self._fds = Fds()
+
+        # Initialize smv_file to be None
+        self._smv_file = None
 
         # Setup and hide the fuel type legend grid
         self._fl_type_grid_layout_widget = QWidget(self)
@@ -98,8 +93,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Initialize selected output file types
         self._output_file_types = []
 
-        # Initialize smv_file to be None
-        self._smv_file = None
+        # Set tab widget to sim settings tab
+        self._tab_widget.setCurrentIndex(0)
+
+        self._tab_widget.currentChanged.connect(self.__tab_changed)
+
+        self.modify_fuel_map_button.clicked.connect(self.__modify_fuel_map)
+        self.modify_ign_pts_button.clicked.connect(self.__modify_ignition_map)
 
         for child in self._menu_bar.children():
             if type(child) is QtWidgets.QMenu:
@@ -302,6 +302,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # Set current tab to fuel type legend
             self._tab_widget.setCurrentIndex(1)
 
+            self._fm_title_label.setText("Fuel Map Title: " + util.get_filename(file))
+
             # Tab index might not change, so __tab_changed will never get called
             self._fl_map_editor.show()
             qApp.restoreOverrideCursor()
@@ -362,6 +364,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             # Set current tab to fuel type legend
             self._tab_widget.setCurrentIndex(2)
+
+            self._dem_title_label.setText("DEM Title: " + util.get_filename(file))
 
             self._ign_pt_editor.show()
             qApp.restoreOverrideCursor()
