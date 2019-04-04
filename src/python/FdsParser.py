@@ -180,26 +180,7 @@ class FdsParser:
             f.write(no_data_str)
             f.write(part_id_str)
 
-            f.write("-- Ignitor fire\n")
-            for i, ign_cell in enumerate(self._vent):
-
-                p1, p2, ign_time = ign_cell
-
-                x1 = p1.x
-                y1 = p1.y
-                z1 = p1.z
-
-                x2 = p2.x
-                y2 = p2.y
-                z2 = p2.z
-
-                ign_id = 'P' + str(i)
-                xb_str = ','.join([str(int(x1)), str(int(x2)), str(int(y1)), str(int(y2)), str(int(z1)), str(z2)])
-
-                f.write("&SURF ID='" + ign_id + "',VEG_LSET_IGNITE_TIME=" + str(round(ign_time, 2)) + ",RGB=255,0,0 /\n")
-                f.write("&VENT XB=" + xb_str + ",SURF_ID='" + ign_id + "' /\n")
-
-            f.write("\n-- Vegetation\n")
+            f.write("-- Vegetation\n")
             for surf_id in self._obst_dict:
                 for veg in self._obst_dict[surf_id]:
 
@@ -215,6 +196,27 @@ class FdsParser:
 
                     xb_str = ','.join([str(int(x1)), str(int(x2)), str(int(y1)), str(int(y2)), str(int(z1)), str(z2)])
                     f.write("&OBST XB=" + xb_str + ", SURF_ID='" + surf_id + "' /\n")
+
+            f.write('\n')
+
+            f.write("-- Ignitor fire\n")
+            for i, ign_cell in enumerate(self._vent):
+                p1, p2, ign_time = ign_cell
+
+                x1 = p1.x
+                y1 = p1.y
+                z1 = p1.z
+
+                x2 = p2.x
+                y2 = p2.y
+                z2 = p2.z
+
+                ign_id = 'P' + str(i)
+                xb_str = ','.join([str(int(x1)), str(int(x2)), str(int(y1)), str(int(y2)), str(int(z1)), str(z2)])
+
+                f.write(
+                    "&SURF ID='" + ign_id + "',VEG_LSET_IGNITE_TIME=" + str(round(ign_time, 2)) + ",RGB=255,0,0 /\n")
+                f.write("&VENT XB=" + xb_str + ",SURF_ID='" + ign_id + "' /\n")
 
             f.write('\n')
 
