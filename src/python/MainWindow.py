@@ -99,7 +99,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self._tab_widget.currentChanged.connect(self.__tab_changed)
 
         self.modify_fuel_map_button.clicked.connect(self.__modify_fuel_map)
-        self.modify_ign_pts_button.clicked.connect(self.__modify_ignition_map)
+        # self.modify_ign_pts_button.clicked.connect(self.__modify_ignition_map)
 
         for child in self._menu_bar.children():
             if type(child) is QtWidgets.QMenu:
