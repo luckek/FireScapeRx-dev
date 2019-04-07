@@ -214,7 +214,7 @@ class FdsParser:
                     y2 = p2.y
                     z2 = p2.z
 
-                    xb_str = ','.join([str(int(x1)), str(int(x2)), str(int(y1)), str(int(y2)), str(int(z1)), str(z2)])
+                    xb_str = ','.join([str(int(x1)), str(int(x2)), str(int(y1)), str(int(y2)), str(int(z1)), str(int(z2))])
                     f.write("&OBST XB=" + xb_str + ", SURF_ID='" + surf_id + "' /\n")
 
             f.write('\n')
@@ -232,10 +232,9 @@ class FdsParser:
                 z2 = p2.z
 
                 ign_id = 'P' + str(i)
-                xb_str = ','.join([str(int(x1)), str(int(x2)), str(int(y1)), str(int(y2)), str(int(z1)), str(z2)])
+                xb_str = ','.join([str(int(x1)), str(int(x2)), str(int(y1)), str(int(y2)), str(int(z1)), str(int(z2))])
 
-                f.write(
-                    "&SURF ID='" + ign_id + "',VEG_LSET_IGNITE_TIME=" + str(round(ign_time, 2)) + ",RGB=255,0,0 /\n")
+                f.write("&SURF ID='" + ign_id + "',VEG_LSET_IGNITE_TIME=" + str(round(ign_time, 2)) + ",RGB=255,0,0 /\n")
                 f.write("&VENT XB=" + xb_str + ",SURF_ID='" + ign_id + "' /\n")
 
             f.write('\n')
