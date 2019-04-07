@@ -115,8 +115,12 @@ class FdsParser:
                    "VEG_LEVEL_SET_COUPLED=.TRUE.,\n        " \
                    "VEG_LEVEL_SET_SURFACE_HEATFLUX=.TRUE.,\n        " +\
                    "VEG_LEVEL_SET_THERMAL_ELEMENTS=.FALSE.,\n        " + \
-                   "TMPA=" + str(round(self._ambient_temp, 2)) + ",\n        U0=" + str(round(self._u0, 4)) + ",\n        V0=" + \
-                   str(round(self._v0, 4)) + ' /\n\n'
+                   "TMPA=" + str(round(self._ambient_temp, 2)) + ' /\n\n'
+
+                   # FIXME:
+                   # ",\n        U0=" + str(round(self._u0, 4)) + \
+                   # ",\n        V0=" + str(round(self._v0, 4)) + ' /\n\n'
+
 
         # FIXME: This could be made more general... currently hard coded from JFSP run 1
         untrt_str = "&SURF ID ='untrt'\nFREE_SLIP=.TRUE.\nVEG_LEVEL_SET_SPREAD =.TRUE.\nVEG_LSET_ELLIPSE=.TRUE.\n" \
