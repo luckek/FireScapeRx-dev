@@ -106,19 +106,17 @@ class FdsParser:
         """Function to save contents of an fds file"""
 
         # FIXME: This could be made more general... currently hard coded from JFSP run 1
-        misc_str = "&MISC   TERRAIN_CASE=.TRUE.,\n        VEG_LEVEL_SET_UNCOUPLED=.TRUE.," \
-                   "\n        VEG_LEVEL_SET_COUPLED=.FALSE.,\n        TMPA=" + \
-                   str(round(self._ambient_temp, 2)) + ",\n        U0=" + str(round(self._u0, 4)) + ",\n        V0=" + \
-                   str(round(self._v0, 4)) + ' /\n\n'
-
-        # misc_str = "&MISC   TERRAIN_CASE=.TRUE.,\n        " \
-        #            "VEG_LEVEL_SET_UNCOUPLED=.FALSE.,\n        " \
-        #            "VEG_LEVEL_SET_COUPLED=.TRUE.,\n        " \
-        #            "VEG_LEVEL_SET_SURFACE_HEATFLUX=.TRUE.,\n        " +\
-        #            "VEG_LEVEL_SET_THERMAL_ELEMENTS=.FALSE.,\n        " + \
-        #            "TMPA=" + \
+        # misc_str = "&MISC   TERRAIN_CASE=.TRUE.,\n        VEG_LEVEL_SET_UNCOUPLED=.TRUE.," \
+        #            "\n        VEG_LEVEL_SET_COUPLED=.FALSE.,\n        TMPA=" + \
         #            str(round(self._ambient_temp, 2)) + ",\n        U0=" + str(round(self._u0, 4)) + ",\n        V0=" + \
         #            str(round(self._v0, 4)) + ' /\n\n'
+
+        misc_str = "&MISC VEG_LEVEL_SET_UNCOUPLED=.FALSE.,\n        " \
+                   "VEG_LEVEL_SET_COUPLED=.TRUE.,\n        " \
+                   "VEG_LEVEL_SET_SURFACE_HEATFLUX=.TRUE.,\n        " +\
+                   "VEG_LEVEL_SET_THERMAL_ELEMENTS=.FALSE.,\n        " + \
+                   "TMPA=" + str(round(self._ambient_temp, 2)) + ",\n        U0=" + str(round(self._u0, 4)) + ",\n        V0=" + \
+                   str(round(self._v0, 4)) + ' /\n\n'
 
         # FIXME: This could be made more general... currently hard coded from JFSP run 1
         untrt_str = "&SURF ID ='untrt'\nFREE_SLIP=.TRUE.\nVEG_LEVEL_SET_SPREAD =.TRUE.\nVEG_LSET_ELLIPSE=.TRUE.\n" \
@@ -142,9 +140,21 @@ class FdsParser:
                   "VEG_LSET_ROTHFM10_ZEROWINDSLOPE_ROS = 0.007118\nPART_ID='TE'\nNPPC = 1\nVEL = -0.01" \
                   "\nRGB=122,117,48 /\n\n"
 
-        no_data_str = "&SURF ID = 'no_data'\nVEG_LEVEL_SET_SPREAD = .TRUE.\nVEG_LSET_ROS_HEAD = 0.0\n" \
-                      "VEG_LSET_ROS_FLANK = 0.0\nVEG_LSET_ROS_BACK = 0.0\nVEG_LSET_WIND_EXP = 0.0\n" \
-                      "COLOR = 'BLACK' /\n\n"
+        # FIXME:
+        # no_data_str = "&SURF ID = 'no_data'\nVEG_LEVEL_SET_SPREAD = .TRUE.\nVEG_LSET_ROS_HEAD = 0.0\n" \
+        #               "VEG_LSET_ROS_FLANK = 0.0\nVEG_LSET_ROS_BACK = 0.0\nVEG_LSET_WIND_EXP = 0.0\n" \
+        #               "COLOR = 'BLACK' /\n\n"
+
+        # FIXME: This could be made more general... currently hard coded from JFSP run 1
+        no_data_str = "&SURF ID ='no_data'\nFREE_SLIP=.TRUE.\nVEG_LEVEL_SET_SPREAD =.TRUE.\nVEG_LSET_ELLIPSE=.TRUE.\n" \
+                  "VEG_LSET_SURFACE_FIRE_HEAD_ROS_MODEL='ROTHERMEL'\nVEG_LSET_CROWN_FIRE_HEAD_ROS_MODEL= 'SR'\n" \
+                  "VEG_LSET_MODEL_FOR_PASSIVE_ROS = 'SR'\nVEG_LSET_ROTH_ZEROWINDSLOPE_ROS = 0.007118\n" \
+                  "VEG_LSET_HEAT_OF_COMBUSTION=18000\nVEG_LSET_BETA = 0.0173\nVEG_LSET_SIGMA = 5788\n" \
+                  "VEG_LSET_SURF_HEIGHT = 0.254\nVEG_LSET_SURF_LOAD = 2.24592\nVEG_LSET_CHAR_FRACTION = 0.2\n" \
+                  "VEG_LSET_CANOPY_FMC=1\nVEG_LSET_WAF_SHELTERED = 0.18\nVEG_LSET_CANOPY_BULK_DENSITY= 0.037\n" \
+                  "VEG_LSET_CANOPY_HEIGHT= 23\nVEG_LSET_CANOPY_BASE_HEIGHT = 11\n" \
+                  "VEG_LSET_ROTHFM10_ZEROWINDSLOPE_ROS = 0.007118\nPART_ID='TE'\nNPPC = 1\nVEL = -0.01" \
+                  "\nRGB=122,117,48 /\n\n"
 
         # FIXME: This could be made more general... currently hard coded from JFSP run 1
         part_id_str = "-- Thermal Elements\n&PART ID='TE',\nAGE=9999,\nTE_BURNTIME=2.5,\nMASSLESS=.TRUE.," \
