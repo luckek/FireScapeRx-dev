@@ -37,7 +37,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <property name="iconSize">
      <size>
@@ -331,7 +331,7 @@
           <x>30</x>
           <y>0</y>
           <width>335</width>
-          <height>451</height>
+          <height>361</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -370,7 +370,7 @@
               <x>0</x>
               <y>0</y>
               <width>331</width>
-              <height>221</height>
+              <height>131</height>
              </rect>
             </property>
            </widget>
@@ -645,7 +645,7 @@
           <x>40</x>
           <y>0</y>
           <width>331</width>
-          <height>361</height>
+          <height>211</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -684,31 +684,14 @@
               <x>0</x>
               <y>0</y>
               <width>327</width>
-              <height>223</height>
+              <height>135</height>
              </rect>
             </property>
            </widget>
           </widget>
          </item>
          <item>
-          <widget class="Line" name="line_22">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="modify_ignition_point_label">
-           <property name="text">
-            <string>Add/Remove Ignition Points:</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="Line" name="line_23">
+          <widget class="Line" name="line_16">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -729,61 +712,7 @@
           </layout>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_9">
-           <item>
-            <widget class="QLabel" name="label_15">
-             <property name="text">
-              <string>Ignition:</string>
-             </property>
-             <property name="margin">
-              <number>1</number>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="_ign_pt_add_rm_combo_box">
-             <property name="currentText">
-              <string>Add</string>
-             </property>
-             <property name="currentIndex">
-              <number>0</number>
-             </property>
-             <item>
-              <property name="text">
-               <string>Add</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Remove</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-           <item>
-            <spacer name="horizontalSpacer_19">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Fixed</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>130</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="Line" name="line_25">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout_9"/>
          </item>
         </layout>
        </widget>
@@ -1071,7 +1000,6 @@
   <tabstop>_fl_type_combo_box</tabstop>
   <tabstop>modify_fuel_map_button</tabstop>
   <tabstop>ignition_point_map_legend_scroll_area</tabstop>
-  <tabstop>_ign_pt_add_rm_combo_box</tabstop>
   <tabstop>ignition_point_scroll_area</tabstop>
  </tabstops>
  <resources/>
