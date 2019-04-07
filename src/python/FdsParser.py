@@ -174,11 +174,18 @@ class FdsParser:
             # Calculate mesh size
             mesh_i = self._x_end // self._cell_size
             mesh_j = self._y_end // self._cell_size
-            mesh_k = self._z_end // self._cell_size
+
+            # FIXME:
+            # mesh_k = self._z_end // self._cell_size
+            mesh_k = 20
 
             ijk_str = ','.join([str(int(mesh_i)), str(int(mesh_j)), str(int(mesh_k))])
+
+            # FIXME:
+            # xb_str = ','.join([str(int(self._x_start)), str(int(self._x_end)), str(int(self._y_start)),
+            #                    str(int(self._y_end)), str(int(self._z_start)), str(int(self._z_end))])
             xb_str = ','.join([str(int(self._x_start)), str(int(self._x_end)), str(int(self._y_start)),
-                               str(int(self._y_end)), str(int(self._z_start)), str(int(self._z_end))])
+                               str(int(self._y_end)), str(int(self._z_start)), str(int(20))])
 
             f.write("&MESH IJK=" + ijk_str + ", XB=" + xb_str + ' /\n\n')
 
