@@ -16,29 +16,29 @@ class AsciiToFds:
         self._nrows = fuel_map.nrows
         self._ncols = fuel_map.ncols
 
-        no_data = self._dem.no_data_val
+        # no_data = self._dem.no_data_val
 
         dat_table = self._dem.data_table
 
         # TODO: ###handle 'no data' values###
 
         # NOTE: we replace NO_DATA values with inf here so that we may properly calculate the table minimum
-        dat_table[dat_table == no_data] = np.inf
+        # dat_table[dat_table == no_data] = np.inf
 
         # One liner to get max and min of data table
-        tbl_min = dat_table.min()
+        # tbl_min = dat_table.min()
 
         # Re assign no data values
-        dat_table[dat_table == np.inf] = no_data
+        # dat_table[dat_table == np.inf] = no_data
 
         # This 'zeroes out' elevation so the lowest elevation is 0 m.
         # NOTE: We do this even when tbl_min = 0.0 so that the elevation values are rounded
         # TODO: can't round inf...
-        dat_table -= tbl_min
+        # dat_table -= tbl_min
         np.round(dat_table)
 
         # Round to nearest tens
-        self._tbl_max = round(dat_table.max(), -1)
+        # self._tbl_max = round(dat_table.max(), -1)
 
         # FIXME:
         #self._spatial_translator = SpatialTranslator(fuel_map)
