@@ -92,7 +92,10 @@ class AsciiToFds:
         new_fds_file.y_end = fuel_map.y_max()
 
         new_fds_file.z_start = 0  # This should always be true, because we subtract min from DEM table
-        new_fds_file.z_end = self._tbl_max + (cells_above_max_z * self._fuel_map.cell_size)
+
+        # FIXME:
+        # new_fds_file.z_end = self._tbl_max + (cells_above_max_z * self._fuel_map.cell_size)
+        new_fds_file.z_end = 20
 
         ign_pts_and_times = self.convert_fire_lines(fire_lines)
 
