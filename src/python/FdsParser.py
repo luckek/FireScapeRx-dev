@@ -231,10 +231,14 @@ class FdsParser:
             f.write('\n')
 
             f.write("-- Outputs\n")
-            f.write("&DUMP DT_SLCF = 0.1, DT_BNDF = 0.1, DT_PART = 0.1, DT_ISOF = 0.1, DT_PL3D = 200 /\n")
-            f.write("&DUMP DT_OUTPUT_LS=180,SMOKE3D=." + str(self._3d_smoke).upper() + ". /\n")
+            # FIXME:
+            # f.write("&DUMP DT_SLCF = 0.1, DT_BNDF = 0.1, DT_PART = 0.1, DT_ISOF = 0.1, DT_PL3D = 200 /\n")
+            # f.write("&DUMP DT_OUTPUT_LS=180,SMOKE3D=." + str(self._3d_smoke).upper() + ". /\n")
+            # f.write("&ISOF QUANTITY = 'TEMPERATURE', VALUE = 150. /\n")
+
+            # Dump output every 1 second in simulation time
+            f.write("&DUMP DT_ISOF = 1.0 /\n")
             f.write("&ISOF QUANTITY = 'TEMPERATURE', VALUE = 150. /\n")
-            f.write("&BNDF QUANTITY = 'CONVECTIVE HEAT FLUX' /\n\n")
 
             f.write("-- END of Input file\n")
             f.write("&TAIL /")
