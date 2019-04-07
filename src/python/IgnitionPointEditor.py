@@ -98,5 +98,23 @@ class IgnitionPointEditor(AsciiGridEditor):
                         button_grid[i][j].set_color()
                     break
 
+    def add_ignition_point(self, i, j, idx_pt_map):
+
+        # Make all points light at 0.2s
+        t_list = [0.2]
+
+        # Get (x,y) from (i,j)
+        points_list = [idx_pt_map[(i, j)]]
+
+        self._fire_lines.append(FireLine(points_list, t_list))
+
     def fire_lines(self):
+
+        map = self.index_to_point_map()
+        for i, row in enumerate(self.rects):
+            for j, rect in enumerate(row):
+
+                if rect.color_idx == 0:
+                    self.add_ignition_point(i, j, map)
+
         return self._fire_lines
