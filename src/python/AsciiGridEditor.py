@@ -26,16 +26,8 @@ class AsciiGridEditor(QtWidgets.QGraphicsScene):
 
     def draw_grid(self):
 
-
-        WIDTH = 100
-        HEIGHT = 60
-
         size = 50
 
-        width = (self._nrows + 1) * WIDTH
-        height = (self._ncols + 1) * HEIGHT
-
-        self.setSceneRect(0, 0, width, height)
         self.setItemIndexMethod(QtWidgets.QGraphicsScene.NoIndex)
 
         # FIXME:
