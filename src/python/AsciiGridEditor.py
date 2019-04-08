@@ -35,7 +35,7 @@ class AsciiGridEditor(QtWidgets.QGraphicsScene):
         # cell_size = self._ascii_parser.cell_size + 500
 
         # Rows start at min coordinate value
-        init_x_val = int(self._ascii_parser.xllcorner) + cell_size // 2
+        init_x_val = int(self._ascii_parser.xllcorner) + cell_size / 2
 
         # FIXME:
         current_x_val = init_x_val
@@ -54,7 +54,7 @@ class AsciiGridEditor(QtWidgets.QGraphicsScene):
             current_x_val += cell_size
 
         # Columns start at max coordinate value
-        init_y_val = int(self._ascii_parser.yllcorner) + cell_size * self._nrows - cell_size // 2
+        init_y_val = int(self._ascii_parser.yllcorner) + cell_size * self._nrows - cell_size / 2
         current_y_val = init_y_val
 
         # Setup row labels for editor
