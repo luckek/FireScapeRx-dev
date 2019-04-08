@@ -10,7 +10,6 @@ import sys
 import time
 
 from PyQt5 import Qt
-from PyQt5.QtWidgets import QLabel
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QMessageBox, qApp, QGraphicsView, QGridLayout, QWidget
 
 import Utility as util
@@ -395,8 +394,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             # Initialize fields with simulation settings values
             self._sim_duration_line_edit.setText(str(sim_settings.sim_duration))
-            self._wind_speed_line_edit.setText(str(sim_settings.wind_speed))
-            self._wind_direction_line_edit.setText(str(sim_settings.wind_direction))
+            self._wind_speed_line_edit.setText(str(sim_settings.wind_vel))
             self._ambient_temp_line_edit.setText(str(sim_settings.ambient_temp))
 
     @QtCore.pyqtSlot(int, name='__tab_changed')
@@ -578,6 +576,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         fds_pid = util.execute(cmd=cmd, cwd=out_dir, out_file=out_file)
 
         t_end = float(self._fds.sim_time())
+        # self._progress_bar.setFormat("%p% ({0}s / {1}s)".format(0, t_end)) # Initialize the progress bar format
 
         # Make progress bar visible
         self._progress_bar.show()
@@ -611,6 +610,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         # Figure out percentage and update progress bar
                         loading = (sim_time_float / t_end) * 100
                         self._progress_bar.setValue(loading)
+
+                        # self._progress_bar.setFormat("%p% ({0}s / {1}s)".format(sim_time_float, t_end))
+
                 wait = False
 
             except FileNotFoundError:
@@ -939,29 +941,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __check_wind(self):
 
         wind_speed = self._wind_speed_line_edit.text()
-        wind_dir = self._wind_direction_line_edit.text()
 
-        if not wind_speed or not wind_dir:
+        if not wind_speed:
             QMessageBox.information(self, "Blank Field",
-                                    "At least one of wind speed or wind direction is empty. "
-                                    "Please provide a valid value")
+                                    "Wind speed is empty. Please provide a valid value")
 
-        if not util.is_number(wind_speed) or not util.is_number(wind_dir):
+        if not util.is_number(wind_speed):
             QMessageBox.information(self, "Invalid number",
-                                    "At least one of wind speed or wind direction is not a valid number. "
-                                    "Please enter a valid number")
+                                    "Wind speed is not a valid number. Please enter a valid number")
 
             return False
 
         wind_speed = float(wind_speed)
-        wind_dir = float(wind_dir)
-
-        if wind_dir < 0.0 or wind_dir > 360.0:
-            QMessageBox.information(self, "Invalid wind direction",
-                                    "Wind direction must be between 0 and 360. "
-                                    "Please enter a valid wind direction")
-
-            return False
 
         if wind_speed < 0.0:
             QMessageBox.information(self, "Invalid wind speed",
@@ -1003,13 +994,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         ambient_temp = util.fahrenheit_to_celsius(float(self._ambient_temp_line_edit.text()))
 
                         wind_speed = util.mph_to_ms(float(self._wind_speed_line_edit.text()))
-                        wind_direction = util.met_to_vect(float(self._wind_direction_line_edit.text()))
+                        wind_direction = self._wind_direction_combo_box.currentText()
 
                         sim_settings = SimulationSettings('default.sim_settings')
 
                         sim_settings.sim_duration = sim_time
                         sim_settings.ambient_temp = ambient_temp
-                        sim_settings.wind_speed = wind_speed
+                        sim_settings.wind_vel = wind_speed
                         sim_settings.wind_direction = wind_direction
 
                         ascii_fds_converter = AsciiToFds(fl_map_parser, dem_parser, sim_settings)
