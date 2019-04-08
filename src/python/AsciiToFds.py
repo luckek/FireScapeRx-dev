@@ -79,9 +79,8 @@ class AsciiToFds:
         new_fds_file.time = self._sim_settings.sim_duration
         new_fds_file.ambient_temp = self._sim_settings.ambient_temp
 
-        u0, v0 = self._sim_settings.wind_vector()
-        new_fds_file.u0 = u0
-        new_fds_file.v0 = v0
+        new_fds_file.wind_vel = self._sim_settings.wind_vel
+        new_fds_file.wind_dir = self._sim_settings.wind_direction
 
         new_fds_file.cell_size = fuel_map.cell_size
 

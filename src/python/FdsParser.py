@@ -29,8 +29,8 @@ class FdsParser:
         self._z_start = 0
         self._z_end = 0
 
-        self._u0 = 0.0
-        self._v0 = 0.0
+        self._wind_vel = 0.0
+        self._wind_dir = "West"
 
         self._ambient_temp = 20.0  # Default to ~ 68 degrees Fahrenheit
 
@@ -124,18 +124,18 @@ class FdsParser:
         # FIXME: This could be made more general... currently hard coded from JFSP run 1
         untrt_str = "&SURF ID ='untrt'\nVEG_LEVEL_SET_SPREAD =.TRUE.\nVEG_LSET_ELLIPSE=.TRUE.\n" \
                     "VEG_LSET_SURFACE_FIRE_HEAD_ROS_MODEL='ROTHERMEL'\n" \
-                    "VEG_LSET_ROTH_ZEROWINDSLOPE_ROS = 0.007118\n" \
+                    "VEG_LSET_ROTH_ZEROWINDSLOPE_ROS = 0.2\n" \
                     "VEG_LSET_HEAT_OF_COMBUSTION=18000\nVEG_LSET_BETA = 0.0012\nVEG_LSET_SIGMA = 11400\n" \
                     "VEG_LSET_SURF_HEIGHT = 0.51\n" \
-                    "\nRGB=0,255,0 /\n\n"
+                    "RGB=0,255,0 /\n\n"
 
         # FIXME: This could be made more general... currently hard coded from JFSP run 1
         trt_str = "&SURF ID ='trt'\nVEG_LEVEL_SET_SPREAD =.TRUE.\nVEG_LSET_ELLIPSE=.TRUE.\n" \
                     "VEG_LSET_SURFACE_FIRE_HEAD_ROS_MODEL='ROTHERMEL'\n" \
-                    "VEG_LSET_ROTH_ZEROWINDSLOPE_ROS = 0.007118\n" \
+                    "VEG_LSET_ROTH_ZEROWINDSLOPE_ROS = 0.2\n" \
                     "VEG_LSET_HEAT_OF_COMBUSTION=18000\nVEG_LSET_BETA = 0.0012\nVEG_LSET_SIGMA = 11400\n" \
                     "VEG_LSET_SURF_HEIGHT = 0.51\n" \
-                    "\nRGB=0,255,0 /\n\n"
+                    "RGB=0,255,0 /\n\n"
 
         # FIXME:
         # no_data_str = "&SURF ID = 'no_data'\nVEG_LEVEL_SET_SPREAD = .TRUE.\nVEG_LSET_ROS_HEAD = 0.0\n" \
@@ -230,11 +230,46 @@ class FdsParser:
 
             f.write('\n')
 
-            f.write("-- Outputs\n")
             # FIXME:
             # f.write("&DUMP DT_SLCF = 0.1, DT_BNDF = 0.1, DT_PART = 0.1, DT_ISOF = 0.1, DT_PL3D = 200 /\n")
             # f.write("&DUMP DT_OUTPUT_LS=180,SMOKE3D=." + str(self._3d_smoke).upper() + ". /\n")
             # f.write("&ISOF QUANTITY = 'TEMPERATURE', VALUE = 150. /\n")
+
+            f.write("-- Boundary conditions\n")
+            f.write("&SURF ID='wind',VEL=-" + str(self.wind_vel) + " / \n")
+            f.write("&RAMP ID='RAMPVEL',T=0.0,F=0.0 / \n")
+            f.write("&RAMP ID='RAMPVEL',T=0.1,F=1.0 / \n")
+
+            if self.wind_dir == "North":
+
+                f.write("&VENT XB = 0, 100, 100, 100, 0, 20, SURF_ID = 'wind' / \n")
+                f.write("&VENT XB = 0, 100, 0, 0, 0, 20, SURF_ID = 'OPEN' / \n")
+                f.write("&VENT XB = 0, 0, 0, 100, 0, 20, SURF_ID = 'OPEN' / \n")
+                f.write("&VENT XB = 100, 100, 0, 100, 0, 20, SURF_ID = 'OPEN' / \n")
+                f.write("&VENT XB = 0, 100, 0, 100, 20, 20, SURF_ID = 'OPEN' /\n\n")
+
+            elif self.wind_dir == "East":
+                f.write("&VENT XB=   100,   100,   0, 100,  0, 20,SURF_ID='wind' /\n")
+                f.write("&VENT XB=   0, 0,   0, 100,  0, 20,SURF_ID='OPEN' /\n")
+                f.write("&VENT XB=   0, 100,   0,   0,  0, 20,SURF_ID='OPEN' /\n")
+                f.write("&VENT XB=   0, 100, 100, 100,  0, 20,SURF_ID='OPEN' /\n")
+                f.write("&VENT XB=   0, 100,   0, 100, 20, 20,SURF_ID='OPEN' /\n")
+
+            elif self.wind_dir == "South":
+                f.write("&VENT XB=   0, 100,   0,   0,  0, 20,SURF_ID='wind' /\n")
+                f.write("&VENT XB=   0,   0,   0, 100,  0, 20,SURF_ID='OPEN' /\n")
+                f.write("&VENT XB=   100, 100,   0, 100,  0, 20,SURF_ID='OPEN' / \n")
+                f.write("&VENT XB=   0, 100, 100, 100,  0, 20,SURF_ID='OPEN' /\n")
+                f.write("&VENT XB=   0, 100,   0, 100, 20, 20,SURF_ID='OPEN' /\n\n")
+
+            elif self.wind_dir == "West":
+                f.write("&VENT XB=   0,   0,   0, 100,  0, 20,SURF_ID='wind' / \n")
+                f.write("&VENT XB=   100, 100,   0, 100,  0, 20,SURF_ID='OPEN' /\n")
+                f.write("&VENT XB=   0, 100,   0,   0,  0, 20,SURF_ID='OPEN' /\n")
+                f.write("&VENT XB=   0, 100, 100, 100,  0, 20,SURF_ID='OPEN' /\n")
+                f.write("&VENT XB=   0, 100,   0, 100, 20, 20,SURF_ID='OPEN' /\n\n")
+
+            f.write("-- Outputs\n")
 
             # Dump output every 1 second in simulation time
             f.write("&DUMP DT_ISOF = 1.0 /\n")
@@ -354,17 +389,17 @@ class FdsParser:
         self._z_end = new_z
 
     @property
-    def u0(self):
-        return self._u0
+    def wind_vel(self):
+        return self._wind_vel
 
-    @u0.setter
-    def u0(self, u0):
-        self._u0 = u0
+    @wind_vel.setter
+    def wind_vel(self, wind_vel):
+        self._wind_vel = wind_vel
 
     @property
-    def v0(self):
-        return self._v0
+    def wind_dir(self):
+        return self._wind_dir
 
-    @v0.setter
-    def v0(self, v0):
-        self._v0 = v0
+    @wind_dir.setter
+    def wind_dir(self, wind_dir):
+        self._wind_dir = wind_dir
