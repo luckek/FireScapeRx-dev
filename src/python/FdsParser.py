@@ -189,7 +189,7 @@ class FdsParser:
 
             f.write("&MESH IJK=" + ijk_str + ", XB=" + xb_str + ' /\n\n')
 
-            f.write("&TIME T_END=" + str(self.time) + ',LOCK_TIME_STEP=.TRUE./\n\n')
+            f.write("&TIME T_END=" + str(self.time) + ' /\n\n')
             f.write(misc_str)
             f.write("&RADI RADIATION=." + str(self._radi_radiation).upper() + '. /\n\n')
 
