@@ -122,26 +122,20 @@ class FdsParser:
                    # ",\n        V0=" + str(round(self._v0, 4)) + ' /\n\n'
 
         # FIXME: This could be made more general... currently hard coded from JFSP run 1
-        untrt_str = "&SURF ID ='untrt'\nFREE_SLIP=.TRUE.\nVEG_LEVEL_SET_SPREAD =.TRUE.\nVEG_LSET_ELLIPSE=.TRUE.\n" \
-                    "VEG_LSET_SURFACE_FIRE_HEAD_ROS_MODEL='ROTHERMEL'\nVEG_LSET_CROWN_FIRE_HEAD_ROS_MODEL= 'SR'\n" \
-                    "VEG_LSET_MODEL_FOR_PASSIVE_ROS = 'SR'\nVEG_LSET_ROTH_ZEROWINDSLOPE_ROS = 0.007118\n" \
-                    "VEG_LSET_HEAT_OF_COMBUSTION=18000\nVEG_LSET_BETA = 0.0173\nVEG_LSET_SIGMA = 5788\n" \
-                    "VEG_LSET_SURF_HEIGHT = 0.254\nVEG_LSET_SURF_LOAD = 2.24592\nVEG_LSET_CHAR_FRACTION = 0.2\n" \
-                    "VEG_LSET_CANOPY_FMC=1\nVEG_LSET_WAF_SHELTERED = 0.09\nVEG_LSET_CANOPY_BULK_DENSITY= 0.089\n" \
-                    "VEG_LSET_CANOPY_HEIGHT= 23\nVEG_LSET_CANOPY_BASE_HEIGHT = 0\n" \
-                    "VEG_LSET_ROTHFM10_ZEROWINDSLOPE_ROS = 0.007118\nPART_ID='TE'\nNPPC = 1\nVEL = -0.01" \
+        untrt_str = "&SURF ID ='untrt'\nVEG_LEVEL_SET_SPREAD =.TRUE.\nVEG_LSET_ELLIPSE=.TRUE.\n" \
+                    "VEG_LSET_SURFACE_FIRE_HEAD_ROS_MODEL='ROTHERMEL'\n" \
+                    "VEG_LSET_ROTH_ZEROWINDSLOPE_ROS = 0.007118\n" \
+                    "VEG_LSET_HEAT_OF_COMBUSTION=18000\nVEG_LSET_BETA = 0.0012\nVEG_LSET_SIGMA = 11400\n" \
+                    "VEG_LSET_SURF_HEIGHT = 0.51\n" \
                     "\nRGB=0,255,0 /\n\n"
 
         # FIXME: This could be made more general... currently hard coded from JFSP run 1
-        trt_str = "&SURF ID ='trt'\nFREE_SLIP=.TRUE.\nVEG_LEVEL_SET_SPREAD =.TRUE.\nVEG_LSET_ELLIPSE=.TRUE.\n" \
-                  "VEG_LSET_SURFACE_FIRE_HEAD_ROS_MODEL='ROTHERMEL'\nVEG_LSET_CROWN_FIRE_HEAD_ROS_MODEL= 'SR'\n" \
-                  "VEG_LSET_MODEL_FOR_PASSIVE_ROS = 'SR'\nVEG_LSET_ROTH_ZEROWINDSLOPE_ROS = 0.007118\n" \
-                  "VEG_LSET_HEAT_OF_COMBUSTION=18000\nVEG_LSET_BETA = 0.0173\nVEG_LSET_SIGMA = 5788\n" \
-                  "VEG_LSET_SURF_HEIGHT = 0.254\nVEG_LSET_SURF_LOAD = 2.24592\nVEG_LSET_CHAR_FRACTION = 0.2\n" \
-                  "VEG_LSET_CANOPY_FMC=1\nVEG_LSET_WAF_SHELTERED = 0.18\nVEG_LSET_CANOPY_BULK_DENSITY= 0.037\n" \
-                  "VEG_LSET_CANOPY_HEIGHT= 23\nVEG_LSET_CANOPY_BASE_HEIGHT = 11\n" \
-                  "VEG_LSET_ROTHFM10_ZEROWINDSLOPE_ROS = 0.007118\nPART_ID='TE'\nNPPC = 1\nVEL = -0.01" \
-                  "\nRGB=122,117,48 /\n\n"
+        trt_str = "&SURF ID ='trt'\nVEG_LEVEL_SET_SPREAD =.TRUE.\nVEG_LSET_ELLIPSE=.TRUE.\n" \
+                    "VEG_LSET_SURFACE_FIRE_HEAD_ROS_MODEL='ROTHERMEL'\n" \
+                    "VEG_LSET_ROTH_ZEROWINDSLOPE_ROS = 0.007118\n" \
+                    "VEG_LSET_HEAT_OF_COMBUSTION=18000\nVEG_LSET_BETA = 0.0012\nVEG_LSET_SIGMA = 11400\n" \
+                    "VEG_LSET_SURF_HEIGHT = 0.51\n" \
+                    "\nRGB=0,255,0 /\n\n"
 
         # FIXME:
         # no_data_str = "&SURF ID = 'no_data'\nVEG_LEVEL_SET_SPREAD = .TRUE.\nVEG_LSET_ROS_HEAD = 0.0\n" \
@@ -149,15 +143,12 @@ class FdsParser:
         #               "COLOR = 'BLACK' /\n\n"
 
         # FIXME: This could be made more general... currently hard coded from JFSP run 1
-        no_data_str = "&SURF ID ='no_data'\nFREE_SLIP=.TRUE.\nVEG_LEVEL_SET_SPREAD =.TRUE.\nVEG_LSET_ELLIPSE=.TRUE.\n" \
-                  "VEG_LSET_SURFACE_FIRE_HEAD_ROS_MODEL='ROTHERMEL'\nVEG_LSET_CROWN_FIRE_HEAD_ROS_MODEL= 'SR'\n" \
-                  "VEG_LSET_MODEL_FOR_PASSIVE_ROS = 'SR'\nVEG_LSET_ROTH_ZEROWINDSLOPE_ROS = 0.007118\n" \
-                  "VEG_LSET_HEAT_OF_COMBUSTION=18000\nVEG_LSET_BETA = 0.0173\nVEG_LSET_SIGMA = 5788\n" \
-                  "VEG_LSET_SURF_HEIGHT = 0.254\nVEG_LSET_SURF_LOAD = 2.24592\nVEG_LSET_CHAR_FRACTION = 0.2\n" \
-                  "VEG_LSET_CANOPY_FMC=1\nVEG_LSET_WAF_SHELTERED = 0.18\nVEG_LSET_CANOPY_BULK_DENSITY= 0.037\n" \
-                  "VEG_LSET_CANOPY_HEIGHT= 23\nVEG_LSET_CANOPY_BASE_HEIGHT = 11\n" \
-                  "VEG_LSET_ROTHFM10_ZEROWINDSLOPE_ROS = 0.007118\nPART_ID='TE'\nNPPC = 1\nVEL = -0.01" \
-                  "\nRGB=122,117,48 /\n\n"
+        no_data_str = "&SURF ID ='no_data'\nVEG_LEVEL_SET_SPREAD =.TRUE.\nVEG_LSET_ELLIPSE=.TRUE.\n" \
+                  "VEG_LSET_SURFACE_FIRE_HEAD_ROS_MODEL='ROTHERMEL'\n" \
+                  "VEG_LSET_ROTH_ZEROWINDSLOPE_ROS = 0.007118\n" \
+                  "VEG_LSET_HEAT_OF_COMBUSTION=18000\nVEG_LSET_BETA = 0.0012\nVEG_LSET_SIGMA = 11400\n" \
+                  "VEG_LSET_SURF_HEIGHT = 0.51\n" \
+                  "\nRGB=0,255,0 /\n\n"
 
         # FIXME: This could be made more general... currently hard coded from JFSP run 1
         part_id_str = "-- Thermal Elements\n&PART ID='TE',\nAGE=9999,\nTE_BURNTIME=2.5,\nMASSLESS=.TRUE.," \
