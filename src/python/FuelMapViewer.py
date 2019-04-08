@@ -13,6 +13,9 @@ class FuelMapViewer(AsciiViewer):
         self._ascii_parser = fmeg._ascii_parser
         self.setScene(fmeg)
 
+        # Hack to ensure the editor view starts in the upper left hand corner
+        self.ensureVisible(self.editor.rects[0][0], 1, 1)
+
     @staticmethod
     def colors():
         return FuelMapRect.colors + list(FuelMapRect.no_data_color)

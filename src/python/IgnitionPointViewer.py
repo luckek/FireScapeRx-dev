@@ -1,8 +1,6 @@
 from AsciiViewer import AsciiViewer
 from IgnitionPointEditor import IgnitionPointEditor
 from gui.IgnitionPointRect import *
-from Utility import linspace
-from FireLine import FireLine
 
 
 class IgnitionPointViewer(AsciiViewer):
@@ -14,6 +12,9 @@ class IgnitionPointViewer(AsciiViewer):
         self.editor = ipeg
         self._ascii_parser = ipeg._ascii_parser
         self.setScene(ipeg)
+
+        # Hack to ensure the editor view starts in the upper left hand corner
+        self.ensureVisible(self.editor.rects[0][0], 1, 1)
 
         self._fire_lines = []
 
